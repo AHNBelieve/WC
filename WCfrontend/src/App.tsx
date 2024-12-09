@@ -19,7 +19,6 @@ const WrapperRight = styled.div`
   justify-content: space-evenly;
   width: 43%;
   height: 90%;
-  background-color: aliceblue;
   padding: 10px;
 `;
 
@@ -50,12 +49,7 @@ const ProfileBoard = styled.div`
   background-color: ${(props) => props.theme.boardColor};
 `;
 
-const CalendarBoard = styled.div`
-  border-radius: 56px;
-  width: 92%;
-  height: 55%;
-  background-color: ${(props) => props.theme.boardColor};
-`;
+
 
 function App() {
   return (
@@ -73,9 +67,7 @@ function App() {
           <ProfileBoard>
             <Profile />
           </ProfileBoard>
-          <CalendarBoard>
-            <Calendar />
-          </CalendarBoard>
+          <Calendar />
         </WrapperRight>
       </Container>
     </>

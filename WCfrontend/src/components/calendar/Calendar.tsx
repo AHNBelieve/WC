@@ -50,7 +50,7 @@ const StyledCalendar = styled(Calendars)`
     border-radius: 50px;
   }
   .react-calendar__month-view__days__day {
-    height: 80px; 
+    height: 70px; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
@@ -63,7 +63,6 @@ const StyledCalendar = styled(Calendars)`
     }
 }
 `;
-
 
 function Calendar() {
   const [date, setDate] = useState(new Date());

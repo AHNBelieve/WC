@@ -1,5 +1,11 @@
+import WeatherAPI from "./WeatherApi";
+
 function Weather() {
-    return null;
+    return (
+        <>
+            <WeatherAPI />
+        </>
+    )
 }
 
 export default Weather;

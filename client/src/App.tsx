@@ -1,30 +1,40 @@
 import styled from "styled-components";
 import Weather from "./components/weather/Weather";
 import ToDo from "./components/todo/ToDo";
-import Profile from "./components/profile/Profile";
 import Calendar from "./components/calendar/Calendar";
 
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: 200vh;
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column;
   align-items: center;
   `;
 
-const WrapperRight = styled.div`
+const TodayInformation = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  width: 43%;
-  height: 90%;
+  width: 850px;
+  height: 850px;
   padding: 10px;
+  margin-top: 150px;
+  background-color: ${(props) => props.theme.boxColor};
+  border-radius: 80px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px;
 `;
 
-const WrapperLeft = styled(WrapperRight)`
-  border-radius: 80px;
+const WrapperBottom = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  width: 850px;
+  height: 850px;
+  padding: 10px;
+  margin-top: 50px;
   background-color: ${(props) => props.theme.boxColor};
+  border-radius: 80px;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px;
 `;
 
@@ -48,18 +58,17 @@ function App() {
   return (
     <>
       <Container>
-        <WrapperLeft>
+        <TodayInformation>
           <WeatherBoard>
             <Weather />
           </WeatherBoard>
           <ToDoBoard>
             <ToDo />
           </ToDoBoard>
-        </WrapperLeft>
-        <WrapperRight>
-          <Profile />
+        </TodayInformation>
+        <WrapperBottom>
           <Calendar />
-        </WrapperRight>
+        </WrapperBottom>
       </Container>
     </>
   )

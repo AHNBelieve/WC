@@ -1,4 +1,4 @@
-// const API_KEY = "";
+const API_KEY = "674bc744607f1dcc62ba480a79132421";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
@@ -79,7 +79,6 @@ function WeatherAPI() {
         return <div>로딩 중...</div>;
     }
 
-    console.log(data)
     return (<div>
         <h1>날씨 정보</h1>
         <p>도시: {data?.name}</p>

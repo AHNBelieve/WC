@@ -45,12 +45,6 @@ const WeatherBoard = styled.div`
   background-color: ${(props) => props.theme.boardColor};
 `;
 
-const ToDoBoard = styled.div`
-  border-radius: 56px;
-  width: 92%;
-  height: 42%;
-  background-color: ${(props) => props.theme.boardColor};
-`;
 
 
 
@@ -62,9 +56,7 @@ function App() {
           <WeatherBoard>
             <Weather />
           </WeatherBoard>
-          <ToDoBoard>
-            <ToDo />
-          </ToDoBoard>
+          <ToDo />
         </TodayInformation>
         <WrapperBottom>
           <Calendar />

@@ -12,7 +12,6 @@ const ToDoBoard = styled.div`
   grid-template-columns: 10fr 7fr;
   grid-template-rows: 40px 270px;
   gap: 5px;
-  padding: 10px 30px;
 `;
 
 const ToDoMemo = styled.textarea`

@@ -36,14 +36,13 @@ interface IDroppableToDoProps {
 function DroppableToDo({ toDos }: IDroppableToDoProps) {
     const { register, setValue, handleSubmit } = useForm<IForm>();
     const setTodoState = useSetRecoilState(toDoState);
-    const onValid = ({ toDo }: IForm) => {
+    const createToDo = ({ toDo }: IForm) => {
         const newToDo = {
             id: Date.now(),
             text: toDo,
         };
-        setTodoState((allBoards) => {
+        setTodoState(() => {
             return {
-                ...allBoards,
                 "To Do": [...toDos, newToDo], // 보드 이름을 "To Do"로 설정
             };
         });
@@ -51,11 +50,11 @@ function DroppableToDo({ toDos }: IDroppableToDoProps) {
     };
     return (
         <>
-            <Form onSubmit={handleSubmit(onValid)}>
+            <Form onSubmit={handleSubmit(createToDo)}>
                 <input
                     {...register("toDo", { required: true })}
                     type="text"
-                    placeholder="Add task"
+                    placeholder="오늘 할 일"
                 />
             </Form>
             <Droppable droppableId="To Do">

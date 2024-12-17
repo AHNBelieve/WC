@@ -7,8 +7,8 @@ import { toDoState } from "../../atoms";
 const ToDoCard = styled.div`
     width: 100%;
     height: 40px;
-    margin: 4px 0;
     border-radius: 12px;
+    margin: 4px 0;
     grid-column: 1 span 1;
     grid-row: 2 span 1;
     background-color: #bbaef5;
@@ -31,11 +31,7 @@ function DraggableToDo({ toDoId, toDoText, index }: IDragabbleCardProps) {
     const onDelete = () => {
         setTodoState((prevTodos) => {
             const updatedTodos = { ...prevTodos };
-            const categories = Object.keys(updatedTodos);
-            for (let i = 0; i < (categories.length); i++) {
-                // "To Do", "Doing", "Done" 중 해당 ID를 찾아서 삭제
-                updatedTodos[categories[i]] = updatedTodos[categories[i]].filter((todo) => todo.id !== toDoId);
-            }
+            updatedTodos["To Do"] = updatedTodos["To Do"].filter((todo) => todo.id !== toDoId);
             return updatedTodos;
         });
     };

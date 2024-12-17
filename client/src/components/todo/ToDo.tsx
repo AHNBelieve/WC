@@ -5,9 +5,9 @@ import { toDoState } from "../../atoms";
 import DroppableToDo from "./DroppableToDo";
 
 const ToDoBoard = styled.div`
-  border-radius: 56px;
   width: 92%;
   height: 42%;
+  border-radius: 56px;
   display: grid;
   grid-template-columns: 10fr 7fr;
   grid-template-rows: 40px 270px;
@@ -17,13 +17,13 @@ const ToDoBoard = styled.div`
 const ToDoMemo = styled.textarea`
     width: 100%;
     height: 100%;
+    border-radius: 15px;
     grid-column: 2;
     grid-row: 2;
     background-color: ${(props) => props.theme.boardColor};
-    border-radius: 15px;
     padding: 20px;
-    resize: none;
     color: white;
+    resize: none;
     &:focus{
         outline: none;
     }
@@ -40,22 +40,19 @@ const ToDoMemo = styled.textarea`
 `;
 
 function ToDo() {
-    const [toDos, setToDos] = useRecoilState(toDoState);
+    const [toDos, setTodoState] = useRecoilState(toDoState);
     const onDragEnd = ({ destination, source }: DropResult) => {
         if (!destination) return; // 드롭 위치가 없으면 종료
         // 같은 보드 내에서의 드래그
         if (destination.droppableId === source.droppableId) {
-            setToDos((allBoards) => {
-                const boardCopy = [...allBoards[source.droppableId]]; // 현재 드래그된 보드의 복사본
-                const taskObj = boardCopy[source.index];
-
+            setTodoState((ToDos) => {
+                const toDoCopy = [...ToDos[source.droppableId]]; // 현재 드래그된 보드의 복사본
+                const taskObj = toDoCopy[source.index];
                 // 아이템 재배치
-                boardCopy.splice(source.index, 1);
-                boardCopy.splice(destination.index, 0, taskObj);
-
+                toDoCopy.splice(source.index, 1);
+                toDoCopy.splice(destination.index, 0, taskObj);
                 return {
-                    ...allBoards,
-                    [source.droppableId]: boardCopy,
+                    [source.droppableId]: toDoCopy,
                 };
             });
         }

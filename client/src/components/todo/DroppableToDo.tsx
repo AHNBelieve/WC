@@ -27,6 +27,16 @@ const ToDoList = styled.div`
     align-items: center;
     grid-column: 1;
     grid-row: 2;
+    overflow: auto;
+        /* 스크롤바 스타일 */
+        &::-webkit-scrollbar{
+        height: 20px;
+        width: 20px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: #ad9eff; /* 스크롤바 색상 */
+        border-radius: 15px; /* 스크롤바 모서리 둥글게 */
+    }
 `;
 
 interface IDroppableToDoProps {

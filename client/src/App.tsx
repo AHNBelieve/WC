@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Weather from "./components/weather/Weather";
 import ToDo from "./components/todo/ToDo";
 import Calendar from "./components/calendar/Calendar";
+import LoginComponent from "./components/LoginComponent/LoginComponent";
 
 const Container = styled.div`
   width: 100vw;
@@ -9,7 +10,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  `;
+`;
 
 const TodayInformation = styled.div`
   display: flex;
@@ -45,13 +46,11 @@ const WeatherBoard = styled.div`
   background-color: ${(props) => props.theme.boardColor};
 `;
 
-
-
-
 function App() {
   return (
     <>
       <Container>
+        <LoginComponent />
         <TodayInformation>
           <WeatherBoard>
             <Weather />
@@ -63,7 +62,7 @@ function App() {
         </WrapperBottom>
       </Container>
     </>
-  )
+  );
 }
 
 export default App;

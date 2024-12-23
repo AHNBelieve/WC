@@ -3,6 +3,7 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { useRecoilState } from "recoil";
 import { toDoState } from "../../atoms";
 import DroppableToDo from "./DroppableToDo";
+import ToDoMemo from "./ToDoMemo";
 
 const ToDoBoard = styled.div`
   width: 92%;
@@ -14,30 +15,7 @@ const ToDoBoard = styled.div`
   gap: 5px;
 `;
 
-const ToDoMemo = styled.textarea`
-    width: 100%;
-    height: 100%;
-    border-radius: 15px;
-    grid-column: 2;
-    grid-row: 2;
-    background-color: ${(props) => props.theme.boardColor};
-    padding: 20px;
-    color: white;
-    resize: none;
-    &:focus{
-        outline: none;
-    }
-    /* 스크롤바 스타일 */
-    &::-webkit-scrollbar{
-        height: 20px;
-        width: 20px;
-    }
-    &::-webkit-scrollbar-thumb {
-        background-color: #ad9eff; /* 스크롤바 색상 */
-        border-radius: 15px; /* 스크롤바 모서리 둥글게 */
-    }
 
-`;
 
 function ToDo() {
     const [toDos, setTodoState] = useRecoilState(toDoState);
@@ -61,7 +39,7 @@ function ToDo() {
         <DragDropContext onDragEnd={onDragEnd}>
             <ToDoBoard>
                 <DroppableToDo toDos={toDos["To Do"]} />
-                <ToDoMemo placeholder="메모 입력" />
+                <ToDoMemo />
             </ToDoBoard>
         </DragDropContext>
     );

@@ -1,10 +1,15 @@
 // src/components/LoginComponent.tsx
 import React, { useEffect, useState } from "react";
-import { supabase } from "../../supabase"; // Supabase 클라이언트 임포트
+import { getToken, supabase } from "../../supabase"; // Supabase 클라이언트 임포트
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { toDoState } from "../../atoms";
 
 const LoginComponent: React.FC = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const recoilValue = useRecoilValue(toDoState);
+
   const handleLogin = async () => {
     try {
       // 구글 로그인 OAuth 시작
@@ -28,6 +33,7 @@ const LoginComponent: React.FC = () => {
   };
   //현재 로그인 됐는지 안 됐는지 파악하는 useEffect
   useEffect(() => {
+    console.log(recoilValue);
     const func = async () => {
       const { data, error } = await supabase.auth.getSession();
       if (data.session) {
@@ -43,29 +49,26 @@ const LoginComponent: React.FC = () => {
 
   const testHandler = async () => {
     try {
-      const token = await supabase.auth
-        .getSession()
-        .then(({ data: { session } }) => session?.access_token);
+      const token = await getToken();
+
       if (!token) {
-        alert("로그인 해주세요");
-        return;
+        alert("로그인이 필요합니다.");
+        return "로그인 해주세요.";
       }
 
-      const response = await fetch("http://localhost:3000/DailyData", {
-        headers: {
-          Authorization: `Bearer ${token}`, // JWT를 Authorization 헤더에 추가
+      const response = await axios.post(
+        "http://localhost:3000/DailyData", // NestJS 서버의 엔드포인트
+        {
+          data: recoilValue, // Recoil 상태 값
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // 헤더에 Authorization 추가
+          },
+        }
+      );
 
-      if (!response.ok) {
-        const errorData = await response.json(); // 에러 응답을 JSON으로 파싱
-        throw new Error(
-          errorData.error || `HTTP error! status: ${response.status}`
-        );
-      }
-
-      const data = await response.json();
-      console.log("Products:", data);
+      console.log("Response:", response.data);
     } catch (error: any) {
       console.error("Error fetching products:", error.message);
       alert("데이터를 가져오는 중 오류가 발생했습니다: " + error.message);

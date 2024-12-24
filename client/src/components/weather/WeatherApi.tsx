@@ -1,6 +1,7 @@
 const API_KEY = "674bc744607f1dcc62ba480a79132421";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import styled from "styled-components";
 
 interface Weathers {
     coord: {
@@ -48,6 +49,96 @@ interface Weathers {
     cod: number;    // 응답 코드드
 }
 
+const WeatherBoard = styled.div`
+  border-radius: 56px;
+  width: 92%;
+  height: 47%;
+  background-color: ${(props) => props.theme.boardColor};
+  display: grid;
+  grid-template-columns: 465px 300px;
+  grid-template-rows: 1fr;
+`;
+
+const MainWeather = styled.div`
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 280px 185px;
+    grid-template-rows: 110px auto;
+`;
+
+const Name = styled.div`
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    div{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        margin-left: 80px;
+        font-size: 50px;
+    }
+`;
+const Temp = styled.div`
+    grid-column: 2;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 120px;
+
+    div:first-child{
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        font-size: 60px;
+    }
+    div:last-child{
+        display: flex;
+        justify-content: center;
+        font-size: 20px;
+    }
+`;
+const Icon = styled.div`
+    grid-column: 1;
+    grid-row: 2;
+    img{
+        width: 100%;
+        height: 100%;
+    }
+`;
+
+const SubWeather = styled.div`
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 0.7fr 1fr 1fr;
+    div{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        div{
+            margin-top: 10px;
+        }
+    };
+    div:nth-child(1){
+    grid-column: 1;
+    grid-row: 2;
+    }
+    div:nth-child(2){
+    grid-column: 1;
+    grid-row: 3;
+    }
+    div:nth-child(3){
+    grid-column: 2;
+    grid-row: 3;
+    }
+    div:nth-child(4){
+    grid-column: 2;
+    grid-row: 2;
+    }
+`;
+
 function WeatherAPI() {
     const [location, setLocation] = useState<{ lat: number; lon: number } | null>(null);
     useEffect(() => {
@@ -68,7 +159,7 @@ function WeatherAPI() {
     }, []);
 
     const getWeather = () => {
-        return fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location?.lat}&lon=${location?.lon}&appid=${API_KEY}&units=metric`).then((response) => response.json());
+        return fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location?.lat}&lon=${location?.lon}&appid=${API_KEY}&units=metric&lang=kr`).then((response) => response.json());
     };
 
     const { data, isLoading } = useQuery<Weathers>("weatherData", getWeather, {
@@ -79,12 +170,28 @@ function WeatherAPI() {
         return <div>로딩 중...</div>;
     }
 
-    return (<div>
-        <h1>날씨 정보</h1>
-        <p>도시: {data?.name}</p>
-        <p>온도: {data?.main.temp} °C</p>
-        <p>상태: {data?.weather[0].description}</p>
-    </div>)
+    return (
+        <WeatherBoard>
+            <MainWeather>
+                <Name>
+                    <div>{data?.name}</div>
+                </Name>
+                <Temp>
+                    <div>{data?.main.temp}°</div>
+                    <div>{data?.weather[0].description}</div>
+                </Temp>
+                <Icon>
+                    <img src={`https://openweathermap.org/img/wn/${data?.weather[0].icon}@2x.png`} />
+                </Icon>
+            </MainWeather>
+            <SubWeather>
+                <div>{data?.main.temp_max}<div>최고기온</div></div>
+                <div>{data?.main.temp_min}<div>최저기온</div></div>
+                <div>{data?.main.pressure}hpa<div>기압</div></div>
+                <div>{data?.main.humidity}%<div>습도</div></div>
+            </SubWeather>
+        </WeatherBoard>
+    )
 }
 
 export default WeatherAPI;

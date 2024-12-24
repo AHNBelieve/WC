@@ -39,12 +39,6 @@ const WrapperBottom = styled.div`
   box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px;
 `;
 
-const WeatherBoard = styled.div`
-  border-radius: 56px;
-  width: 92%;
-  height: 47%;
-  background-color: ${(props) => props.theme.boardColor};
-`;
 
 function App() {
   return (
@@ -52,9 +46,7 @@ function App() {
       <Container>
         <LoginComponent />
         <TodayInformation>
-          <WeatherBoard>
-            <Weather />
-          </WeatherBoard>
+          <Weather />
           <ToDo />
         </TodayInformation>
         <WrapperBottom>

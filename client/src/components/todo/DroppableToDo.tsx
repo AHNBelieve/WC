@@ -53,18 +53,19 @@ function DroppableToDo({ toDos }: IDroppableToDoProps) {
             id: Date.now(),
             text: toDo,
         };
-        setTodoState(() => {
+        setTodoState((prevState) => {
             return {
+                ...prevState,    // 기존 상태 유지
                 "To Do": [...toDos, newToDo], // 보드 이름을 "To Do"로 설정
             };
         });
-        setValue("toDo", "");
+        setValue("toDo", "");    // 입력필드 초기화
     };
     return (
         <>
             <Form onSubmit={handleSubmit(createToDo)}>
                 <input
-                    {...register("toDo", { required: true })}
+                    {...register("toDo", { required: true })}   // 폼 필드를 toDo라는 이름으로 등록, 유효성 검사
                     type="text"
                     placeholder="오늘 할 일"
                 />

@@ -48,7 +48,7 @@ function ToDoMemo() {
     const { register, handleSubmit } = useForm<IForm>();
     const [todoState, setTodoState] = useRecoilState(toDoState);
     const memoState = todoState["Memo"];
-    const existingMemo = memoState?.length > 0 && memoState[0] ? memoState[0].text : "";
+    const existingMemo = memoState?.length > 0 && memoState[0] ? memoState[0].text : "";    //메모 객체배열이 존재하면 text를 없다면 빈문자열
     const saveMemo = ({ memo }: IForm) => {
         const newMemo = {
             id: Date.now(),
@@ -62,10 +62,10 @@ function ToDoMemo() {
         });
     };
     return (
-        <MemoForm onSubmit={handleSubmit(saveMemo)}>
+        <MemoForm onSubmit={handleSubmit(saveMemo)}>    {/* 폼 제출시 saveMemo함수 실행*/}
             <Memo
                 {...register("memo", { required: true })}
-                defaultValue={existingMemo}
+                defaultValue={existingMemo} // 입력필드의 초기값
                 placeholder="입력하세용"
             />
             <MemoBTN type="submit">제출</MemoBTN>

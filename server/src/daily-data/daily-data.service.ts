@@ -18,14 +18,12 @@ export class DailyDataService {
   }
 
   async getUserFromAuthHeader(authHeader: string) {
-    console.log(authHeader);
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new UnauthorizedException(
         'Authorization 헤더가 유효하지 않습니다.',
       );
     }
     const token = authHeader.split(' ')[1];
-    console.log(token);
     const { data, error } = await this.supabase.auth.getUser(token);
     if (error || !data?.user) {
       throw new UnauthorizedException('Invalid or expired session token.');
@@ -34,6 +32,7 @@ export class DailyDataService {
   }
 
   async getDailyData(@Headers('Authorization') authHeader: string) {
+    //오늘 데이터를 보내주는 함수
     try {
       const user = await this.getUserFromAuthHeader(authHeader);
       const { data, error } = await this.supabase
@@ -57,22 +56,20 @@ export class DailyDataService {
   ) {
     try {
       const user = await this.getUserFromAuthHeader(authHeader);
-      console.log(body.data);
-      console.log(user);
       const { data: result, error } = await this.supabase
-        .from('DailyData') // 여기서 테이블명 'your_table'을 실제 테이블 이름으로 바꿔야 합니다
+        .from('DailyData')
         .insert([
           {
-            userId: user.id, // 'user_id' 컬럼에 유저 ID를 삽입
+            userId: user.id,
             todoData: body.data.ToDo,
-            memoData: body.data.Memo, // 'data' 컬럼에 데이터를 삽입
-            created_at: new Date(), // 'created_at' 컬럼에 현재 날짜/시간을 삽입
+            memoData: body.data.Memo,
+            created_at: new Date(),
           },
         ]);
       if (error) {
-        throw new Error(error.message); // 에러 발생 시 에러 메시지 처리
+        throw new Error(error.message);
       }
-      return result; // 성공적으로 삽입된 데이터 반환
+      return result;
     } catch (error) {
       console.error('Error inserting data to Supabase:', error);
       throw new Error('Supabase insertion failed');

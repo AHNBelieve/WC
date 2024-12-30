@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import Weather from "./components/weather/Weather";
-import ToDo from "./components/todo/ToDo";
 import Calendar from "./components/calendar/Calendar";
 import LoginComponent from "./components/LoginComponent/LoginComponent";
+import TodayInformation from "./components/TodayInformation";
 
 const Container = styled.div`
   width: 100vw;
@@ -12,7 +11,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const TodayInformation = styled.div`
+const TodayInformationStyled = styled(TodayInformation)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,7 +43,7 @@ function App() {
     <>
       <Container>
         <LoginComponent />
-        <TodayInformation />
+        <TodayInformationStyled />
         <WrapperBottom>
           <Calendar />
         </WrapperBottom>

@@ -7,7 +7,7 @@ export class DailyDataController {
 
   @Get()
   async getDailyData(@Headers('Authorization') authHeader: string) {
-    return await this.DailyDataService.getTodayDailyData(authHeader);
+    return await this.DailyDataService.getDailyData(authHeader);
   }
 
   @Post()

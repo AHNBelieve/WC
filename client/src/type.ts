@@ -1,10 +1,5 @@
-interface todoData {
-  id: string;
+export interface todoData {
+  id: number;
   text: string;
   //boolean?
-}
-
-interface dailyData {
-  todoDataArray: todoData[];
-  memoData: string;
 }

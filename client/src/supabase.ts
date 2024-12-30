@@ -6,11 +6,9 @@ export const supabase = createClient(
   import.meta.env.VITE_SUPABASE_KEY
 );
 
-export const checkSession = async () => {
-  const auth = await supabase.auth.getSession();
-  if (auth) {
-    return true;
-  } else {
-    return false;
-  }
+export const getToken = async () => {
+  const token = await supabase.auth
+    .getSession()
+    .then(({ data: { session } }) => session?.access_token);
+  return token;
 };

@@ -1,10 +1,15 @@
 // src/components/LoginComponent.tsx
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../supabase"; // Supabase 클라이언트 임포트
+import { useRecoilValue } from "recoil";
+import { toDoState } from "../../atoms";
+import { getDailyData } from "../../api/testHandler";
 
 const LoginComponent: React.FC = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const recoilValue = useRecoilValue(toDoState);
+
   const handleLogin = async () => {
     try {
       // 구글 로그인 OAuth 시작
@@ -40,39 +45,8 @@ const LoginComponent: React.FC = () => {
     func();
     setIsLoading(false);
   }, []);
-
-  const testHandler = async () => {
-    try {
-      const token = await supabase.auth
-        .getSession()
-        .then(({ data: { session } }) => session?.access_token);
-      if (!token) {
-        alert("로그인 해주세요");
-        return;
-      }
-
-      const response = await fetch("http://localhost:3000/DailyData", {
-        headers: {
-          Authorization: `Bearer ${token}`, // JWT를 Authorization 헤더에 추가
-        },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json(); // 에러 응답을 JSON으로 파싱
-        throw new Error(
-          errorData.error || `HTTP error! status: ${response.status}`
-        );
-      }
-
-      const data = await response.json();
-      console.log("Products:", data);
-    } catch (error: any) {
-      console.error("Error fetching products:", error.message);
-      alert("데이터를 가져오는 중 오류가 발생했습니다: " + error.message);
-    }
-  };
   if (isLoading || isLogin) {
-    return <button onClick={testHandler}>테스트</button>;
+    return <button onClick={getDailyData}>테스트</button>;
   }
   return (
     <div className="login-container">

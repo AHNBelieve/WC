@@ -2,39 +2,77 @@ import { useEffect, useState } from "react";
 import ToDo from "./todo/ToDo";
 import WeatherAPI from "./weather/WeatherApi";
 import { todoData } from "../type";
-import { getDailyData } from "../api/testHandler";
+import {
+  createDailyData,
+  getDailyData,
+  updateDailyData,
+} from "../api/testHandler";
 
 export default function TodayInformation() {
+  //주요 변수들
+  //todoDataArray -> 할 일 목록
   const [todoDataArray, setTodoDataArray] = useState<todoData[]>([]);
+  //memoData -> 옆의 메모장
+  const [memoData, setMemoData] = useState<string>("");
+  //저장할 weatherData -> 프롭스로 weatherAPI에 전달하니까 거기서 setWeatherDataToSave로 저장
   const [weatherDataToSave, setWeatherDataToSave] = useState({});
 
-  //여기서 이제 데이터를 다 모아서 한번에 서버로 fetch
-  //날씨는 한번만 보내도 되잖음
-  //그래서 그냥 저장할 때에는 todoData만 Update해주고
-  //처음에 생성할 때에 따른 초기 하루 데이터를 만들까 고민중중
-  //확인용
+  //컴포넌트 상태에 관한 것
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     const func = async () => {
-      const response = await getDailyData();
-      console.log(response);
+      //이렇게 보내면 그냥 오늘 데이터 받는 것!
+      try {
+        setIsLoading(true);
+        const response = await getDailyData();
 
-      //여기서 서버의 데이터를 가져오면 됨
-      if (response && response.data[0])
-        setTodoDataArray(response.data[0].todoData as todoData[]);
-        //지금은 [0]으로 첫 번째 인덱스만 가져오지만, 수정할 예정! 해당 유저의 하루 데이터만 받도록
+        //여기서 서버의 데이터를 가져오면 됨
+
+        if (response && response.data) {
+          setTodoDataArray(response.data.todoData as todoData[]);
+          setMemoData(response.data.memoData as string);
+        } else {
+          //현재 오늘 데이터가 존재하지 않는 경우!
+          //일단은 바로 오늘 데이터를 생성해놓는 걸로 했는데, 이거 버튼식으로 바꿔도 좋을듯
+          const response = await createDailyData();
+          console.log(response);
+        }
+        setIsLoading(false);
+      } catch (err) {
+        //이게 서버랑 같이 켜지다보니까 서버에 API요청 보내도 못 받는 경우가 있음
+        //그런 경우에 해당해서 reload해주는게 적합하다고 판단함.
+        window.location.reload();
+        alert(err);
+      }
     };
 
     func();
   }, []);
 
-  console.log(todoDataArray, weatherDataToSave);
+  //Update핸들러 이 핸들러를 통해서 데이터가 업데이트 된다.
+  const updatingHandler = () => {
+    const func = async () => {
+      const response = await updateDailyData(todoDataArray, memoData);
+      console.log(response);
+    };
+    func();
+  };
+
+  if (isLoading) {
+    return <div>로딩중입니다~~</div>;
+  }
+
   return (
     <div>
       <WeatherAPI setWeatherDataToSave={setWeatherDataToSave}></WeatherAPI>
       <ToDo
         todoDataArray={todoDataArray}
         setTodoDataArray={setTodoDataArray}
+        memoData={memoData}
+        setMemoData={setMemoData}
       ></ToDo>
+      <button onClick={updatingHandler}>업데이트!</button>
     </div>
   );
 }

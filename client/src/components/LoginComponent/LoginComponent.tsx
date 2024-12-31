@@ -1,14 +1,11 @@
 // src/components/LoginComponent.tsx
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../supabase"; // Supabase 클라이언트 임포트
-import { useRecoilValue } from "recoil";
-import { toDoState } from "../../atoms";
 import { getDailyData } from "../../api/testHandler";
 
 const LoginComponent: React.FC = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const recoilValue = useRecoilValue(toDoState);
 
   const handleLogin = async () => {
     try {

@@ -17,6 +17,7 @@ export class DailyDataService {
     );
   }
 
+  //헤더의 authHeader받아서 토큰 리턴하는 함수
   async getUserFromAuthHeader(authHeader: string) {
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new UnauthorizedException(
@@ -34,45 +35,71 @@ export class DailyDataService {
   async getDailyData(@Headers('Authorization') authHeader: string) {
     //오늘 데이터를 보내주는 함수
     try {
+      const today = new Date().toISOString().split('T')[0];
       const user = await this.getUserFromAuthHeader(authHeader);
       const { data, error } = await this.supabase
         .from('DailyData')
         .select('*')
-        .eq('userId', user.id);
+        .match({ userId: user.id, date: today });
       if (error) {
         console.error('Supabase Error:', error);
         throw error;
       }
 
-      return data;
+      return data[0];
     } catch (error) {
       console.error('Error fetching products:', error);
       throw error;
     }
   }
-  async postDailyData(
-    @Body() body: { data: any },
-    @Headers('Authorization') authHeader: string,
-  ) {
+  async postDailyData(@Headers('Authorization') authHeader: string) {
     try {
+      const today = new Date().toISOString().split('T')[0];
       const user = await this.getUserFromAuthHeader(authHeader);
-      const { data: result, error } = await this.supabase
-        .from('DailyData')
-        .insert([
-          {
-            userId: user.id,
-            todoData: body.data.ToDo,
-            memoData: body.data.Memo,
-            created_at: new Date(),
-          },
-        ]);
+      const { data, error } = await this.supabase.from('DailyData').insert([
+        {
+          userId: user.id,
+          created_at: new Date(),
+          date: today,
+          todoData: [],
+          memoData: '',
+        },
+      ]);
       if (error) {
         throw new Error(error.message);
       }
-      return result;
+      return {
+        success: 'true',
+        data: data,
+      };
     } catch (error) {
       console.error('Error inserting data to Supabase:', error);
       throw new Error('Supabase insertion failed');
+    }
+  }
+  async updateDailyData(
+    @Body() body: any,
+    @Headers('Authorization') authHeader: string,
+  ) {
+    try {
+      //DailyData받아서 오늘 데이터 업데이트!
+      const today = new Date().toISOString().split('T')[0];
+      const user = await this.getUserFromAuthHeader(authHeader);
+      //supabase fetch
+      const { data, error } = await this.supabase
+        .from('DailyData')
+        .update({
+          todoData: body.todoDataArray,
+          memoData: body.memoData,
+        })
+        .match({ userId: user.id, date: today });
+      if (error) {
+        console.log('Error updating data', error);
+      } else {
+        console.log('Data updated!');
+      }
+    } catch (err) {
+      console.log('Updating Connection Error ', err);
     }
   }
 }

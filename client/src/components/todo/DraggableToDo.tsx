@@ -64,7 +64,8 @@ function DraggableToDo({
 
   const onDelete = () => {
     setTodoDataArray((prevData) => {
-      let updatedTodoDataArray = { ...prevData };
+      console.log(todoId, prevData);
+      let updatedTodoDataArray = [...prevData];
       updatedTodoDataArray = updatedTodoDataArray.filter(
         (todoData: todoData) => todoData.id !== todoId
       );
@@ -86,7 +87,7 @@ function DraggableToDo({
   const handleSubmit = () => {
     if (newTodo.trim() !== "") {
       setTodoDataArray((prevData) => {
-        let updatedTodoDataArray = { ...prevData };
+        let updatedTodoDataArray = [...prevData];
         updatedTodoDataArray = updatedTodoDataArray.map(
           (todoData: todoData, idx) => {
             return idx === index ? { ...todoData, text: newTodo } : todoData;

@@ -3,6 +3,7 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import DroppableToDo from "./DroppableToDo";
 import ToDoMemo from "./ToDoMemo";
 import { todoData } from "../../type";
+import React from "react";
 
 const ToDoBoard = styled.div`
   width: 92%;
@@ -17,9 +18,16 @@ const ToDoBoard = styled.div`
 interface Props {
   todoDataArray: todoData[];
   setTodoDataArray: React.Dispatch<React.SetStateAction<todoData[]>>;
+  memoData: string;
+  setMemoData: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function ToDo({ todoDataArray, setTodoDataArray }: Props) {
+function ToDo({
+  todoDataArray,
+  setTodoDataArray,
+  memoData,
+  setMemoData,
+}: Props) {
   const onDragEnd = ({ destination, source }: DropResult) => {
     // 드래그가 끝났을 때 호출, destination은 목적지, source는 출발지
 
@@ -43,7 +51,7 @@ function ToDo({ todoDataArray, setTodoDataArray }: Props) {
           todoDataArray={todoDataArray}
           setTodoDataArray={setTodoDataArray}
         />
-        <ToDoMemo />
+        <ToDoMemo memoData={memoData} setMemoData={setMemoData} />
       </ToDoBoard>
     </DragDropContext>
   );

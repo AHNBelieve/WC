@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Patch, Post } from '@nestjs/common';
 import { DailyDataService } from './daily-data.service';
 
 @Controller('DailyData')
@@ -11,10 +11,16 @@ export class DailyDataController {
   }
 
   @Post()
-  async postDailyData(
-    @Body() body: { data: any },
+  async postDailyData(@Headers('Authorization') authHeader: string) {
+    return await this.DailyDataService.postDailyData(authHeader);
+  }
+
+  @Patch()
+  async updateDailyData(
+    @Body()
+    body: any,
     @Headers('Authorization') authHeader: string,
   ) {
-    return await this.DailyDataService.postDailyData(body, authHeader);
+    return await this.DailyDataService.updateDailyData(body, authHeader);
   }
 }

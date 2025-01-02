@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Calendars from 'react-calendar';
-import 'react-calendar/dist/Calendar.css'; // 기본 스타일 추가
+import Calendars from "react-calendar";
+import "react-calendar/dist/Calendar.css"; // 기본 스타일 추가
 import styled from "styled-components";
 
 const CalendarBoard = styled.div`
@@ -19,8 +19,8 @@ const StyledCalendar = styled(Calendars)`
   border: none;
   border-radius: 56px;
   background-color: ${(props) => props.theme.boxColor};
-  opacity: 100% ;
-.react-calendar__month-view {
+  opacity: 100%;
+  .react-calendar__month-view {
     abbr {
       font-size: 1.3em;
       color: ${(props) => props.theme.lighter};
@@ -28,7 +28,7 @@ const StyledCalendar = styled(Calendars)`
   }
   .react-calendar__navigation {
     justify-content: center;
-    button{
+    button {
       border-radius: 50px;
       color: white;
       font-size: 1.4em;
@@ -40,7 +40,7 @@ const StyledCalendar = styled(Calendars)`
   }
   .react-calendar__navigation button:hover,
   .react-calendar__navigation button:focus {
-    background-color: ${(props) => props.theme.bgColor};;
+    background-color: ${(props) => props.theme.bgColor};
   }
 
   .react-calendar__tile:enabled:hover,
@@ -50,18 +50,30 @@ const StyledCalendar = styled(Calendars)`
     border-radius: 50px;
   }
   .react-calendar__month-view__days__day {
-    height: 70px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-}
-.react-calendar__tile--now {
-    background-color: white; 
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .react-calendar__tile--now {
+    background-color: white;
     border-radius: 50px;
-    abbr{
-    color: black; 
+    abbr {
+      color: black;
     }
-}
+  }
+`;
+const WrapperBottom = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  width: 850px;
+  height: 850px;
+  padding: 10px;
+  margin-top: 50px;
+  background-color: ${(props) => props.theme.boxColor};
+  border-radius: 80px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px;
 `;
 
 function Calendar() {
@@ -71,12 +83,11 @@ function Calendar() {
   };
 
   return (
-    <CalendarBoard>
-      <StyledCalendar
-        onChange={onChange}
-        value={date}
-      />
-    </CalendarBoard>
+    <WrapperBottom>
+      <CalendarBoard>
+        <StyledCalendar onChange={onChange} value={date} />
+      </CalendarBoard>
+    </WrapperBottom>
   );
 }
 

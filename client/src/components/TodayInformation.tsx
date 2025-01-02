@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import ToDo from "./todo/ToDo";
 import WeatherAPI from "./weather/WeatherApi";
-import { todoData } from "../type";
+import { todoData, weatherDataToSave } from "../type";
 import {
   createDailyData,
   getDailyData,
   updateDailyData,
-} from "../api/testHandler";
+} from "../api/dailyData";
+import { getToken } from "../supabase";
 
 export default function TodayInformation() {
   //주요 변수들
@@ -15,15 +16,25 @@ export default function TodayInformation() {
   //memoData -> 옆의 메모장
   const [memoData, setMemoData] = useState<string>("");
   //저장할 weatherData -> 프롭스로 weatherAPI에 전달하니까 거기서 setWeatherDataToSave로 저장
-  const [weatherDataToSave, setWeatherDataToSave] = useState({});
+  const [weatherDataToSave, setWeatherDataToSave] =
+    useState<weatherDataToSave | null>(null);
 
   //컴포넌트 상태에 관한 것
   const [isLoading, setIsLoading] = useState(false);
+
+  //로그인 됐는지 안 됐는지
+  const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
     const func = async () => {
       //이렇게 보내면 그냥 오늘 데이터 받는 것!
       try {
+        const token = await getToken();
+        if (!token) {
+          setIsLogin(false);
+          return;
+        }
+        setIsLogin(true);
         setIsLoading(true);
         const response = await getDailyData();
 
@@ -35,8 +46,11 @@ export default function TodayInformation() {
         } else {
           //현재 오늘 데이터가 존재하지 않는 경우!
           //일단은 바로 오늘 데이터를 생성해놓는 걸로 했는데, 이거 버튼식으로 바꿔도 좋을듯
-          const response = await createDailyData();
-          console.log(response);
+          if (weatherDataToSave) {
+            console.log(weatherDataToSave);
+            const response = await createDailyData();
+            console.log(response);
+          }
         }
         setIsLoading(false);
       } catch (err) {
@@ -53,8 +67,14 @@ export default function TodayInformation() {
   //Update핸들러 이 핸들러를 통해서 데이터가 업데이트 된다.
   const updatingHandler = () => {
     const func = async () => {
-      const response = await updateDailyData(todoDataArray, memoData);
-      console.log(response);
+      try {
+        const response = await updateDailyData(todoDataArray, memoData);
+        if (response) {
+          alert("저장되었습니다!");
+        }
+      } catch (err) {
+        console.log("업데이트 실패", err);
+      }
     };
     func();
   };
@@ -66,13 +86,17 @@ export default function TodayInformation() {
   return (
     <div>
       <WeatherAPI setWeatherDataToSave={setWeatherDataToSave}></WeatherAPI>
-      <ToDo
-        todoDataArray={todoDataArray}
-        setTodoDataArray={setTodoDataArray}
-        memoData={memoData}
-        setMemoData={setMemoData}
-      ></ToDo>
-      <button onClick={updatingHandler}>업데이트!</button>
+      {isLogin ? (
+        <div>
+          <ToDo
+            todoDataArray={todoDataArray}
+            setTodoDataArray={setTodoDataArray}
+            memoData={memoData}
+            setMemoData={setMemoData}
+          ></ToDo>
+          <button onClick={updatingHandler}>업데이트!</button>
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -2,6 +2,8 @@ import styled from "styled-components";
 import Calendar from "./components/calendar/Calendar";
 import LoginComponent from "./components/LoginComponent/LoginComponent";
 import TodayInformation from "./components/TodayInformation";
+import { useEffect, useState } from "react";
+import { getToken } from "./supabase";
 
 const Container = styled.div`
   width: 100vw;
@@ -39,14 +41,29 @@ const WrapperBottom = styled.div`
 `;
 
 function App() {
+  const [isLogin, setIsLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const initFun = async () => {
+      const token = await getToken();
+      if (!token) {
+        setIsLogin(false);
+      } else {
+        setIsLogin(true);
+      }
+      setIsLoading(false); //이게 안에 있어야지 로그인이 1초라도 안 보인다.
+    };
+    initFun();
+  });
+  if (isLoading) {
+    return <>로딩중...</>;
+  }
   return (
     <>
       <Container>
-        <LoginComponent />
         <TodayInformationStyled />
-        <WrapperBottom>
-          <Calendar />
-        </WrapperBottom>
+        {!isLogin ? <LoginComponent /> : null}
+        {isLogin ? <Calendar /> : null}
       </Container>
     </>
   );

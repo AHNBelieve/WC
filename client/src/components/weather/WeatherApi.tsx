@@ -1,58 +1,7 @@
-const API_KEY = "674bc744607f1dcc62ba480a79132421";
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
 import styled from "styled-components";
-
-interface Weathers {
-  coord: {
-    lon: number; //위도
-    lat: number; //경도도
-  };
-  weather: [
-    // 날씨 정보보
-    {
-      id: number; // 날씨 아이디
-      main: string; //
-      description: string; //날씨 설명
-      icon: string; //아이콘 코드
-    }
-  ];
-  base: string; // 기상 관측 기지
-  main: {
-    // 주요 날씨 데이터
-    temp: number; // 현재 온도 (섭씨)
-    feels_like: number; // 체감 온도 (섭씨)
-    temp_min: number; // 최저 온도
-    temp_max: number; // 최고 온도
-    pressure: number; // 기압 (hpa)
-    humidity: number; // 습도 (%)
-    sea_level: number; // 해수면 기압 (hpa)
-    grnd_level: number; // 지면 기압(hpa)
-  };
-  visibility: number; // 가시 거리 (m)
-  wind: {
-    // 바람 정보
-    speed: number; // 바람 속도 (m/s)
-    deg: number; // 바람 방향 (degree)
-  };
-  clouds: {
-    // 구름 정보
-    all: number; // 구름의 전체 비율 (%)
-  };
-  dt: number; // 데이터 수집 기간 (Unix 타임스탬프)
-  sys: {
-    // 시스템 정보
-    type: number; // 시스템 타입
-    id: number; // 시스템 ID
-    country: string; // 국가 코드
-    sunrise: number; // 일출 시간 (Unix 타임스탬프)
-    sunset: number; // 일몰 시간 (Unix 타임스탬프)
-  };
-  timezone: number; // 시간대(초)
-  id: number; // 도시 ID
-  name: string; // 도시 이름
-  cod: number; // 응답 코드드
-}
+import { WeathersResponse, weatherDataToSave } from "../../type";
+import { fetchWeatherData } from "../../api/weatherData";
 
 const WeatherBoard = styled.div`
   border-radius: 56px;
@@ -144,75 +93,97 @@ const SubWeather = styled.div`
   }
 `;
 interface Props {
-  setWeatherDataToSave: React.Dispatch<React.SetStateAction<number>>;
+  setWeatherDataToSave: React.Dispatch<
+    React.SetStateAction<weatherDataToSave | null>
+  >;
 }
 
 function WeatherAPI({ setWeatherDataToSave }: Props) {
-  const [location, setLocation] = useState<{ lat: number; lon: number } | null>(
-    null
-  );
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          setLocation({ lat, lon });
-        },
-        (error) => {
-          console.error(`에러 코드: ${error.code}, 메시지: ${error.message}`);
-        }
-      );
-    } else {
-      console.log("이 브라우저는 Geolocation을 지원하지 않습니다.");
-    }
-  }, []);
+  const [weatherData, setWeatherData] = useState<WeathersResponse | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const getWeather = () => {
-    return fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${location?.lat}&lon=${location?.lon}&appid=${API_KEY}&units=metric&lang=kr`
-    ).then((response) => response.json());
+  //애초에 geolocation이 비동기적으로 작동하는데 async를 적용할 수 없어서 그냥 Promise안에 가둬버렸다!
+  const getLocation = (): Promise<{ lat: number; lon: number }> => {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            resolve({ lat, lon });
+          },
+          (error) => {
+            reject(`에러 코드: ${error.code}, 메시지: ${error.message}`);
+          }
+        );
+      } else {
+        reject("이 브라우저는 Geolocation을 지원하지 않습니다.");
+      }
+    });
   };
+  useEffect(() => {
+    const getWeather = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const location = await getLocation(); // 위치를 받아옴
+        const data = await fetchWeatherData(location.lat, location.lon);
+        setWeatherData(data);
+        setWeatherDataToSave({
+          temp_min: data.main.temp_min,
+          temp_max: data.main.temp_max,
+          id: data.id,
+          name: data.name,
+        });
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const { data, isLoading } = useQuery<Weathers>("weatherData", getWeather, {
-    enabled: !!location, // location이 설정된 경우에만 쿼리 실행
-  });
+    getWeather();
+  }, []);
 
   if (isLoading) {
     return <div>로딩 중...</div>;
   }
-  //setWeatherDataToSave -> 서버에 저장할 날씨 데이터만 세터하면됨됨
+
+  if (error) {
+    return <div>에러 발생: {error}</div>;
+  }
 
   return (
     <WeatherBoard>
       <MainWeather>
         <Name>
-          <div>{data?.name}</div>
+          <div>{weatherData?.name}</div>
         </Name>
         <Temp>
-          <div>{data?.main.temp}°</div>
-          <div>{data?.weather[0].description}</div>
+          <div>{weatherData?.main.temp}°</div>
+          <div>{weatherData?.weather[0].description}</div>
         </Temp>
         <Icon>
           <img
-            src={`https://openweathermap.org/img/wn/${data?.weather[0].icon}@2x.png`}
+            src={`https://openweathermap.org/img/wn/${weatherData?.weather[0].icon}@2x.png`}
           />
         </Icon>
       </MainWeather>
       <SubWeather>
         <div>
-          {data?.main.temp_max}
+          {weatherData?.main.temp_max}
           <div>최고기온</div>
         </div>
         <div>
-          {data?.main.temp_min}
+          {weatherData?.main.temp_min}
           <div>최저기온</div>
         </div>
         <div>
-          {data?.main.pressure}hpa<div>기압</div>
+          {weatherData?.main.pressure}hpa<div>기압</div>
         </div>
         <div>
-          {data?.main.humidity}%<div>습도</div>
+          {weatherData?.main.humidity}%<div>습도</div>
         </div>
       </SubWeather>
     </WeatherBoard>

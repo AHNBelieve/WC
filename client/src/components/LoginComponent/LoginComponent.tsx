@@ -1,13 +1,18 @@
 // src/components/LoginComponent.tsx
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { supabase } from "../../supabase"; // Supabase 클라이언트 임포트
-import { getDailyData } from "../../api/testHandler";
+import SignupPopup from "../SignupPopup/SingupPopup";
+import "./LoginComponent.css";
 
 const LoginComponent: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isSignupOpen, setIsSignupOpen] = useState(false);
 
-  const handleLogin = async () => {
+  //일반적인 로그인을 위한 변수
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  //구글 로그인 핸들러
+  const handleGoogleLogin = async () => {
     try {
       // 구글 로그인 OAuth 시작
       const { data, error } = await supabase.auth.signInWithOAuth({
@@ -19,42 +24,79 @@ const LoginComponent: React.FC = () => {
           },
         },
       });
-      console.log(data);
       if (error) {
         throw new Error();
       }
       // JWT 토큰은 Supabase에서 자동으로 쿠키에 저장됨
+      data;
     } catch (err: unknown) {
       // err가 Error인 경우를 처리
     }
   };
-  //현재 로그인 됐는지 안 됐는지 파악하는 useEffect
-  useEffect(() => {
-    const func = async () => {
-      const { data, error } = await supabase.auth.getSession();
-      if (data.session) {
-        console.log("안녕하세요. ", data);
-        setIsLogin(true);
-      } else {
-        console.log("에러", error);
-      }
-    };
-    func();
-    setIsLoading(false);
-  }, []);
-  if (isLoading || isLogin) {
-    return <button onClick={getDailyData}>테스트</button>;
-  }
-  return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2>Login</h2>
+  const openSignupPopup = () => {
+    setIsSignupOpen(true);
+  };
 
-        <button onClick={handleLogin} className="login-btn">
-          Login with Google
+  const closeSignupPopup = () => {
+    setIsSignupOpen(false);
+  };
+  //일반적인 로그인 핸들러
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+      if (error) throw error;
+      console.log("Logged in successfully");
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return (
+    <>
+      <div className="login-card">
+        <h2 className="login-title">로그인</h2>
+        <form onSubmit={handleLogin} className="login-form">
+          <input
+            type="email"
+            placeholder="이메일"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="login-input"
+          />
+          <input
+            type="password"
+            placeholder="비밀번호"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="login-input"
+          />
+          <button type="submit" className="login-button">
+            로그인
+          </button>
+        </form>
+        <button onClick={openSignupPopup} className="signup-button">
+          회원가입
+        </button>
+        <div className="divider">
+          <span>또는</span>
+        </div>
+        <button onClick={handleGoogleLogin} className="google-login-button">
+          <img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            alt="Google logo"
+            className="google-icon"
+          />
+          Google로 로그인
         </button>
       </div>
-    </div>
+      <SignupPopup isOpen={isSignupOpen} onClose={closeSignupPopup} />
+    </>
   );
 };
 

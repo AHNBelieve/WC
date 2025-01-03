@@ -9,6 +9,10 @@ export class DailyDataController {
   async getDailyData(@Headers('Authorization') authHeader: string) {
     return await this.DailyDataService.getDailyData(authHeader);
   }
+  @Get('month')
+  async getMonthlyDailyData(@Headers('Authorization') authHeader: string) {
+    return await this.DailyDataService.getMonthlyDailyData(authHeader);
+  }
 
   @Post()
   async postDailyData(@Headers('Authorization') authHeader: string) {

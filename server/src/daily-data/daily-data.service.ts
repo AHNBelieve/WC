@@ -86,9 +86,10 @@ export class DailyDataService {
       const today = new Date().toISOString().split('T')[0];
       const user = await this.getUserFromAuthHeader(authHeader);
       //supabase fetch
-      const { data, error } = await this.supabase
+      const { error } = await this.supabase
         .from('DailyData')
         .update({
+          weatherData: body.weatherDataToSave,
           todoData: body.todoDataArray,
           memoData: body.memoData,
         })
@@ -100,6 +101,27 @@ export class DailyDataService {
       }
     } catch (err) {
       console.log('Updating Connection Error ', err);
+    }
+  }
+  //Calender 전용
+  async getMonthlyDailyData(@Headers('Authorization') authHeader: string) {
+    try {
+      //조건 : 해당 유저이고, todoData가 있긴 해야한다.
+      const user = await this.getUserFromAuthHeader(authHeader);
+      const { data, error } = await this.supabase
+        .from('DailyData')
+        .select('date')
+        .eq('userId', user.id)
+        .neq('weatherData', null)
+        .gte('date', '2025-01-01')
+        .lte('date', '2025-01-31');
+      if (error) {
+        throw new Error(error.message);
+      }
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.log(err);
     }
   }
 }

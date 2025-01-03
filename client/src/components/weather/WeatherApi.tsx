@@ -94,7 +94,7 @@ const SubWeather = styled.div`
 `;
 interface Props {
   setWeatherDataToSave: React.Dispatch<
-    React.SetStateAction<weatherDataToSave | null>
+    React.SetStateAction<weatherDataToSave | object>
   >;
 }
 
@@ -105,7 +105,7 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
 
   //애초에 geolocation이 비동기적으로 작동하는데 async를 적용할 수 없어서 그냥 Promise안에 가둬버렸다!
   const getLocation = (): Promise<{ lat: number; lon: number }> => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -113,15 +113,20 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
             const lon = position.coords.longitude;
             resolve({ lat, lon });
           },
-          (error) => {
-            reject(`에러 코드: ${error.code}, 메시지: ${error.message}`);
+          () => {
+            // 오류가 발생하면 서울의 위치(위도: 37.5665, 경도: 126.978) 반환
+            resolve({ lat: 37.5665, lon: 126.978 });
           }
         );
       } else {
-        reject("이 브라우저는 Geolocation을 지원하지 않습니다.");
+        // Geolocation이 지원되지 않는 경우에도 서울의 위치 반환
+        resolve({ lat: 37.5665, lon: 126.978 });
       }
     });
   };
+  //메인 로직으로, 우선 location받아오고, 이후에 따로 뺀 weather API를 호출한다.
+  //보안을 위해서 API키는 환경변수로 뺐고, 타입도 빼줬다.
+  //성공적으로 값을 가져오면 weatherData값과 저장할 weatherDataToSave를 저장한다.
   useEffect(() => {
     const getWeather = async () => {
       setIsLoading(true);
@@ -137,6 +142,7 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
           name: data.name,
         });
       } catch (err) {
+        console.log(err);
         setError((err as Error).message);
       } finally {
         setIsLoading(false);

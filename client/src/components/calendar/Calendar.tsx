@@ -4,35 +4,37 @@ import "react-calendar/dist/Calendar.css"; // 기본 스타일 추가
 import styled from "styled-components";
 
 const CalendarBoard = styled.div`
-  border-radius: 56px;
-  width: 92%;
-  height: 55%;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  border-radius: 9% 9% 3% 3%;
 `;
 
 const StyledCalendar = styled(Calendars)`
-  height: 100%;
   width: 100%;
+  height: 100%;
   padding: 20px;
   border: none;
   border-radius: 56px;
-  background-color: ${(props) => props.theme.boxColor};
-  opacity: 100%;
-  .react-calendar__month-view {
+  border-radius: 9% 9% 3% 3%;
+  opacity: 100%; 
+  background-color: #d2e4fc;
+ .react-calendar__month-view {
     abbr {
       font-size: 1.3em;
-      color: ${(props) => props.theme.lighter};
+      color: black;
     }
   }
   .react-calendar__navigation {
     justify-content: center;
     button {
       border-radius: 50px;
-      color: white;
+      color: black;
       font-size: 1.4em;
-      background-color: ${(props) => props.theme.bgColor};
     }
   }
   .react-calendar__navigation__label {
@@ -50,7 +52,7 @@ const StyledCalendar = styled(Calendars)`
     border-radius: 50px;
   }
   .react-calendar__month-view__days__day {
-    height: 70px;
+    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -61,33 +63,23 @@ const StyledCalendar = styled(Calendars)`
     abbr {
       color: black;
     }
-  }
+  } 
 `;
-const WrapperBottom = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-evenly;
-  width: 850px;
-  height: 850px;
-  padding: 10px;
-  margin-top: 50px;
-  background-color: ${(props) => props.theme.boxColor};
-  border-radius: 80px;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px;
-`;
+
 
 function Calendar() {
   const [date, setDate] = useState(new Date());
-  const onChange = (newDate: any) => {
+  const onChange = (newDate: any, event: any) => {
     setDate(newDate);
+    if (event.target.innerHTML === `<abbr aria-label="2025년 1월 19일">19일</abbr>`) {
+      console.log(event.target.innerHTML)
+    }
   };
 
   return (
-    <WrapperBottom>
-      <CalendarBoard>
-        <StyledCalendar onChange={onChange} value={date} />
-      </CalendarBoard>
-    </WrapperBottom>
+    <CalendarBoard>
+      <StyledCalendar onChange={onChange} value={date} />
+    </CalendarBoard>
   );
 }
 

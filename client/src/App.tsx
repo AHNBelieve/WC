@@ -6,38 +6,48 @@ import { useEffect, useState } from "react";
 import { getToken } from "./supabase";
 
 const Container = styled.div`
-  width: 100vw;
-  height: 200vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  height: 100vh; 
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
 `;
 
-const TodayInformationStyled = styled(TodayInformation)`
+const TodayInformationSection = styled.div`
+  height: 100vh;
+  scroll-snap-align: start;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: space-evenly;
-  width: 850px;
-  height: 850px;
-  padding: 10px;
-  margin-top: 150px;
-  background-color: ${(props) => props.theme.boxColor};
-  border-radius: 80px;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px;
+  background-color: white;
+`;
+const CalendarSection = styled.div`
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
 `;
 
-const WrapperBottom = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-evenly;
-  width: 850px;
-  height: 850px;
-  padding: 10px;
-  margin-top: 50px;
-  background-color: ${(props) => props.theme.boxColor};
-  border-radius: 80px;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px;
+const TodayInformationWrapper = styled.div`
+  max-width: 1000px;
+  max-height: 1200px;
+  width: 60%;
+  height: 80%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 4fr 6fr;
+  border-radius: 9% 9% 3% 3%;
+  background-color: #d2e4fc;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+`;
+
+const CalaendarWrapper = styled.div`
+  max-width: 1000px;
+  max-height: 1200px;
+  width: 60%;
+  height: 80%;
+  border-radius: 9% 9% 3% 3%;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 `;
 
 function App() {
@@ -58,12 +68,21 @@ function App() {
   if (isLoading) {
     return <>로딩중...</>;
   }
+
   return (
     <>
       <Container>
-        <TodayInformationStyled />
+        <TodayInformationSection>
+          <TodayInformationWrapper>
+            <TodayInformation />
+          </TodayInformationWrapper>
+        </TodayInformationSection>
         {!isLogin ? <LoginComponent /> : null}
-        {isLogin ? <Calendar /> : null}
+        <CalendarSection>
+          <CalaendarWrapper>
+            {isLogin ? <Calendar /> : null}
+          </CalaendarWrapper>
+        </CalendarSection>
       </Container>
     </>
   );

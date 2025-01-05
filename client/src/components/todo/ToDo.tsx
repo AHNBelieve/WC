@@ -1,19 +1,8 @@
-import styled from "styled-components";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import DroppableToDo from "./DroppableToDo";
 import ToDoMemo from "./ToDoMemo";
 import { todoData } from "../../type";
 import React from "react";
-
-const ToDoBoard = styled.div`
-  width: 92%;
-  height: 42%;
-  border-radius: 56px;
-  display: grid;
-  grid-template-columns: 10fr 7fr;
-  grid-template-rows: 40px 270px;
-  gap: 5px;
-`;
 
 interface Props {
   todoDataArray: todoData[];
@@ -44,15 +33,14 @@ function ToDo({
       });
     }
   };
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <ToDoBoard>
-        <DroppableToDo
-          todoDataArray={todoDataArray}
-          setTodoDataArray={setTodoDataArray}
-        />
-        <ToDoMemo memoData={memoData} setMemoData={setMemoData} />
-      </ToDoBoard>
+      <DroppableToDo
+        todoDataArray={todoDataArray}
+        setTodoDataArray={setTodoDataArray}
+      />
+      <ToDoMemo memoData={memoData} setMemoData={setMemoData} />
     </DragDropContext>
   );
 }

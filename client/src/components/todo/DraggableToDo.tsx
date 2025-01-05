@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { toDoState } from "../../atoms";
 import { motion, AnimatePresence } from "framer-motion";
 import { todoData } from "../../type";
-
+import { TiPencil } from "react-icons/ti";
+import { LuEraser } from "react-icons/lu";
 const ToDoCard = styled.div`
   width: 100%;
   height: 40px;
-  border-radius: 12px;
   margin: 4px 0;
-  background-color: #bbaef5;
+  background-color: #d2e4fc;
+  border-bottom-color: black;
+  border-bottom: solid 1px;
   padding-left: 10px;
-  color: white;
+  color: black;
   display: grid;
   grid-template-columns: 20px auto 35px 35px;
   align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
 `;
 
 const Overlay = styled(motion.div)`
@@ -43,6 +44,34 @@ const PopUp = styled(motion.div)`
   flex-direction: column;
   align-items: space-evenly;
   z-index: 11;
+`;
+
+const StyledPencil = styled.div`
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  &:hover{
+     transition: 0.8s ease-in-out;
+      color: #6495ED;
+    }
+`;
+
+const StyledLuEraser = styled.div`
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  &:hover{
+    transition: 0.8s ease-in-out;
+    color: #6495ED;
+    }
 `;
 
 interface IDragabbleCardProps {
@@ -131,8 +160,12 @@ function DraggableToDo({
           >
             <input type="checkbox"></input>
             {todoText}
-            <button onClick={onModify}>수정</button>
-            <button onClick={onDelete}>삭제</button>
+            <StyledPencil>
+              <TiPencil onClick={onModify} />
+            </StyledPencil>
+            <StyledLuEraser>
+              <LuEraser onClick={onDelete} />
+            </StyledLuEraser>
           </ToDoCard>
         )}
       </Draggable>

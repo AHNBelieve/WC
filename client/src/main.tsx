@@ -62,7 +62,11 @@ body {
   font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
   line-height: 1.2;
-  background-color: ${(props) => props.theme.bgColor};
+  background-color: white;
+}
+html,body{
+  height: 100vh;
+  overflow: hidden;
 }
 a {
   text-decoration:none;

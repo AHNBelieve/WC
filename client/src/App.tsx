@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getToken } from "./supabase";
 
 const Container = styled.div`
-  height: 100vh; 
+  height: 100vh;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
 `;
@@ -77,11 +77,10 @@ function App() {
             <TodayInformation />
           </TodayInformationWrapper>
         </TodayInformationSection>
-        {!isLogin ? <LoginComponent /> : null}
+
         <CalendarSection>
-          <CalaendarWrapper>
-            {isLogin ? <Calendar /> : null}
-          </CalaendarWrapper>
+          {!isLogin ? <LoginComponent /> : null}
+          <CalaendarWrapper>{isLogin ? <Calendar /> : null}</CalaendarWrapper>
         </CalendarSection>
       </Container>
     </>

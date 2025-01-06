@@ -1,9 +1,10 @@
-import { StrictMode } from 'react'
+// import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from './theme.ts';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { RecoilRoot } from 'recoil';
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -61,7 +62,11 @@ body {
   font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
   line-height: 1.2;
-  background-color: ${(props) => props.theme.bgColor};
+  background-color: white;
+}
+html,body{
+  height: 100vh;
+  overflow: hidden;
 }
 a {
   text-decoration:none;
@@ -74,12 +79,14 @@ a {
 const client = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+  // <StrictMode>
+  <RecoilRoot>
     <QueryClientProvider client={client}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <App />
       </ThemeProvider>
     </QueryClientProvider>
-  </StrictMode>,
+  </RecoilRoot>
+  // </StrictMode>,
 )

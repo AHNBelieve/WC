@@ -1,68 +1,127 @@
 import styled from "styled-components";
-import Weather from "./components/weather/Weather";
-import ToDo from "./components/todo/ToDo";
-import Profile from "./components/profile/Profile";
 import Calendar from "./components/calendar/Calendar";
+import LoginComponent from "./components/LoginComponent/LoginComponent";
+import TodayInformation from "./components/TodayInformation";
+import { useEffect, useState } from "react";
+import { getToken, supabase } from "./supabase";
 
 const Container = styled.div`
-  width: 100vw;
   height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+`;
+
+const TodayInformationSection = styled.div`
+  height: 100vh;
+  scroll-snap-align: start;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
-  `;
-
-const WrapperRight = styled.div`
+  background-color: white;
+`;
+const CalendarSection = styled.div`
+  height: 100vh;
+  scroll-snap-align: start;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: space-evenly;
-  width: 43%;
-  height: 90%;
-  padding: 10px;
+  background-color: white;
 `;
 
-const WrapperLeft = styled(WrapperRight)`
-  border-radius: 80px;
-  background-color: ${(props) => props.theme.boxColor};
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px;
+const TodayInformationWrapper = styled.div`
+  max-width: 1000px;
+  max-height: 1200px;
+  width: 60%;
+  height: 80%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 4fr 6fr;
+  border-radius: 9% 9% 3% 3%;
+  background-color: #d2e4fc;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 `;
 
-const WeatherBoard = styled.div`
-  border-radius: 56px;
-  width: 92%;
-  height: 47%;
-  background-color: ${(props) => props.theme.boardColor};
+const CalaendarWrapper = styled.div`
+  max-width: 1000px;
+  max-height: 1200px;
+  width: 60%;
+  height: 80%;
+  border-radius: 9% 9% 3% 3%;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 `;
+const LogoutButton = styled.button`
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  padding: 15px 30px;
+  background-color: #fd5129;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 22px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 15px;
+  transition: background-color 0.3s ease;
 
-const ToDoBoard = styled.div`
-  border-radius: 56px;
-  width: 92%;
-  height: 42%;
-  background-color: ${(props) => props.theme.boardColor};
+  &:hover {
+    background-color: #cb2801;
+  }
 `;
-
-
 
 function App() {
+  const [isLogin, setIsLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const initFun = async () => {
+      const token = await getToken();
+      if (!token) {
+        setIsLogin(false);
+      } else {
+        setIsLogin(true);
+      }
+      setIsLoading(false); //이게 안에 있어야지 로그인이 1초라도 안 보인다.
+    };
+    initFun();
+  });
+  const onClickLogoutHandler = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        throw error;
+      }
+      console.log("로그아웃 성공");
+      window.location.reload();
+    } catch (error) {
+      console.error("로그아웃 중 오류 발생:", error);
+    }
+  };
+  if (isLoading) {
+    return <>로딩중...</>;
+  }
+
   return (
     <>
       <Container>
-        <WrapperLeft>
-          <WeatherBoard>
-            <Weather />
-          </WeatherBoard>
-          <ToDoBoard>
-            <ToDo />
-          </ToDoBoard>
-        </WrapperLeft>
-        <WrapperRight>
-          <Profile />
-          <Calendar />
-        </WrapperRight>
+        {isLogin ? (
+          <LogoutButton onClick={onClickLogoutHandler}>로그아웃</LogoutButton>
+        ) : null}
+        <TodayInformationSection>
+          <TodayInformationWrapper>
+            <TodayInformation />
+          </TodayInformationWrapper>
+        </TodayInformationSection>
+        <CalendarSection>
+          {isLogin ? (
+            <CalaendarWrapper>
+              <Calendar />
+            </CalaendarWrapper>
+          ) : (
+            <LoginComponent />
+          )}
+        </CalendarSection>
       </Container>
     </>
-  )
+  );
 }
 
 export default App;

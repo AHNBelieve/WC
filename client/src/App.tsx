@@ -3,7 +3,7 @@ import Calendar from "./components/calendar/Calendar";
 import LoginComponent from "./components/LoginComponent/LoginComponent";
 import TodayInformation from "./components/TodayInformation";
 import { useEffect, useState } from "react";
-import { getToken } from "./supabase";
+import { getToken, supabase } from "./supabase";
 
 const Container = styled.div`
   height: 100vh;
@@ -49,6 +49,24 @@ const CalaendarWrapper = styled.div`
   border-radius: 9% 9% 3% 3%;
   box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 `;
+const LogoutButton = styled.button`
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  padding: 15px 30px;
+  background-color: #fd5129;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 22px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 15px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #cb2801;
+  }
+`;
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -65,6 +83,18 @@ function App() {
     };
     initFun();
   });
+  const onClickLogoutHandler = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        throw error;
+      }
+      console.log("로그아웃 성공");
+      window.location.reload();
+    } catch (error) {
+      console.error("로그아웃 중 오류 발생:", error);
+    }
+  };
   if (isLoading) {
     return <>로딩중...</>;
   }
@@ -72,15 +102,22 @@ function App() {
   return (
     <>
       <Container>
+        {isLogin ? (
+          <LogoutButton onClick={onClickLogoutHandler}>로그아웃</LogoutButton>
+        ) : null}
         <TodayInformationSection>
           <TodayInformationWrapper>
             <TodayInformation />
           </TodayInformationWrapper>
         </TodayInformationSection>
-
         <CalendarSection>
-          {!isLogin ? <LoginComponent /> : null}
-          <CalaendarWrapper>{isLogin ? <Calendar /> : null}</CalaendarWrapper>
+          {isLogin ? (
+            <CalaendarWrapper>
+              <Calendar />
+            </CalaendarWrapper>
+          ) : (
+            <LoginComponent />
+          )}
         </CalendarSection>
       </Container>
     </>

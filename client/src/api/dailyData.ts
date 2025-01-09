@@ -37,7 +37,7 @@ export const createDailyData = async () => {
     return response;
 
     //추후에 여기 빈 body안에 로컬스토리지 값을 넣던가 해도 될듯 자동 저장기능으로
-  } catch (err) {
+  } catch {
     throw new Error("페칭에 실패했습니다.");
   }
 };
@@ -64,7 +64,7 @@ export const updateDailyData = async (
     );
 
     return response;
-  } catch (error: any) {
+  } catch (error) {
     console.log("Updating Faild", error);
   }
 };

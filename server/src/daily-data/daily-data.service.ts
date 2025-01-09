@@ -3,6 +3,8 @@ import {
   UnauthorizedException,
   Headers,
   Body,
+  Param,
+  Query,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
@@ -32,21 +34,25 @@ export class DailyDataService {
     return data.user; // 사용자 정보 반환
   }
 
-  async getDailyData(@Headers('Authorization') authHeader: string) {
-    //오늘 데이터를 보내주는 함수
+  async getDailyData(
+    @Headers('Authorization') authHeader: string,
+    @Query('date') date?: string,
+  ) {
     try {
-      const today = new Date().toISOString().split('T')[0];
       const user = await this.getUserFromAuthHeader(authHeader);
+      const queryDate = date || new Date().toISOString().split('T')[0];
+      console.log(queryDate);
       const { data, error } = await this.supabase
         .from('DailyData')
         .select('*')
-        .match({ userId: user.id, date: today });
+        .match({ userId: user.id, date: queryDate });
+
       if (error) {
         console.error('Supabase Error:', error);
         throw error;
       }
 
-      return data[0];
+      return data[0]; // 항상 배열로 반환
     } catch (error) {
       console.error('Error fetching products:', error);
       throw error;

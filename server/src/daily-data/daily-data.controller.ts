@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Headers, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Headers,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { DailyDataService } from './daily-data.service';
 
 @Controller('DailyData')
@@ -6,12 +15,11 @@ export class DailyDataController {
   constructor(private readonly DailyDataService: DailyDataService) {}
 
   @Get()
-  async getDailyData(@Headers('Authorization') authHeader: string) {
-    return await this.DailyDataService.getDailyData(authHeader);
-  }
-  @Get('month')
-  async getMonthlyDailyData(@Headers('Authorization') authHeader: string) {
-    return await this.DailyDataService.getMonthlyDailyData(authHeader);
+  async getDailyData(
+    @Headers('Authorization') authHeader: string,
+    @Query('date') date?: string,
+  ) {
+    return await this.DailyDataService.getDailyData(authHeader, date);
   }
 
   @Post()

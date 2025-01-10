@@ -5,6 +5,8 @@ import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from './theme.ts';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot } from 'recoil';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Past from './components/router/past.tsx';
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -84,7 +86,12 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={client}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <App />
+        <Router>
+          <Routes>
+            <Route path='/' element={<App />} />
+            <Route path='/date/:dateId' element={<Past />} />
+          </Routes>
+        </Router>
       </ThemeProvider>
     </QueryClientProvider>
   </RecoilRoot>

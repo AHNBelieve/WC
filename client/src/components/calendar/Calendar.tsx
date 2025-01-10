@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Calendars from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // 기본 스타일 추가
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const CalendarBoard = styled.div`
@@ -68,12 +69,12 @@ const StyledCalendar = styled(Calendars)`
 
 
 function Calendar() {
+  const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
-  const onChange = (newDate: any, event: any) => {
+  const onChange = (newDate: any) => {
     setDate(newDate);
-    if (event.target.innerHTML === `<abbr aria-label="2025년 1월 19일">19일</abbr>`) {
-      console.log(event.target.innerHTML)
-    }
+    const dateId: string = newDate.toString().split(" ").slice(0, 4).join(" ")
+    navigate(`/date/${dateId}`);
   };
 
   return (

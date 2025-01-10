@@ -3,11 +3,11 @@ import {
   UnauthorizedException,
   Headers,
   Body,
-  Param,
   Query,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { UpdateDailyDataDto, DailyDataResponseDto } from './dto/daily-data.dto';
 
 @Injectable()
 export class DailyDataService {
@@ -37,7 +37,7 @@ export class DailyDataService {
   async getDailyData(
     @Headers('Authorization') authHeader: string,
     @Query('date') date?: string,
-  ) {
+  ): Promise<DailyDataResponseDto> {
     try {
       const user = await this.getUserFromAuthHeader(authHeader);
       const queryDate = date || new Date().toISOString().split('T')[0];
@@ -58,7 +58,9 @@ export class DailyDataService {
       throw error;
     }
   }
-  async postDailyData(@Headers('Authorization') authHeader: string) {
+  async postDailyData(
+    @Headers('Authorization') authHeader: string,
+  ): Promise<{ success: string; data: DailyDataResponseDto }> {
     try {
       const today = new Date().toISOString().split('T')[0];
       const user = await this.getUserFromAuthHeader(authHeader);
@@ -84,19 +86,20 @@ export class DailyDataService {
     }
   }
   async updateDailyData(
-    @Body() body: any,
+    @Body() body: UpdateDailyDataDto,
     @Headers('Authorization') authHeader: string,
-  ) {
+  ): Promise<void> {
     try {
-      //DailyData받아서 오늘 데이터 업데이트!
+      console.log(body);
+      //DailyData받아 서 오늘 데이터 업데이트!
       const today = new Date().toISOString().split('T')[0];
       const user = await this.getUserFromAuthHeader(authHeader);
       //supabase fetch
       const { error } = await this.supabase
         .from('DailyData')
         .update({
-          weatherData: body.weatherDataToSave,
-          todoData: body.todoDataArray,
+          weatherData: body.weatherData,
+          todoData: body.todoData,
           memoData: body.memoData,
         })
         .match({ userId: user.id, date: today });

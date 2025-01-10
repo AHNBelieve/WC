@@ -52,8 +52,8 @@ export const updateDailyData = async (
     const response = await axios.patch(
       "http://localhost:3000/DailyData",
       {
-        weatherDataToSave: weatherDataToSave,
-        todoDataArray: todoDataArray,
+        weatherData: weatherDataToSave,
+        todoData: todoDataArray,
         memoData: memoData,
       },
       {

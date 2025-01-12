@@ -2,19 +2,30 @@ import axios from "axios";
 import { getToken } from "../supabase";
 import { todoData, weatherDataToSave } from "../type";
 
-export const getDailyData = async () => {
+export const getDailyData = async (date?: string) => {
   try {
     const token = await getToken();
-    const response = await axios.get(
-      "http://localhost:3000/DailyData", // NestJS 서버의 엔드포인트
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, // 헤더에 Authorization 추가
-        },
-      }
-    );
-    console.log(response);
-    return response;
+    if (date) {
+      const response = await axios.get(
+        `http://localhost:3000/DailyData?q=${date}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // 헤더에 Authorization 추가
+          },
+        }
+      );
+      return response;
+    } else {
+      const response = await axios.get(
+        "http://localhost:3000/DailyData", // NestJS 서버의 엔드포인트
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // 헤더에 Authorization 추가
+          },
+        }
+      );
+      return response;
+    }
   } catch (error: any) {
     if (error.code == "ERR_NETWORK") {
       throw new Error(error);

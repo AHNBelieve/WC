@@ -22,9 +22,9 @@ const StyledCalendar = styled(Calendars)`
   border: none;
   border-radius: 56px;
   border-radius: 9% 9% 3% 3%;
-  opacity: 100%; 
+  opacity: 100%;
   background-color: #d2e4fc;
- .react-calendar__month-view {
+  .react-calendar__month-view {
     abbr {
       font-size: 1.3em;
       color: black;
@@ -64,16 +64,15 @@ const StyledCalendar = styled(Calendars)`
     abbr {
       color: black;
     }
-  } 
+  }
 `;
-
 
 function Calendar() {
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
   const onChange = (newDate: any) => {
     setDate(newDate);
-    const dateId: string = newDate.toString().split(" ").slice(0, 4).join(" ")
+    const dateId = newDate.toISOString().split("T")[0];
     navigate(`/date/${dateId}`);
   };
 

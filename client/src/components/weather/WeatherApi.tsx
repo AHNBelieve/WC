@@ -10,8 +10,8 @@ justify-content: center;
 align-items: center;
 user-select: none;
 img{
-  width: 400px;
-  height: 400px;
+  width: 90%;
+  height: 90%;
 }
   grid-column: 2;
   grid-row: 1;

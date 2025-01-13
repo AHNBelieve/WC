@@ -7,12 +7,14 @@ import { getToken, supabase } from "./supabase";
 
 const Container = styled.div`
   height: 100vh;
+  width: 100vw;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
 `;
 
 const TodayInformationSection = styled.div`
   height: 100vh;
+  width: 100vw;
   scroll-snap-align: start;
   display: flex;
   justify-content: center;
@@ -29,10 +31,18 @@ const CalendarSection = styled.div`
 `;
 
 const TodayInformationWrapper = styled.div`
-  max-width: 1000px;
-  max-height: 1200px;
-  width: 60%;
-  height: 80%;
+  @media (max-width: 3000px) and (max-height: 1500px) {
+    width: 1000px;
+    height: 1000px;
+  }
+  @media (max-width: 1300px) and (max-height: 1500px) {
+    width: 700px;
+    height: 700px;
+  }
+  @media (max-width: 1000px) {
+    width: 300px;
+    height: 300px;
+  }
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 4fr 6fr;

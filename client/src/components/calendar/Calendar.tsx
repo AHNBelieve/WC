@@ -3,6 +3,7 @@ import Calendars from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // 기본 스타일 추가
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Past from "../router/Past";
 
 const CalendarBoard = styled.div`
   width: 100%;
@@ -71,16 +72,30 @@ const StyledCalendar = styled(Calendars)`
 function Calendar() {
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
-  const onChange = (newDate: any) => {
+  const [dateId, setDateId] = useState("");
+  const [showPastModal, setShowPastModal] = useState(false);
+
+  const handleButtonClick = (newDate: any) => {
     setDate(newDate);
-    const dateId: string = newDate.toString().split(" ").slice(0, 4).join(" ")
-    navigate(`/date/${dateId}`);
+    const newDateId = newDate.toISOString().split("T")[0];
+    setDateId(newDateId);
+    navigate(`/date/${newDateId}`);
+    setShowPastModal(true);
   };
 
+  const onClose = () => {
+    navigate('/');
+    setShowPastModal(false);
+
+  }
+
   return (
-    <CalendarBoard>
-      <StyledCalendar onChange={onChange} value={date} />
-    </CalendarBoard>
+    <>
+      <CalendarBoard>
+        <StyledCalendar onChange={handleButtonClick} value={date} />
+      </CalendarBoard>
+      {showPastModal && <Past dateId={dateId} onClose={onClose} />}
+    </>
   );
 }
 

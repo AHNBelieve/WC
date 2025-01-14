@@ -10,28 +10,12 @@ import {
 } from "../api/dailyData";
 import { getToken } from "../supabase";
 import styled from "styled-components";
-import { FaRegSave } from "react-icons/fa";
 
 const Tododo = styled.div`
   grid-column: 1 / span 2;
   grid-row: 2;
   grid-template-columns: 220px 1fr;
   grid-template-rows: 58px 247px 95px;
-`;
-
-const StyledFaRegSave = styled.div`
-  grid-column: 2;
-  grid-row: 1;
-  display: flex;
-  align-items: center;
-  svg{
-    width: 40px;
-    height: 40px;
-  }
-  svg:hover{
-    transition: 0.6s ease-in-out;
-    color: #6495ED;
-  }
 `;
 
 export default function TodayInformation() {
@@ -121,14 +105,12 @@ export default function TodayInformation() {
       <WeatherAPI setWeatherDataToSave={setWeatherDataToSave}></WeatherAPI>
       {isLogin ? (
         <Tododo>
-          <StyledFaRegSave>
-            <FaRegSave onClick={updatingHandler} />
-          </StyledFaRegSave>
           <ToDo
             todoDataArray={todoDataArray}
             setTodoDataArray={setTodoDataArray}
             memoData={memoData}
             setMemoData={setMemoData}
+            updatingHandler={updatingHandler}
           ></ToDo>
         </Tododo>
       ) : null}

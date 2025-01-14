@@ -113,24 +113,36 @@ export class DailyDataService {
     }
   }
   //Calender 전용
-  async getMonthlyDailyData(@Headers('Authorization') authHeader: string) {
+  async getMonthlyDailyData(
+    @Headers('Authorization') authHeader: string,
+    year: string,
+    month: string,
+  ) {
     try {
-      //조건 : 해당 유저이고, todoData가 있긴 해야한다.
       const user = await this.getUserFromAuthHeader(authHeader);
+
+      // 해당 월의 시작일과 마지막일 계산
+      console.log(year, month);
+      const startDate = `${year}-${month.padStart(2, '0')}-01`;
+      const lastDay = new Date(parseInt(year), parseInt(month), 0).getDate();
+      const endDate = `${year}-${month.padStart(2, '0')}-${lastDay}`;
+
       const { data, error } = await this.supabase
         .from('DailyData')
         .select('date')
         .eq('userId', user.id)
         .neq('weatherData', null)
-        .gte('date', '2025-01-01')
-        .lte('date', '2025-01-31');
+        .gte('date', startDate)
+        .lte('date', endDate);
+
       if (error) {
         throw new Error(error.message);
       }
-      console.log(data);
+
       return data;
     } catch (err) {
       console.log(err);
+      throw err;
     }
   }
 }

@@ -2,19 +2,30 @@ import axios from "axios";
 import { getToken } from "../supabase";
 import { todoData, weatherDataToSave } from "../type";
 
-export const getDailyData = async () => {
+export const getDailyData = async (date?: string) => {
   try {
     const token = await getToken();
-    const response = await axios.get(
-      "http://localhost:3000/DailyData", // NestJS 서버의 엔드포인트
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, // 헤더에 Authorization 추가
-        },
-      }
-    );
-    console.log(response);
-    return response;
+    if (date) {
+      const response = await axios.get(
+        `http://localhost:3000/DailyData?q=${date}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // 헤더에 Authorization 추가
+          },
+        }
+      );
+      return response;
+    } else {
+      const response = await axios.get(
+        "http://localhost:3000/DailyData", // NestJS 서버의 엔드포인트
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // 헤더에 Authorization 추가
+          },
+        }
+      );
+      return response;
+    }
   } catch (error: any) {
     if (error.code == "ERR_NETWORK") {
       throw new Error(error);
@@ -68,22 +79,26 @@ export const updateDailyData = async (
     console.log("Updating Faild", error);
   }
 };
-export const getMonthlyDailyData = async () => {
-  //month를 받아서 해당 달에 해당 유저가 쓴 글에 대해서 정보를 받는다.
-  //이후 이를 바탕으로 getDailyData에 date를 보내서 해당 유저의 해당 날짜 글을 확인도 가능
+
+export const getMonthlyDailyData = async (date: Date) => {
   try {
     const token = await getToken();
+    const month = date.getMonth() + 1; // 0부터 시작하므로 1을 더함
+    const year = date.getFullYear();
+
     const response = await axios.get(
-      "http://localhost:3000/DailyData/month", // NestJS 서버의 엔드포인트
+      `http://localhost:3000/DailyData/month?year=${year}&month=${month}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`, // 헤더에 Authorization 추가
+          Authorization: `Bearer ${token}`,
         },
       }
     );
-    const diaryDates = response.data.map((item: { date: string }) => item.date); // 날짜 배열 추출
-    return diaryDates as string[]; //["2025-01-03", "2025-01-05"]형식
+    const diaryDates = response.data.map((item: { date: string }) => item.date);
+    console.log(diaryDates);
+    return diaryDates as string[];
   } catch (err) {
     console.log(err);
+    return [];
   }
 };

@@ -1,101 +1,82 @@
-import { useState } from "react";
-import Calendars from "react-calendar";
-import "react-calendar/dist/Calendar.css"; // 기본 스타일 추가
+import { useState, useEffect } from "react";
+import { Calendar as Calendars } from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import "./Calendar.styles.css";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import Past from "../router/Past";
-
-const CalendarBoard = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-column: 2;
-  grid-row: 1 / span 3;
-  border-radius: 9% 9% 3% 3%;
-`;
-
-const StyledCalendar = styled(Calendars)`
-  width: 100%;
-  height: 100%;
-  padding: 20px;
-  border: none;
-  border-radius: 56px;
-  border-radius: 9% 9% 3% 3%;
-  opacity: 100%; 
-  background-color: #d2e4fc;
- .react-calendar__month-view {
-    abbr {
-      font-size: 1.3em;
-      color: black;
-    }
-  }
-  .react-calendar__navigation {
-    justify-content: center;
-    button {
-      border-radius: 50px;
-      color: black;
-      font-size: 1.4em;
-    }
-  }
-  .react-calendar__navigation__label {
-    flex-grow: 0 !important;
-  }
-  .react-calendar__navigation button:hover,
-  .react-calendar__navigation button:focus {
-    background-color: ${(props) => props.theme.bgColor};
-  }
-
-  .react-calendar__tile:enabled:hover,
-  .react-calendar__tile:enabled:focus,
-  .react-calendar__tile--active {
-    background-color: ${(props) => props.theme.bgColor};
-    border-radius: 50px;
-  }
-  .react-calendar__month-view__days__day {
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .react-calendar__tile--now {
-    background-color: white;
-    border-radius: 50px;
-    abbr {
-      color: black;
-    }
-  } 
-`;
-
+import { getMonthlyDailyData } from "../../api/dailyData";
+import type { OnArgs } from "react-calendar/dist/cjs/shared/types.d.ts";
+import { Value } from "react-calendar/dist/cjs/shared/types.d.ts";
 
 function Calendar() {
   const navigate = useNavigate();
-  const [date, setDate] = useState(new Date());
-  const [dateId, setDateId] = useState("");
-  const [showPastModal, setShowPastModal] = useState(false);
+  const [date, setDate] = useState<Date>(new Date());
+  const [writtenDates, setWrittenDates] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleButtonClick = (newDate: any) => {
-    setDate(newDate);
-    const newDateId = newDate.toISOString().split("T")[0];
-    setDateId(newDateId);
-    navigate(`/date/${newDateId}`);
-    setShowPastModal(true);
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchWrittenDates = async () => {
+      const dates = await getMonthlyDailyData(date);
+      setWrittenDates(dates);
+      setIsLoading(false);
+    };
+    fetchWrittenDates();
+  }, [date]);
+
+  const onChange = (value: Value) => {
+    if (value instanceof Date) {
+      const dateString = new Date(
+        value.getTime() - value.getTimezoneOffset() * 60000
+      )
+        .toISOString()
+        .split("T")[0];
+
+      if (writtenDates.includes(dateString)) {
+        setDate(value);
+        navigate(`/date/${dateString}`);
+      }
+    }
   };
 
-  const onClose = () => {
-    navigate('/');
-    setShowPastModal(false);
+  const onActiveStartDateChange = (args: OnArgs) => {
+    if (args.activeStartDate) {
+      setDate(args.activeStartDate);
+    }
+  };
 
+  const tileClassName = ({ date }: { date: Date }) => {
+    const dateString = new Date(
+      date.getTime() - date.getTimezoneOffset() * 60000
+    )
+      .toISOString()
+      .split("T")[0];
+    return writtenDates.includes(dateString) ? "written-date" : null;
+  };
+  const tileDisabled = ({ date }: { date: Date }) => {
+    const dateString = new Date(
+      date.getTime() - date.getTimezoneOffset() * 60000
+    )
+      .toISOString()
+      .split("T")[0];
+
+    return !writtenDates.includes(dateString);
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
   return (
-    <>
-      <CalendarBoard>
-        <StyledCalendar onChange={handleButtonClick} value={date} />
-      </CalendarBoard>
-      {showPastModal && <Past dateId={dateId} onClose={onClose} />}
-    </>
+    <div className="calendar-board">
+      <Calendars
+        onChange={onChange}
+        value={date}
+        tileClassName={tileClassName}
+        tileDisabled={tileDisabled}
+        onActiveStartDateChange={onActiveStartDateChange}
+        className="custom-calendar"
+      />
+    </div>
   );
 }
 

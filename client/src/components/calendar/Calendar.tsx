@@ -52,7 +52,6 @@ function Calendar() {
       .split("T")[0];
     return writtenDates.includes(dateString) ? "written-date" : null;
   };
-
   const tileDisabled = ({ date }: { date: Date }) => {
     const dateString = new Date(
       date.getTime() - date.getTimezoneOffset() * 60000

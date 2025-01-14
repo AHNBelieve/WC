@@ -24,8 +24,14 @@ export class DailyDataController {
   @Get('month')
   async getMonthlyDailyData(
     @Headers('Authorization') authHeader: string,
+    @Query('year') year: string,
+    @Query('month') month: string,
   ): Promise<{ date: string }[]> {
-    return await this.DailyDataService.getMonthlyDailyData(authHeader);
+    return await this.DailyDataService.getMonthlyDailyData(
+      authHeader,
+      year,
+      month,
+    );
   }
 
   @Post()

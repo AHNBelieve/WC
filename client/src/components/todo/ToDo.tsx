@@ -3,12 +3,30 @@ import DroppableToDo from "./DroppableToDo";
 import ToDoMemo from "./ToDoMemo";
 import { todoData } from "../../type";
 import React from "react";
+import styled from "styled-components";
+import { FaRegSave } from "react-icons/fa";
+
+const StyledFaRegSave = styled.div`
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  svg {
+    width: 40px;
+    height: 40px;
+  }
+  svg:hover {
+    transition: 0.6s ease-in-out;
+    color: #6495ed;
+  }
+`;
 
 interface Props {
   todoDataArray: todoData[];
   setTodoDataArray: React.Dispatch<React.SetStateAction<todoData[]>>;
   memoData: string;
   setMemoData: React.Dispatch<React.SetStateAction<string>>;
+  updatingHandler: () => void;
 }
 
 function ToDo({
@@ -16,6 +34,7 @@ function ToDo({
   setTodoDataArray,
   memoData,
   setMemoData,
+  updatingHandler,
 }: Props) {
   const onDragEnd = ({ destination, source }: DropResult) => {
     // 드래그가 끝났을 때 호출, destination은 목적지, source는 출발지
@@ -41,6 +60,9 @@ function ToDo({
         setTodoDataArray={setTodoDataArray}
       />
       <ToDoMemo memoData={memoData} setMemoData={setMemoData} />
+      <StyledFaRegSave>
+        <FaRegSave onClick={updatingHandler} />
+      </StyledFaRegSave>
     </DragDropContext>
   );
 }

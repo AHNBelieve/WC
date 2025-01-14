@@ -6,13 +6,15 @@ import { useNavigate } from "react-router-dom";
 import { getMonthlyDailyData } from "../../api/dailyData";
 import type { OnArgs } from "react-calendar/dist/cjs/shared/types.d.ts";
 import { Value } from "react-calendar/dist/cjs/shared/types.d.ts";
+import Past from "../router/Past";
 
 function Calendar() {
   const navigate = useNavigate();
   const [date, setDate] = useState<Date>(new Date());
   const [writtenDates, setWrittenDates] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [showPastModal, setShowPastModal] = useState(false);
+  const [dateId, setDateId] = useState("");
   useEffect(() => {
     setIsLoading(true);
     const fetchWrittenDates = async () => {
@@ -33,7 +35,9 @@ function Calendar() {
 
       if (writtenDates.includes(dateString)) {
         setDate(value);
+        setDateId(dateString);
         navigate(`/date/${dateString}`);
+        setShowPastModal(true);
       }
     }
   };
@@ -66,6 +70,11 @@ function Calendar() {
     return <div>Loading...</div>;
   }
 
+  const onClose = () => {
+    navigate('/');
+    setShowPastModal(false);
+  }
+
   return (
     <div className="calendar-board">
       <Calendars
@@ -76,6 +85,7 @@ function Calendar() {
         onActiveStartDateChange={onActiveStartDateChange}
         className="custom-calendar"
       />
+      {showPastModal && <Past dateId={dateId} onClose={onClose} />}
     </div>
   );
 }

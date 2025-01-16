@@ -34,7 +34,6 @@ function Calendar() {
         .split("T")[0];
 
       if (writtenDates.includes(dateString)) {
-        setDate(value);
         setDateId(dateString);
         navigate(`/date/${dateString}`);
         setShowPastModal(true);
@@ -43,6 +42,7 @@ function Calendar() {
   };
 
   const onActiveStartDateChange = (args: OnArgs) => {
+    console.log(args.activeStartDate);
     if (args.activeStartDate) {
       setDate(args.activeStartDate);
     }
@@ -67,13 +67,20 @@ function Calendar() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="calendar-board">
+        <div className="calendar-loading">
+          <div className="loading-spinner"></div>
+          <span>Loading calendar...</span>
+        </div>
+      </div>
+    );
   }
 
   const onClose = () => {
-    navigate('/');
+    navigate("/");
     setShowPastModal(false);
-  }
+  };
 
   return (
     <div className="calendar-board">

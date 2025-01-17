@@ -10,12 +10,14 @@ import {
 } from "../api/dailyData";
 import { getToken } from "../supabase";
 import styled from "styled-components";
+import ToDoMemo from "./todo/ToDoMemo";
 
 const Tododo = styled.div`
-  grid-column: 1 / span 2;
-  grid-row: 2;
-  grid-template-columns: 220px 1fr;
-  grid-template-rows: 58px 247px 95px;
+  grid-column: 2;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: 3fr 36fr 11fr;
+  grid-template-rows: 8fr 4fr 18fr 3fr;
 `;
 
 export default function TodayInformation() {
@@ -104,15 +106,16 @@ export default function TodayInformation() {
     <>
       <WeatherAPI setWeatherDataToSave={setWeatherDataToSave}></WeatherAPI>
       {isLogin ? (
-        <Tododo>
-          <ToDo
-            todoDataArray={todoDataArray}
-            setTodoDataArray={setTodoDataArray}
-            memoData={memoData}
-            setMemoData={setMemoData}
-            updatingHandler={updatingHandler}
-          ></ToDo>
-        </Tododo>
+        <>
+          <Tododo>
+            <ToDo
+              todoDataArray={todoDataArray}
+              setTodoDataArray={setTodoDataArray}
+              updatingHandler={updatingHandler}
+            />
+          </Tododo>
+          <ToDoMemo memoData={memoData} setMemoData={setMemoData} />
+        </>
       ) : null}
     </>
   );

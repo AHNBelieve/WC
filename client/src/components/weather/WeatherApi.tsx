@@ -2,37 +2,114 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { WeathersResponse, weatherDataToSave } from "../../type";
 import { fetchWeatherData } from "../../api/weatherData";
-
+import { FaChevronRight } from "react-icons/fa6";
+import countries from 'i18n-iso-countries';
+import en from 'i18n-iso-countries/langs/en.json';
+countries.registerLocale(en);
+const getCountryName = (code: string | undefined) => {
+  if (!code) return 'Unknown Country';
+  return countries.getName(code, 'en') || 'Unknown Country';
+};
 
 const Icon = styled.div`
+grid-column: 1;
+grid-row: 1;
+width: 100%;
+height: 100%;
 display: flex;
 justify-content: center;
-align-items: center;
+align-items: flex-end;
 user-select: none;
 img{
-  width: 90%;
-  height: 90%;
+  width: 148px;
+  height: 136px;
 }
-  grid-column: 2;
-  grid-row: 1;
 `;
 
-const Name = styled.div`
+const WeatherCard = styled.div`
   grid-column: 1;
+  grid-row: 1;
+  width: 360px;
+  height: 500px;
+  background-color: #C8D4E3;
+  border-radius: 50px;
+  margin-left: 110px;
+  margin-top: 110px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 15fr 21fr 14fr;
 `;
 
 const Temp = styled.div`
+  grid-column: 1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 3fr 14fr 4fr;
+  div:nth-child(1) {
+    font-size: 30px;
+    font-weight: 500;
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-left: 160px;
+    position: relative;
+    top: 40px;
+  }
+  div:nth-child(2) {
+  grid-column: 1;
+  grid-row: 2;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 50px;
-  grid-column: 1;
-  grid-row: 1;
-  div:last-child{
+  div {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    font-size: 130px;
+    text-align: center;
+    position: relative;
+    top: 0px;
+  }
+} 
+
+
+
+  div:nth-child(3) {
     font-size: 30px;
+    font-weight: 500;
+    grid-column: 1;
+    grid-row: 3;
+    display: flex;
+    justify-content: center;
   }
 `;
+
+const MoreBTN = styled.button`
+  grid-column: 1;
+  grid-row: 3;
+  background-color: transparent;
+  border-radius: 0 0 50px 50px ;
+  border: none;
+  width: 96%;
+  height: 30%;
+  align-self: end;
+  justify-self: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 30px;
+  color: #7A7A7A;
+  &:hover {
+    transition: color 0.3s ease-in-out;
+    color: #000; /* Hover 시 텍스트 색 변경 */
+  }
+  &:not(:hover) {
+    transition: color 0.3s ease-in-out; /* 원래 색으로 돌아갈 때 속도 변경 */
+  }
+`;
+
 
 interface Props {
   setWeatherDataToSave: React.Dispatch<
@@ -130,13 +207,20 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
       {/* <Name>
         <div>{weatherData?.name}</div>
       </Name> */}
-      <Temp>
-        <div>{weatherData?.main.temp}°</div>
-        <div>{weatherData?.weather[0].description}</div>
-      </Temp>
-      <Icon>
-        {renderIcon()}
-      </Icon>
+      <WeatherCard>
+        <Icon>
+          {/* {renderIcon()} */}
+          <img src="weather.png" alt="Day Clear Icon" />
+        </Icon>
+        <Temp>
+          <div>°C</div>
+          <div><div>{weatherData?.main.temp.toFixed(1)}</div></div>
+          <div>{weatherData?.name}, {getCountryName(weatherData?.sys.country)}</div>
+        </Temp>
+        <MoreBTN>see more<FaChevronRight />
+        </MoreBTN>
+      </WeatherCard>
+
     </>
   );
 }

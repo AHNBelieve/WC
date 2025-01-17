@@ -1,13 +1,12 @@
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import DroppableToDo from "./DroppableToDo";
-import ToDoMemo from "./ToDoMemo";
 import { todoData } from "../../type";
 import React from "react";
 import styled from "styled-components";
 import { FaRegSave } from "react-icons/fa";
 
 const StyledFaRegSave = styled.div`
-  grid-column: 2;
+  grid-column: 1;
   grid-row: 1;
   display: flex;
   align-items: center;
@@ -24,16 +23,12 @@ const StyledFaRegSave = styled.div`
 interface Props {
   todoDataArray: todoData[];
   setTodoDataArray: React.Dispatch<React.SetStateAction<todoData[]>>;
-  memoData: string;
-  setMemoData: React.Dispatch<React.SetStateAction<string>>;
   updatingHandler: () => void;
 }
 
 function ToDo({
   todoDataArray,
   setTodoDataArray,
-  memoData,
-  setMemoData,
   updatingHandler,
 }: Props) {
   const onDragEnd = ({ destination, source }: DropResult) => {
@@ -59,7 +54,6 @@ function ToDo({
         todoDataArray={todoDataArray}
         setTodoDataArray={setTodoDataArray}
       />
-      <ToDoMemo memoData={memoData} setMemoData={setMemoData} />
       <StyledFaRegSave>
         <FaRegSave onClick={updatingHandler} />
       </StyledFaRegSave>

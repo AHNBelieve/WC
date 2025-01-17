@@ -7,17 +7,15 @@ import { TiPencil } from "react-icons/ti";
 import { LuEraser } from "react-icons/lu";
 const ToDoCard = styled.div`
   width: 100%;
-  height: 40px;
-  margin: 4px 0;
-  background-color: #d2e4fc;
+  height: 44px;
+  background-color: white;
   border-bottom-color: black;
   border-bottom: solid 1px;
   padding-left: 10px;
   color: black;
   display: grid;
-  grid-template-columns: 20px auto 35px 35px;
+  grid-template-columns: auto 30px 30px;
   align-items: center;
-  box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
 `;
 
 const Overlay = styled(motion.div)`
@@ -47,31 +45,62 @@ const PopUp = styled(motion.div)`
 `;
 
 const StyledPencil = styled.div`
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
+  padding-right: 0;
+  font-size: 20px;
   cursor: pointer;
   &:hover{
-     transition: 0.8s ease-in-out;
+     transition: color 0.5s ease-in-out;
       color: #6495ED;
     }
+  &:not(:hover){
+    transition: color 0.5s ease-in-out;
+  }
 `;
 
 const StyledLuEraser = styled.div`
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 10px 0;
   cursor: pointer;
   &:hover{
-    transition: 0.8s ease-in-out;
+    transition: color 0.5s ease-in-out;
     color: #6495ED;
     }
+  &:not(:hover){
+    transition: color 0.5s ease-in-out;
+  }
+`;
+
+const ToDoCardWrapper = styled.div`
+  width: 100%;
+  height: 62px;
+  margin-top: 3px;
+  display: flex;
+  display: grid;
+  grid-template-columns: 50px auto;
+`;
+
+const ToDoCardCheckbox = styled.input`
+  appearance: none;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  margin-top: 15px;
+  cursor: pointer;
+  border: 4px solid #A5C0C2;
+  &:checked {
+    background-color: black;
+  }
 `;
 
 interface IDragabbleCardProps {
@@ -153,20 +182,22 @@ function DraggableToDo({
     <>
       <Draggable draggableId={todoId + ""} index={index}>
         {(provided) => (
-          <ToDoCard
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            <input type="checkbox"></input>
-            {todoText}
-            <StyledPencil>
-              <TiPencil onClick={onModify} />
-            </StyledPencil>
-            <StyledLuEraser>
-              <LuEraser onClick={onDelete} />
-            </StyledLuEraser>
-          </ToDoCard>
+          <ToDoCardWrapper>
+            <ToDoCardCheckbox type="checkbox" />
+            <ToDoCard
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+            >
+              {todoText}
+              <StyledPencil>
+                <TiPencil onClick={onModify} />
+              </StyledPencil>
+              <StyledLuEraser>
+                <LuEraser onClick={onDelete} />
+              </StyledLuEraser>
+            </ToDoCard>
+          </ToDoCardWrapper>
         )}
       </Draggable>
       <AnimatePresence>

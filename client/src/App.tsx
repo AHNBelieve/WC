@@ -19,7 +19,7 @@ const TodayInformationSection = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: #F0F7FA;
 `;
 const CalendarSection = styled.div`
   height: 100vh;
@@ -31,7 +31,7 @@ const CalendarSection = styled.div`
 `;
 
 const TodayInformationWrapper = styled.div`
-  @media (max-width: 3000px) and (max-height: 1500px) {
+/*   @media (max-width: 3000px) and (max-height: 1500px) {
     width: 1000px;
     height: 1000px;
   }
@@ -42,13 +42,15 @@ const TodayInformationWrapper = styled.div`
   @media (max-width: 1000px) {
     width: 300px;
     height: 300px;
-  }
+  }   잠시대기*/
+  width: 1000px;
+  height: 1000px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 4fr 6fr;
-  border-radius: 9% 9% 3% 3%;
-  background-color: #d2e4fc;
-  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+  grid-template-rows: 61fr 39fr;
+  border-radius: 3%;
+  background-color: #FFFFFF;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 `;
 
 const CalaendarWrapper = styled.div`

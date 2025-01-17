@@ -11,25 +11,32 @@ import styled from "styled-components";
 // `;
 
 const MemoWrapper = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  grid-column: 1 / span 2;
+  grid-row: 2;
 `;
 
 const Memo = styled(motion.textarea)`
-  width: 80%;
-  border-radius: 15px;
-  background-color: #dae5f0;
-  padding: 20px;
-  color: black;
-  font-weight: bold;
-  font-size: 16px;
-  resize: none;
-  border: none;
   grid-column: 1 / span 2;
   grid-row: 3;
-  box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+  width: 78%;
+  height: 200px;
+  margin-bottom: 30px;
+  background-color: #dae5f0;
+  padding: 20px;
+  color: #000;
+  font-size: 20px;
+  resize: none;
+  border: none;
   &:focus {
     outline: none;
+  }
+  &::placeholder{
+   font-weight: bold;
   }
   /* 스크롤바 스타일 */
   &::-webkit-scrollbar {
@@ -39,6 +46,13 @@ const Memo = styled(motion.textarea)`
     background-color: #b8e0f5; /* 스크롤바 색상 */
     border-radius: 15px; /* 스크롤바 모서리 둥글게 */
   }
+  background-attachment: local;
+  line-height: 31px;
+  padding: 6px 10px;
+  background-image:
+    linear-gradient(to right, white 10px, transparent 10px),
+    linear-gradient(to left, white 10px, transparent 10px),
+    repeating-linear-gradient(white, white 30px, #000 30px, #000 31px, white 31px);
 `;
 
 // const MemoBTN = styled.button`
@@ -63,12 +77,9 @@ function ToDoMemo({ memoData, setMemoData }: Props) {
   return (
     <MemoWrapper>
       <Memo
-        whileFocus={{ height: '250px' }}
-        initial={{ height: '150px' }} // 초기 높이 설정
-        transition={{ type: 'spring', stiffness: 50 }}
         onChange={onChangeMemoData}
         defaultValue={memoData} // 입력필드의 초기값
-        placeholder="메모지"
+        placeholder="Memo:"
       />
     </MemoWrapper>
   );

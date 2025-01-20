@@ -3,6 +3,7 @@ import { IsString, IsArray, IsObject, IsOptional } from 'class-validator';
 export class TodoItem {
   id: number;
   text: string;
+  isDone: boolean;
 }
 
 export class WeatherData {

@@ -54,11 +54,11 @@ const StyledPencil = styled.div`
   padding-right: 0;
   font-size: 20px;
   cursor: pointer;
-  &:hover{
-     transition: color 0.5s ease-in-out;
-      color: #6495ED;
-    }
-  &:not(:hover){
+  &:hover {
+    transition: color 0.5s ease-in-out;
+    color: #6495ed;
+  }
+  &:not(:hover) {
     transition: color 0.5s ease-in-out;
   }
 `;
@@ -72,11 +72,11 @@ const StyledLuEraser = styled.div`
   align-items: center;
   padding: 10px 0;
   cursor: pointer;
-  &:hover{
+  &:hover {
     transition: color 0.5s ease-in-out;
-    color: #6495ED;
-    }
-  &:not(:hover){
+    color: #6495ed;
+  }
+  &:not(:hover) {
     transition: color 0.5s ease-in-out;
   }
 `;
@@ -97,7 +97,7 @@ const ToDoCardCheckbox = styled.input`
   margin: 0;
   margin-top: 15px;
   cursor: pointer;
-  border: 4px solid #A5C0C2;
+  border: 4px solid #a5c0c2;
   &:checked {
     background-color: black;
   }
@@ -106,6 +106,7 @@ const ToDoCardCheckbox = styled.input`
 interface IDragabbleCardProps {
   todoId: number;
   todoText: string;
+  todoIsDone: boolean;
   index: number;
   setTodoDataArray: React.Dispatch<React.SetStateAction<todoData[]>>;
 }
@@ -113,6 +114,7 @@ interface IDragabbleCardProps {
 function DraggableToDo({
   todoId,
   todoText,
+  todoIsDone,
   index,
   setTodoDataArray,
 }: IDragabbleCardProps) {
@@ -122,7 +124,6 @@ function DraggableToDo({
 
   const onDelete = () => {
     setTodoDataArray((prevData) => {
-      console.log(todoId, prevData);
       let updatedTodoDataArray = [...prevData];
       updatedTodoDataArray = updatedTodoDataArray.filter(
         (todoData: todoData) => todoData.id !== todoId
@@ -177,13 +178,32 @@ function DraggableToDo({
       setNewTodo("");
     }
   };
+  //체크박스 바꾸는 핸들러
+  const onChangeCheckBox = () => {
+    setTodoDataArray((prevData) => {
+      let updatedTodoDataArray = [...prevData];
+      updatedTodoDataArray = updatedTodoDataArray.filter(
+        (todoData: todoData) => {
+          if (todoData.id == todoId) {
+            todoData.isDone = todoIsDone ? false : true;
+          }
+          return todoData;
+        }
+      );
+      return updatedTodoDataArray;
+    });
+  };
 
   return (
     <>
       <Draggable draggableId={todoId + ""} index={index}>
         {(provided) => (
           <ToDoCardWrapper>
-            <ToDoCardCheckbox type="checkbox" />
+            <ToDoCardCheckbox
+              type="checkbox"
+              checked={todoIsDone}
+              onChange={onChangeCheckBox}
+            />
             <ToDoCard
               ref={provided.innerRef}
               {...provided.draggableProps}

@@ -3,27 +3,27 @@ import styled from "styled-components";
 import { WeathersResponse, weatherDataToSave } from "../../type";
 import { fetchWeatherData } from "../../api/weatherData";
 import { FaChevronRight } from "react-icons/fa6";
-import countries from 'i18n-iso-countries';
-import en from 'i18n-iso-countries/langs/en.json';
+import countries from "i18n-iso-countries";
+import en from "i18n-iso-countries/langs/en.json";
 countries.registerLocale(en);
 const getCountryName = (code: string | undefined) => {
-  if (!code) return 'Unknown Country';
-  return countries.getName(code, 'en') || 'Unknown Country';
+  if (!code) return "Unknown Country";
+  return countries.getName(code, "en") || "Unknown Country";
 };
 
 const Icon = styled.div`
-grid-column: 1;
-grid-row: 1;
-width: 100%;
-height: 100%;
-display: flex;
-justify-content: center;
-align-items: flex-end;
-user-select: none;
-img{
-  width: 148px;
-  height: 136px;
-}
+  grid-column: 1;
+  grid-row: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  user-select: none;
+  img {
+    width: 148px;
+    height: 136px;
+  }
 `;
 
 const WeatherCard = styled.div`
@@ -31,7 +31,7 @@ const WeatherCard = styled.div`
   grid-row: 1;
   width: 360px;
   height: 500px;
-  background-color: #C8D4E3;
+  background-color: #c8d4e3;
   border-radius: 50px;
   margin-left: 110px;
   margin-top: 110px;
@@ -59,23 +59,21 @@ const Temp = styled.div`
     top: 40px;
   }
   div:nth-child(2) {
-  grid-column: 1;
-  grid-row: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  div {
+    grid-column: 1;
+    grid-row: 2;
     display: flex;
     justify-content: center;
-    margin: 0;
-    font-size: 130px;
-    text-align: center;
-    position: relative;
-    top: 0px;
+    align-items: center;
+    div {
+      display: flex;
+      justify-content: center;
+      margin: 0;
+      font-size: 130px;
+      text-align: center;
+      position: relative;
+      top: 0px;
+    }
   }
-} 
-
-
 
   div:nth-child(3) {
     font-size: 30px;
@@ -91,7 +89,7 @@ const MoreBTN = styled.button`
   grid-column: 1;
   grid-row: 3;
   background-color: transparent;
-  border-radius: 0 0 50px 50px ;
+  border-radius: 0 0 50px 50px;
   border: none;
   width: 96%;
   height: 30%;
@@ -100,7 +98,7 @@ const MoreBTN = styled.button`
   display: flex;
   justify-content: space-between;
   padding: 0 30px;
-  color: #7A7A7A;
+  color: #7a7a7a;
   &:hover {
     transition: color 0.3s ease-in-out;
     color: #000; /* Hover 시 텍스트 색 변경 */
@@ -109,7 +107,6 @@ const MoreBTN = styled.button`
     transition: color 0.3s ease-in-out; /* 원래 색으로 돌아갈 때 속도 변경 */
   }
 `;
-
 
 interface Props {
   setWeatherDataToSave: React.Dispatch<
@@ -153,6 +150,7 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
         const location = await getLocation(); // 위치를 받아옴
         const data = await fetchWeatherData(location.lat, location.lon);
         setWeatherData(data);
+        console.log(data);
         setWeatherDataToSave({
           temp_min: data.main.temp_min,
           temp_max: data.main.temp_max,
@@ -178,29 +176,26 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
     return <div>에러 발생: {error}</div>;
   }
   const renderIcon = () => {
-    const Id = weatherData?.weather[0].id
+    const Id = weatherData?.weather[0].id;
     if (Id) {
       if (Id === 800) {
-        return <img src="/day_clear.svg" alt="Day Clear Icon" />
+        return <img src="/day_clear.svg" alt="Day Clear Icon" />;
       } else if (Id >= 200 && Id <= 232) {
-        return <img src="/rain_thunder.svg" alt="Rain Thunder Icon" />
+        return <img src="/rain_thunder.svg" alt="Rain Thunder Icon" />;
       } else if (Id >= 300 && Id <= 321) {
-        return <img src="/rain.svg" alt="Rain Icon" />
+        return <img src="/rain.svg" alt="Rain Icon" />;
       } else if (Id >= 500 && Id <= 531) {
-        return <img src="/rain.svg" alt="Rain Icon" />
+        return <img src="/rain.svg" alt="Rain Icon" />;
       } else if (Id >= 600 && Id <= 622) {
-        return <img src="/snow.svg" alt="Snow Icon" />
+        return <img src="/snow.svg" alt="Snow Icon" />;
       } else if (Id >= 700 && Id <= 781) {
-        return <img src="/fog.svg" alt="Fog Icon" />
+        return <img src="/fog.svg" alt="Fog Icon" />;
       } else if (Id >= 801 && Id <= 804) {
-        return <img src="/cloudy.svg" alt="Cloudy Icon" />
+        return <img src="/cloudy.svg" alt="Cloudy Icon" />;
       }
     }
-    return (
-      null
-    );
-  }
-
+    return null;
+  };
 
   return (
     <>
@@ -214,13 +209,18 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
         </Icon>
         <Temp>
           <div>°C</div>
-          <div><div>{weatherData?.main.temp.toFixed(1)}</div></div>
-          <div>{weatherData?.name}, {getCountryName(weatherData?.sys.country)}</div>
+          <div>
+            <div>{weatherData?.main.temp.toFixed(1)}</div>
+          </div>
+          <div>
+            {weatherData?.name}, {getCountryName(weatherData?.sys.country)}
+          </div>
         </Temp>
-        <MoreBTN>see more<FaChevronRight />
+        <MoreBTN>
+          see more
+          <FaChevronRight />
         </MoreBTN>
       </WeatherCard>
-
     </>
   );
 }

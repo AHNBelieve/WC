@@ -2,7 +2,7 @@
 export interface todoData {
   id: number;
   text: string;
-  //boolean?
+  isDone: boolean;
 }
 //업데이트 할 데이터 (날씨도 추가할수도?)
 export interface DailyData {

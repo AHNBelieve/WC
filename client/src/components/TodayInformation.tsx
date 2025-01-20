@@ -5,7 +5,6 @@ import { todoData, weatherDataToSave } from "../type";
 import {
   createDailyData,
   getDailyData,
-  getMonthlyDailyData,
   updateDailyData,
 } from "../api/dailyData";
 import { getToken } from "../supabase";
@@ -49,15 +48,13 @@ export default function TodayInformation() {
         setIsLogin(true);
         setIsLoading(true);
         const response = await getDailyData();
-
+        console.log(response);
         //이건 한번 해당 유저의 해당 달에 쓴 데이터를 뽑는 로직을 짜봄
         //month를 받아서 이를 적절히 넘겨줘야지 가능하다.
-        const response2 = await getMonthlyDailyData();
-        console.log(response2);
 
-        if (response && response.data) {
-          setTodoDataArray(response.data.todoData as todoData[]);
-          setMemoData(response.data.memoData as string);
+        if (response) {
+          setTodoDataArray(response.todoData as todoData[]);
+          setMemoData(response.memoData as string);
         } else {
           //현재 오늘 데이터가 존재하지 않는 경우!
           //일단은 바로 오늘 데이터를 생성해놓는 걸로 했는데, 이거 버튼식으로 바꿔도 좋을듯

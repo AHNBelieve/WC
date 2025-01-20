@@ -7,14 +7,14 @@ export const getDailyData = async (date?: string) => {
     const token = await getToken();
     if (date) {
       const response = await axios.get(
-        `http://localhost:3000/DailyData?q=${date}`,
+        `http://localhost:3000/DailyData?date=${date}`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // 헤더에 Authorization 추가
           },
         }
       );
-      return response;
+      return response.data;
     } else {
       const response = await axios.get(
         "http://localhost:3000/DailyData", // NestJS 서버의 엔드포인트
@@ -24,7 +24,7 @@ export const getDailyData = async (date?: string) => {
           },
         }
       );
-      return response;
+      return response.data;
     }
   } catch (error: any) {
     if (error.code == "ERR_NETWORK") {
@@ -95,7 +95,6 @@ export const getMonthlyDailyData = async (date: Date) => {
       }
     );
     const diaryDates = response.data.map((item: { date: string }) => item.date);
-    console.log(diaryDates);
     return diaryDates as string[];
   } catch (err) {
     console.log(err);

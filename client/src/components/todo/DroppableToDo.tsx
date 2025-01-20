@@ -21,12 +21,12 @@ const Input = styled.input`
   font-size: 20px;
   margin-left: 50px;
   padding-top: 10px;
-  &:focus{
+  &:focus {
     outline: none;
   }
-  &::placeholder{
-   font-weight: 300;
-   color: #000;
+  &::placeholder {
+    font-weight: 300;
+    color: #000;
   }
 `;
 
@@ -50,7 +50,7 @@ const ToDoList = styled.div`
     width: 4px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #CEE0DE; /* 스크롤바 색상 */
+    background-color: #cee0de; /* 스크롤바 색상 */
     border-radius: 25px; /* 스크롤바 모서리 둥글게 */
   }
 `;
@@ -70,10 +70,6 @@ interface todoForm {
   todoText: string;
 }
 
-
-
-
-
 function DroppableToDo({ todoDataArray, setTodoDataArray }: Props) {
   const { register, setValue, handleSubmit } = useForm<todoForm>();
   const createToDo = (data: todoForm) => {
@@ -81,6 +77,7 @@ function DroppableToDo({ todoDataArray, setTodoDataArray }: Props) {
     const newTodoData: todoData = {
       id: Date.now(),
       text: todoText,
+      isDone: false,
     };
     setTodoDataArray([...todoDataArray, newTodoData]);
     setValue("todoText", ""); // 입력필드 초기화
@@ -105,6 +102,7 @@ function DroppableToDo({ todoDataArray, setTodoDataArray }: Props) {
                   index={index}
                   todoId={todo.id}
                   todoText={todo.text}
+                  todoIsDone={todo.isDone}
                   setTodoDataArray={setTodoDataArray}
                 />
               ))}

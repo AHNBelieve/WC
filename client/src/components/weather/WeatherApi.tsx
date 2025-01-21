@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { WeathersResponse, weatherDataToSave } from "../../type";
-import { fetchWeatherData } from "../../api/weatherData";
+import { fecthWeatherDataTest, fetchWeatherData } from "../../api/weatherData";
 import { FaChevronRight } from "react-icons/fa6";
 import countries from "i18n-iso-countries";
 import en from "i18n-iso-countries/langs/en.json";
@@ -146,11 +146,14 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
     const getWeather = async () => {
       setIsLoading(true);
       setError(null);
+
       try {
         const location = await getLocation(); // 위치를 받아옴
         const data = await fetchWeatherData(location.lat, location.lon);
+        //TEST
+        const testData = await fecthWeatherDataTest(location.lat, location.lon);
+        console.log(testData);
         setWeatherData(data);
-        console.log(data);
         setWeatherDataToSave({
           temp_min: data.main.temp_min,
           temp_max: data.main.temp_max,

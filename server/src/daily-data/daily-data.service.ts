@@ -41,7 +41,6 @@ export class DailyDataService {
     try {
       const user = await this.getUserFromAuthHeader(authHeader);
       const queryDate = date || new Date().toISOString().split('T')[0];
-      console.log(queryDate);
       const { data, error } = await this.supabase
         .from('DailyData')
         .select('*')
@@ -122,7 +121,6 @@ export class DailyDataService {
       const user = await this.getUserFromAuthHeader(authHeader);
 
       // 해당 월의 시작일과 마지막일 계산
-      console.log(year, month);
       const startDate = `${year}-${month.padStart(2, '0')}-01`;
       const lastDay = new Date(parseInt(year), parseInt(month), 0).getDate();
       const endDate = `${year}-${month.padStart(2, '0')}-${lastDay}`;

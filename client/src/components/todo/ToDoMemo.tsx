@@ -24,7 +24,7 @@ const Memo = styled(motion.textarea)`
   grid-column: 1 / span 2;
   grid-row: 3;
   width: 78%;
-  height: 200px;
+  height: 51.28%;
   margin-bottom: 30px;
   background-color: #dae5f0;
   padding: 20px;

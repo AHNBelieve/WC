@@ -5,18 +5,33 @@ import { motion, AnimatePresence } from "framer-motion";
 import { todoData } from "../../type";
 import { TiPencil } from "react-icons/ti";
 import { LuEraser } from "react-icons/lu";
+import "./checkbox.css";
+
 const ToDoCard = styled.div`
   width: 100%;
-  height: 44px;
+  height: 54px;
   background-color: white;
-  border-bottom-color: black;
-  border-bottom: solid 1px;
-  padding-left: 10px;
+  margin-bottom: 10px;
   color: black;
+  box-sizing: border-box;
+  flex-shrink: 0;
   display: grid;
-  grid-template-columns: auto 30px 30px;
+  grid-template-columns: 40px auto;
   align-items: center;
+/*   div:nth-child(2){
+    padding-bottom: 10px;
+    border-bottom-color: black;
+    border-bottom: solid 1px;
+  } */
 `;
+
+const TextWrapper = styled.div`
+    display: grid;
+    grid-template-columns: auto 30px 30px;
+    border-bottom: solid 1px;
+    border-bottom-color: black;
+`;
+
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -45,13 +60,13 @@ const PopUp = styled(motion.div)`
 `;
 
 const StyledPencil = styled.div`
+  grid-column: 2;
   width: 30px;
   height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
-  padding-right: 0;
+  padding: 10px 0;
   font-size: 20px;
   cursor: pointer;
   &:hover {
@@ -61,9 +76,16 @@ const StyledPencil = styled.div`
   &:not(:hover) {
     transition: color 0.5s ease-in-out;
   }
+  @media (max-width: 1920px) and (max-height: 1080px) {
+    width: 16px;
+    height: 16px;
+    margin-left: 14px;
+    margin-top: 14px;
+  }
 `;
 
 const StyledLuEraser = styled.div`
+  grid-column: 3;
   width: 30px;
   height: 30px;
   font-size: 20px;
@@ -79,28 +101,51 @@ const StyledLuEraser = styled.div`
   &:not(:hover) {
     transition: color 0.5s ease-in-out;
   }
+  @media (max-width: 1920px) and (max-height: 1080px) {
+    width: 16px;
+    height: 16px;
+    margin-left: 10px;
+    margin-top: 14px;
+  }
 `;
 
-const ToDoCardWrapper = styled.div`
-  width: 100%;
-  height: 62px;
-  margin-top: 3px;
+const CheckBoxWrapper = styled.div`
+  grid-column: 1;
   display: flex;
-  display: grid;
-  grid-template-columns: 50px auto;
+  align-items: center;
+  width: 100%;
 `;
 
 const ToDoCardCheckbox = styled.input`
-  appearance: none;
-  width: 30px;
-  height: 30px;
-  margin: 0;
-  margin-top: 15px;
-  cursor: pointer;
-  border: 4px solid #a5c0c2;
-  &:checked {
-    background-color: black;
-  }
+
+`;
+
+const CheckStyle = styled.svg`
+  width: 20px;
+  height: 20px;
+  @media (max-width: 1920px) and (max-height: 1080px) {
+        width: 15px;
+        height: 15px;
+}
+`;
+
+const ToDoTextWrapper = styled.div<{ isDone: boolean }>`
+  line-height: 30px;
+  text-decoration: ${(props) => (props.isDone ? 'line-through' : 'none')};
+  color: ${(props) => (props.isDone ? '#c8ccd4;;' : 'black')};
+`;
+
+
+const MainLabel = styled.label`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
+
+const SubLabel = styled.label`
+  display: flex;
+  align-items: center;
+  width: 100%;
 `;
 
 interface IDragabbleCardProps {
@@ -198,28 +243,38 @@ function DraggableToDo({
     <>
       <Draggable draggableId={todoId + ""} index={index}>
         {(provided) => (
-          <ToDoCardWrapper>
-            <ToDoCardCheckbox
-              type="checkbox"
-              checked={todoIsDone}
-              onChange={onChangeCheckBox}
-            />
-            <ToDoCard
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-            >
-              {todoText}
+          <ToDoCard
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
+            <CheckBoxWrapper className="checkbox-wrapper-52">
+              <MainLabel htmlFor={`${Date.now()}`} className="item">
+                <ToDoCardCheckbox
+                  type="checkbox"
+                  checked={todoIsDone}
+                  onChange={onChangeCheckBox}
+                  id={`${Date.now()}`} className="hidden"
+                />
+                <SubLabel htmlFor={`${Date.now()}`} className="cbx">
+                  <CheckStyle viewBox="0 0 14 12">
+                    <polyline points="1 7.6 5 11 13 1"></polyline>
+                  </CheckStyle>
+                </SubLabel>
+              </MainLabel>
+            </CheckBoxWrapper>
+            <TextWrapper>
+              <ToDoTextWrapper isDone={todoIsDone}>{todoText}</ToDoTextWrapper>
               <StyledPencil>
                 <TiPencil onClick={onModify} />
               </StyledPencil>
               <StyledLuEraser>
                 <LuEraser onClick={onDelete} />
               </StyledLuEraser>
-            </ToDoCard>
-          </ToDoCardWrapper>
+            </TextWrapper>
+          </ToDoCard>
         )}
-      </Draggable>
+      </Draggable >
       <AnimatePresence>
         {showPop && (
           <Overlay

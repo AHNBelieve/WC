@@ -23,18 +23,27 @@ const Icon = styled.div`
   img {
     width: 148px;
     height: 136px;
+    @media (max-width: 1920px) and (max-height: 1080px) {
+      width: 140px;
+      height: 130px;
+  }
   }
 `;
 
-const WeatherCard = styled.div`
+const WeatherCardWrapper = styled.div`
   grid-column: 1;
   grid-row: 1;
-  width: 360px;
-  height: 500px;
+  display: grid;
+  grid-template-columns: 11fr 36fr 3fr;
+  grid-template-rows: 11fr 50fr;
+`;
+const WeatherCard = styled.div`
+  grid-column: 2;
+  grid-row: 2;
+  width: 100%;
+  height: 100%;
   background-color: #c8d4e3;
   border-radius: 50px;
-  margin-left: 110px;
-  margin-top: 110px;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 15fr 21fr 14fr;
@@ -45,44 +54,37 @@ const Temp = styled.div`
   grid-row: 2;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 3fr 14fr 4fr;
+  grid-template-rows: 17fr 4fr;
+
   div:nth-child(1) {
-    font-size: 30px;
-    font-weight: 500;
-    grid-column: 1;
-    grid-row: 1;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    margin-left: 160px;
-    position: relative;
-    top: 40px;
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  font-size: 120px;
+  text-align: center;
+  @media (max-width: 1920px) and (max-height: 1080px) {
+    font-size: 100px;
   }
+  }
+  div:nth-child(1) sup { 
+    font-size: 0.25em; 
+    vertical-align: super; 
+  }
+  
   div:nth-child(2) {
+    font-size: 30px;
+  @media (max-width: 1920px) and (max-height: 1080px) {
+      font-size: 25px;
+  }
+    font-weight: 500;
     grid-column: 1;
     grid-row: 2;
     display: flex;
     justify-content: center;
-    align-items: center;
-    div {
-      display: flex;
-      justify-content: center;
-      margin: 0;
-      font-size: 130px;
-      text-align: center;
-      position: relative;
-      top: 0px;
-    }
   }
 
-  div:nth-child(3) {
-    font-size: 30px;
-    font-weight: 500;
-    grid-column: 1;
-    grid-row: 3;
-    display: flex;
-    justify-content: center;
-  }
 `;
 
 const MoreBTN = styled.button`
@@ -202,25 +204,26 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
       {/* <Name>
         <div>{weatherData?.name}</div>
       </Name> */}
-      <WeatherCard>
-        <Icon>
-          {/* {renderIcon()} */}
-          <img src="weather.png" alt="Day Clear Icon" />
-        </Icon>
-        <Temp>
-          <div>°C</div>
-          <div>
-            <div>{weatherData?.main.temp.toFixed(1)}</div>
-          </div>
-          <div>
-            {weatherData?.name}, {getCountryName(weatherData?.sys.country)}
-          </div>
-        </Temp>
-        <MoreBTN>
-          see more
-          <FaChevronRight />
-        </MoreBTN>
-      </WeatherCard>
+      <WeatherCardWrapper>
+        <WeatherCard>
+          <Icon>
+            {/* {renderIcon()} */}
+            <img src="weather.png" alt="Day Clear Icon" />
+          </Icon>
+          <Temp>
+            <div>
+              {weatherData?.main.temp.toFixed(1)}<sup>°C</sup>
+            </div>
+            <div>
+              {weatherData?.name}, {getCountryName(weatherData?.sys.country)}
+            </div>
+          </Temp>
+          <MoreBTN>
+            see more
+            <FaChevronRight />
+          </MoreBTN>
+        </WeatherCard>
+      </WeatherCardWrapper>
     </>
   );
 }

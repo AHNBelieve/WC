@@ -9,6 +9,7 @@ const Container = styled.div`
   height: 100vh;
   width: 100vw;
   overflow-y: scroll;
+  overflow-x: hidden;
   scroll-snap-type: y mandatory;
 `;
 
@@ -45,6 +46,16 @@ const TodayInformationWrapper = styled.div`
   }   잠시대기*/
   width: 1000px;
   height: 1000px;
+  @media (max-width: 2560px) and (max-height: 1440px) {
+/*         width: 1000px;
+        height: 1000px; */
+        width: 1000px;
+        height: 1000px;
+    }
+  @media (max-width: 1920px) and (max-height: 1080px) {
+        width: 800px;
+        height: 800px;
+    }
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 61fr 39fr;

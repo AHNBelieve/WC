@@ -148,11 +148,11 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
     const getWeather = async () => {
       setIsLoading(true);
       setError(null);
+
       try {
-        const location = await getLocation(); // 위치를 받아옴
+        const location = await getLocation(); // 위치를 받아옴 무조건 받을 수 있음
         const data = await fetchWeatherData(location.lat, location.lon);
         setWeatherData(data);
-        console.log(data);
         setWeatherDataToSave({
           temp_min: data.main.temp_min,
           temp_max: data.main.temp_max,

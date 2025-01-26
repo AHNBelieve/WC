@@ -48,7 +48,6 @@ export default function TodayInformation() {
         setIsLogin(true);
         setIsLoading(true);
         const response = await getDailyData();
-        console.log(response);
         //이건 한번 해당 유저의 해당 달에 쓴 데이터를 뽑는 로직을 짜봄
         //month를 받아서 이를 적절히 넘겨줘야지 가능하다.
 

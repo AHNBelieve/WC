@@ -11,8 +11,8 @@ const StyledFaRegSave = styled.div`
   display: flex;
   align-items: center;
   svg {
-    width: 40px;
-    height: 40px;
+    width: 10px;
+    height: 10px;
   }
   svg:hover {
     transition: 0.6s ease-in-out;

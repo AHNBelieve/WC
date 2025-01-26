@@ -10,7 +10,12 @@ const Form = styled.form`
   grid-row: 4;
   display: flex;
   justify-content: center;
+  align-items: center;
   border: none;
+  div{
+    font-size: 20px;
+    font-weight: 400;
+  }
 `;
 
 const Input = styled.input`
@@ -18,15 +23,11 @@ const Input = styled.input`
   height: 100%;
   border: none;
   border-bottom: 1px solid black;
-  font-size: 20px;
-  margin-left: 50px;
+  font-size: 18px;
+  margin-left: 10px;
   padding-top: 10px;
   &:focus {
     outline: none;
-  }
-  &::placeholder {
-    font-weight: 300;
-    color: #000;
   }
 `;
 
@@ -40,10 +41,13 @@ const Wrapper = styled.div`
 `;
 const ToDoList = styled.div`
   width: 100%;
-  height: 310px;
+  height: 322px;
+  @media (max-width: 1920px) and (max-height: 1080px) {
+        height: 301px;
+    }  
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow-y: auto;
   /* 스크롤바 스타일 */
   &::-webkit-scrollbar {
     height: 20px;
@@ -86,10 +90,12 @@ function DroppableToDo({ todoDataArray, setTodoDataArray }: Props) {
     <>
       <Title>Todo List</Title>
       <Form onSubmit={handleSubmit(createToDo)}>
+        <div>Add:</div>
         <Input
           {...register("todoText", { required: true })} // 폼 필드를 toDo라는 이름으로 등록, 유효성 검사
           type="text"
-          placeholder="Add:"
+          placeholder=""
+          maxLength={30}
         />
       </Form>
       <Wrapper>

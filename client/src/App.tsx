@@ -128,11 +128,13 @@ function App() {
         {isLogin ? (
           <LogoutButton onClick={onClickLogoutHandler}>로그아웃</LogoutButton>
         ) : null}
-        <TodayInformationSection>
-          <TodayInformationWrapper>
-            <TodayInformation />
-          </TodayInformationWrapper>
-        </TodayInformationSection>
+        {isLogin ? (
+          <TodayInformationSection>
+            <TodayInformationWrapper>
+              <TodayInformation />
+            </TodayInformationWrapper>
+          </TodayInformationSection>
+        ) : null}
         <CalendarSection>
           {isLogin ? (
             <CalaendarWrapper>

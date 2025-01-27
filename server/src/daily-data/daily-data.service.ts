@@ -89,7 +89,6 @@ export class DailyDataService {
     @Headers('Authorization') authHeader: string,
   ): Promise<void> {
     try {
-      console.log(body);
       //DailyData받아 서 오늘 데이터 업데이트!
       const today = new Date().toISOString().split('T')[0];
       const user = await this.getUserFromAuthHeader(authHeader);

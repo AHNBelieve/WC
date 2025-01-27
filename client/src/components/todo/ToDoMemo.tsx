@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import styled from "styled-components";
 
 // const MemoForm = styled.form`
@@ -35,8 +36,8 @@ const Memo = styled(motion.textarea)`
   &:focus {
     outline: none;
   }
-  &::placeholder{
-   font-weight: bold;
+  &::placeholder {
+    font-weight: bold;
   }
   /* 스크롤바 스타일 */
   &::-webkit-scrollbar {
@@ -49,10 +50,15 @@ const Memo = styled(motion.textarea)`
   background-attachment: local;
   line-height: 31px;
   padding: 6px 10px;
-  background-image:
-    linear-gradient(to right, white 10px, transparent 10px),
+  background-image: linear-gradient(to right, white 10px, transparent 10px),
     linear-gradient(to left, white 10px, transparent 10px),
-    repeating-linear-gradient(white, white 30px, #000 30px, #000 31px, white 31px);
+    repeating-linear-gradient(
+      white,
+      white 30px,
+      #000 30px,
+      #000 31px,
+      white 31px
+    );
 `;
 
 // const MemoBTN = styled.button`
@@ -62,9 +68,10 @@ const Memo = styled(motion.textarea)`
 interface Props {
   memoData: string;
   setMemoData: React.Dispatch<React.SetStateAction<string>>;
+  updatingHandler: () => void;
 }
 
-function ToDoMemo({ memoData, setMemoData }: Props) {
+function ToDoMemo({ memoData, setMemoData, updatingHandler }: Props) {
   //   const { register, handleSubmit } = useForm<{ memo: string }>();
   //   const saveMemo = ({ memo }: { memo: string }) => {
   //     setMemoData(memo);
@@ -74,12 +81,28 @@ function ToDoMemo({ memoData, setMemoData }: Props) {
     setMemoData(e.target.value);
   };
 
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      // 이곳에서 저장 로직 실행
+      updatingHandler();
+
+      // 메시지를 사용자에게 표시하려면 아래 코드 추가 (일부 브라우저에서만 지원)
+      event.preventDefault();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [memoData]);
   return (
     <MemoWrapper>
       <Memo
         onChange={onChangeMemoData}
         defaultValue={memoData} // 입력필드의 초기값
         placeholder="Memo:"
+        onBlur={updatingHandler}
       />
     </MemoWrapper>
   );

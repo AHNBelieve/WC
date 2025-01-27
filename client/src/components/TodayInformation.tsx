@@ -84,9 +84,7 @@ export default function TodayInformation() {
           todoDataArray,
           memoData
         );
-        if (response) {
-          alert("저장되었습니다!");
-        }
+        response;
       } catch (err) {
         console.log("업데이트 실패", err);
       }
@@ -110,7 +108,11 @@ export default function TodayInformation() {
               updatingHandler={updatingHandler}
             />
           </Tododo>
-          <ToDoMemo memoData={memoData} setMemoData={setMemoData} />
+          <ToDoMemo
+            memoData={memoData}
+            setMemoData={setMemoData}
+            updatingHandler={updatingHandler}
+          />
         </>
       ) : null}
     </>

@@ -1,7 +1,7 @@
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import DroppableToDo from "./DroppableToDo";
 import { todoData } from "../../type";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { FaRegSave } from "react-icons/fa";
 
@@ -26,11 +26,10 @@ interface Props {
   updatingHandler: () => void;
 }
 
-function ToDo({
-  todoDataArray,
-  setTodoDataArray,
-  updatingHandler,
-}: Props) {
+function ToDo({ todoDataArray, setTodoDataArray, updatingHandler }: Props) {
+  useEffect(() => {
+    updatingHandler();
+  }, [todoDataArray]);
   const onDragEnd = ({ destination, source }: DropResult) => {
     // 드래그가 끝났을 때 호출, destination은 목적지, source는 출발지
 
@@ -53,10 +52,8 @@ function ToDo({
       <DroppableToDo
         todoDataArray={todoDataArray}
         setTodoDataArray={setTodoDataArray}
+        updatingHandler={updatingHandler}
       />
-      <StyledFaRegSave>
-        <FaRegSave onClick={updatingHandler} />
-      </StyledFaRegSave>
     </DragDropContext>
   );
 }

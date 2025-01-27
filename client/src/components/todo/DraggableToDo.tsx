@@ -18,7 +18,7 @@ const ToDoCard = styled.div`
   display: grid;
   grid-template-columns: 40px auto;
   align-items: center;
-/*   div:nth-child(2){
+  /*   div:nth-child(2){
     padding-bottom: 10px;
     border-bottom-color: black;
     border-bottom: solid 1px;
@@ -26,12 +26,11 @@ const ToDoCard = styled.div`
 `;
 
 const TextWrapper = styled.div`
-    display: grid;
-    grid-template-columns: auto 30px 30px;
-    border-bottom: solid 1px;
-    border-bottom-color: black;
+  display: grid;
+  grid-template-columns: auto 30px 30px;
+  border-bottom: solid 1px;
+  border-bottom-color: black;
 `;
-
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -116,25 +115,22 @@ const CheckBoxWrapper = styled.div`
   width: 100%;
 `;
 
-const ToDoCardCheckbox = styled.input`
-
-`;
+const ToDoCardCheckbox = styled.input``;
 
 const CheckStyle = styled.svg`
   width: 20px;
   height: 20px;
   @media (max-width: 1920px) and (max-height: 1080px) {
-        width: 15px;
-        height: 15px;
-}
+    width: 15px;
+    height: 15px;
+  }
 `;
 
 const ToDoTextWrapper = styled.div<{ isDone: boolean }>`
   line-height: 30px;
-  text-decoration: ${(props) => (props.isDone ? 'line-through' : 'none')};
-  color: ${(props) => (props.isDone ? '#c8ccd4;;' : 'black')};
+  text-decoration: ${(props) => (props.isDone ? "line-through" : "none")};
+  color: ${(props) => (props.isDone ? "#c8ccd4;;" : "black")};
 `;
-
 
 const MainLabel = styled.label`
   display: flex;
@@ -254,7 +250,8 @@ function DraggableToDo({
                   type="checkbox"
                   checked={todoIsDone}
                   onChange={onChangeCheckBox}
-                  id={`${Date.now()}`} className="hidden"
+                  id={`${Date.now()}`}
+                  className="hidden"
                 />
                 <SubLabel htmlFor={`${Date.now()}`} className="cbx">
                   <CheckStyle viewBox="0 0 14 12">
@@ -274,7 +271,7 @@ function DraggableToDo({
             </TextWrapper>
           </ToDoCard>
         )}
-      </Draggable >
+      </Draggable>
       <AnimatePresence>
         {showPop && (
           <Overlay
@@ -284,7 +281,7 @@ function DraggableToDo({
             exit={{ opacity: 0 }}
           >
             <PopUp>
-              <h2>수정할 값을 적어</h2>
+              <h2>수정할 값을 작성해주세요.</h2>
               <input
                 type="text"
                 value={newTodo}

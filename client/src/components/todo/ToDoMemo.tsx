@@ -51,8 +51,8 @@ const Memo = styled(motion.textarea)`
       white 31px
     );
     @media (max-width: 1920px) and (max-height: 1080px) {
-    line-height: 25px; /* 또는 24.8px */
-    padding: 5px 8px; /* 또는 6px 8px */
+    line-height: 24.8px;
+    padding: 5px 8px;
     background-image: linear-gradient(to right, white 8px, transparent 8px),
     linear-gradient(to left, white 8px, transparent 8px),
     repeating-linear-gradient(

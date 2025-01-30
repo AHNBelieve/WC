@@ -6,6 +6,7 @@ import { todoData } from "../../type";
 import { TiPencil } from "react-icons/ti";
 import { LuEraser } from "react-icons/lu";
 import "./checkbox.css";
+import "./modifyPopUp.style.css";
 
 const ToDoCard = styled.div`
   width: 100%;
@@ -16,20 +17,24 @@ const ToDoCard = styled.div`
   box-sizing: border-box;
   flex-shrink: 0;
   display: grid;
-  grid-template-columns: 40px auto;
+  grid-template-columns: auto 60px;
   align-items: center;
-  /*   div:nth-child(2){
-    padding-bottom: 10px;
+    position: relative;
+    &::before {
+    content: "";
+    position: absolute;
+    left: 37px; /* 왼쪽 여백 */
+    right: 0px; /* 오른쪽 여백 */
+    bottom: 6px;
+    height: 1px;
     border-bottom-color: black;
     border-bottom: solid 1px;
-  } */
+  }
 `;
 
 const TextWrapper = styled.div`
   display: grid;
-  grid-template-columns: auto 30px 30px;
-  border-bottom: solid 1px;
-  border-bottom-color: black;
+  grid-template-columns: 30px 30px;
 `;
 
 const Overlay = styled(motion.div)`
@@ -59,7 +64,7 @@ const PopUp = styled(motion.div)`
 `;
 
 const StyledPencil = styled.div`
-  grid-column: 2;
+  grid-column: 1;
   width: 30px;
   height: 30px;
   display: flex;
@@ -84,7 +89,7 @@ const StyledPencil = styled.div`
 `;
 
 const StyledLuEraser = styled.div`
-  grid-column: 3;
+  grid-column: 2;
   width: 30px;
   height: 30px;
   font-size: 20px;
@@ -258,10 +263,11 @@ function DraggableToDo({
                     <polyline points="1 7.6 5 11 13 1"></polyline>
                   </CheckStyle>
                 </SubLabel>
+                <label htmlFor={`${Date.now()}`} className="cbx-lbl">{todoText}</label>
               </MainLabel>
             </CheckBoxWrapper>
             <TextWrapper>
-              <ToDoTextWrapper isDone={todoIsDone}>{todoText}</ToDoTextWrapper>
+              <ToDoTextWrapper isDone={todoIsDone}></ToDoTextWrapper>
               <StyledPencil>
                 <TiPencil onClick={onModify} />
               </StyledPencil>
@@ -280,11 +286,11 @@ function DraggableToDo({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <PopUp>
+            <PopUp className="edit-form">
               <h2>수정할 값을 작성해주세요.</h2>
               <input
                 type="text"
-                value={newTodo}
+                defaultValue={todoText}
                 onChange={(e) => setNewTodo(e.target.value)}
                 placeholder="새로운 할 일"
               />

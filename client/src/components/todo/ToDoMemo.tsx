@@ -2,15 +2,6 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 import styled from "styled-components";
 
-// const MemoForm = styled.form`
-//   grid-column: 2;
-//   grid-row: 1 / span 2;
-//   display: grid;
-//   grid-template-rows: 40px 270px;
-//   gap: 5px;
-//   justify-items: center; /* 수평 가운데 정렬 */
-// `;
-
 const MemoWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -59,12 +50,21 @@ const Memo = styled(motion.textarea)`
       #000 31px,
       white 31px
     );
+    @media (max-width: 1920px) and (max-height: 1080px) {
+    line-height: 25px; /* 또는 24.8px */
+    padding: 5px 8px; /* 또는 6px 8px */
+    background-image: linear-gradient(to right, white 8px, transparent 8px),
+    linear-gradient(to left, white 8px, transparent 8px),
+    repeating-linear-gradient(
+        white,
+        white 24px,
+        #000 24px,
+        #000 25px,
+        white 25px
+    );
+  }
 `;
 
-// const MemoBTN = styled.button`
-//   grid-row: 1;
-//   width: 20%;
-// `;
 interface Props {
   memoData: string;
   setMemoData: React.Dispatch<React.SetStateAction<string>>;

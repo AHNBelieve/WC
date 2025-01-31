@@ -5,6 +5,8 @@ import { fetchWeatherData } from "../../api/weatherData";
 import { FaChevronRight } from "react-icons/fa6";
 import countries from "i18n-iso-countries";
 import en from "i18n-iso-countries/langs/en.json";
+import WeatherPopUp from "./WeatherPopUp";
+import { useNavigate } from "react-router-dom";
 countries.registerLocale(en);
 const getCountryName = (code: string | undefined) => {
   if (!code) return "Unknown Country";
@@ -24,8 +26,8 @@ const Icon = styled.div`
     width: 148px;
     height: 136px;
     @media (max-width: 1920px) and (max-height: 1080px) {
-      width: 140px;
-      height: 130px;
+      width: 130px;
+      height: 120px;
   }
   }
 `;
@@ -101,6 +103,9 @@ const MoreBTN = styled.button`
   justify-content: space-between;
   padding: 0 30px;
   color: #7a7a7a;
+  @media (max-width: 1920px) and (max-height: 1080px) {
+      font-size: 12px;
+  }
   &:hover {
     transition: color 0.3s ease-in-out;
     color: #000; /* Hover 시 텍스트 색 변경 */
@@ -117,9 +122,11 @@ interface Props {
 }
 
 function WeatherAPI({ setWeatherDataToSave }: Props) {
+  const navigate = useNavigate();
   const [weatherData, setWeatherData] = useState<WeathersResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [showWeatherModal, setshowweatherModal] = useState(false);
   //애초에 geolocation이 비동기적으로 작동하는데 async를 적용할 수 없어서 그냥 Promise안에 가둬버렸다!
   const getLocation = (): Promise<{ lat: number; lon: number }> => {
     return new Promise((resolve) => {
@@ -198,7 +205,14 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
     }
     return null;
   };
+  const onClose = () => {
+    navigate("/");
+    setshowweatherModal(false);
+  };
 
+  const onClick = () => {
+    setshowweatherModal(true);
+  }
   return (
     <>
       {/* <Name>
@@ -218,12 +232,13 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
               {weatherData?.name}, {getCountryName(weatherData?.sys.country)}
             </div>
           </Temp>
-          <MoreBTN>
+          <MoreBTN onClick={onClick}>
             see more
             <FaChevronRight />
           </MoreBTN>
         </WeatherCard>
       </WeatherCardWrapper>
+      {showWeatherModal && <WeatherPopUp onClose={onClose} />}
     </>
   );
 }

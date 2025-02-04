@@ -50,18 +50,18 @@ const Memo = styled(motion.textarea)`
       #000 31px,
       white 31px
     );
-    @media (max-width: 1920px) and (max-height: 1080px) {
+  @media (max-width: 1920px) and (max-height: 1080px) {
     line-height: 24.8px;
     padding: 5px 8px;
     background-image: linear-gradient(to right, white 8px, transparent 8px),
-    linear-gradient(to left, white 8px, transparent 8px),
-    repeating-linear-gradient(
+      linear-gradient(to left, white 8px, transparent 8px),
+      repeating-linear-gradient(
         white,
         white 24px,
         #000 24px,
         #000 25px,
         white 25px
-    );
+      );
   }
 `;
 
@@ -81,21 +81,6 @@ function ToDoMemo({ memoData, setMemoData, updatingHandler }: Props) {
     setMemoData(e.target.value);
   };
 
-  useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      // 이곳에서 저장 로직 실행
-      updatingHandler();
-
-      // 메시지를 사용자에게 표시하려면 아래 코드 추가 (일부 브라우저에서만 지원)
-      event.preventDefault();
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [memoData]);
   return (
     <MemoWrapper>
       <Memo

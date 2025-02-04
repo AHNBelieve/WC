@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ToDo from "./todo/ToDo";
 import WeatherAPI from "./weather/WeatherApi";
 import { todoData, weatherDataToSave } from "../type";
@@ -10,6 +10,7 @@ import {
 import { getToken } from "../supabase";
 import styled from "styled-components";
 import ToDoMemo from "./todo/ToDoMemo";
+import { a } from "framer-motion/client";
 
 const Tododo = styled.div`
   grid-column: 2;
@@ -36,6 +37,20 @@ export default function TodayInformation() {
   //로그인 됐는지 안 됐는지
   const [isLogin, setIsLogin] = useState(false);
 
+  const updatingHandler = () => {
+    const func = async () => {
+      try {
+        await updateDailyData(
+          weatherDataToSave as weatherDataToSave,
+          todoDataArray as todoData[],
+          memoData as string
+        );
+      } catch (err) {
+        console.log("업데이트 실패", err);
+      }
+    };
+    func();
+  };
   useEffect(() => {
     const func = async () => {
       //이렇게 보내면 그냥 오늘 데이터 받는 것!
@@ -74,23 +89,6 @@ export default function TodayInformation() {
 
     func();
   }, []);
-
-  //Update핸들러 이 핸들러를 통해서 데이터가 업데이트 된다.
-  const updatingHandler = () => {
-    const func = async () => {
-      try {
-        const response = await updateDailyData(
-          weatherDataToSave as weatherDataToSave,
-          todoDataArray,
-          memoData
-        );
-        response;
-      } catch (err) {
-        console.log("업데이트 실패", err);
-      }
-    };
-    func();
-  };
 
   if (isLoading) {
     return <div>로딩중입니다~~</div>;

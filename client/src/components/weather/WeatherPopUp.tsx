@@ -1,16 +1,17 @@
-import "./WeatherPopUp.styles.css"
+import "./WeatherPopUp.styles.css";
 interface WeatherPopUpProp {
-    onClose: () => void;
+  onClose: () => void;
 }
 
 function WeatherPopUp({ onClose }: WeatherPopUpProp) {
-    return (
-        <div className="popup-overlay" onClick={onClose}>
-            <div className="popup-box" onClick={(e) => e.stopPropagation()}>
-
-            </div>
-        </div>
-    );
+  return (
+    <div className="popup-overlay" onClick={onClose}>
+      <div
+        className="weather-popup-box"
+        onClick={(e) => e.stopPropagation()}
+      ></div>
+    </div>
+  );
 }
 
 export default WeatherPopUp;

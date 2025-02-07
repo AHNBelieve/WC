@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import "./TodayInformation.css";
 import ToDo from "./todo/ToDo";
 import WeatherAPI from "./weather/WeatherApi";
 import { todoData, weatherDataToSave } from "../type";
@@ -10,7 +11,6 @@ import {
 import { getToken } from "../supabase";
 import styled from "styled-components";
 import ToDoMemo from "./todo/ToDoMemo";
-import { a } from "framer-motion/client";
 
 const Tododo = styled.div`
   grid-column: 2;
@@ -30,7 +30,7 @@ export default function TodayInformation() {
   const [weatherDataToSave, setWeatherDataToSave] = useState<
     weatherDataToSave | object
   >({});
-
+  const [showToast, setShowToast] = useState<boolean>(false);
   //컴포넌트 상태에 관한 것
   const [isLoading, setIsLoading] = useState(false);
 
@@ -45,6 +45,8 @@ export default function TodayInformation() {
           todoDataArray as todoData[],
           memoData as string
         );
+        setShowToast(true); // 저장 완료 후 알림 표시
+        setTimeout(() => setShowToast(false), 5000); // 3초 후 알림 숨기기
       } catch (err) {
         console.log("업데이트 실패", err);
       }
@@ -96,6 +98,7 @@ export default function TodayInformation() {
 
   return (
     <>
+      {showToast && <div className="toast">Save completed</div>}
       <WeatherAPI setWeatherDataToSave={setWeatherDataToSave}></WeatherAPI>
       {isLogin ? (
         <>

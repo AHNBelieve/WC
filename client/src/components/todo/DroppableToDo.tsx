@@ -12,6 +12,7 @@ const SettingButton = styled.form`
   grid-row: 1;
   margin-top: 20px;
   cursor: pointer;
+  font-weight: bold;
 `;
 const Form = styled.form`
   width: 100%;

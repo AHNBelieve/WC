@@ -238,7 +238,7 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
           </MoreBTN>
         </WeatherCard>
       </WeatherCardWrapper>
-      {showWeatherModal && <WeatherPopUp onClose={onClose} />}
+      {showWeatherModal && <WeatherPopUp onClose={onClose} WeatherData={weatherData} />}
     </>
   );
 }

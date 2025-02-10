@@ -46,7 +46,7 @@ export default function SettingPopup({ onClose }: { onClose: () => void }) {
   //버그 확인 리포트 핸들러
   const openGitBugRepoert = () => {
     // 새 창을 열기 위해 window.open() 사용
-    window.open("https://www.naver.com", "_blank");
+    window.open("https://github.com/AHNBelieve/WC/issues/new", "_blank");
   };
 
   return (

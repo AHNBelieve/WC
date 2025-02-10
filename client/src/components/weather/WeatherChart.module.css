@@ -1,0 +1,23 @@
+.container {
+    grid-column: 2;
+    grid-row: 1;
+    position: relative;
+}
+
+.button {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    opacity: 0.5;
+}
+
+
+
+.tooltip {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+}

@@ -8,4 +8,8 @@ export class WeatherDataController {
   async getWeatherData(@Query('lat') lat: number, @Query('lon') lon: number) {
     return await this.weatherDataService.getWeatherData(lat, lon);
   }
+  @Get('forecast')
+  async getForecastData(@Query('lat') lat: number, @Query('lon') lon: number) {
+    return await this.weatherDataService.getForecastData(lat, lon);
+  }
 }

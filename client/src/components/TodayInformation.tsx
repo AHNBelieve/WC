@@ -45,8 +45,10 @@ export default function TodayInformation() {
           todoDataArray as todoData[],
           memoData as string
         );
-        setShowToast(true); // 저장 완료 후 알림 표시
-        setTimeout(() => setShowToast(false), 5000); // 3초 후 알림 숨기기
+        if (showToast === false) {
+          setShowToast(true); // 저장 완료 후 알림 표시
+          setTimeout(() => setShowToast(false), 5000); // 3초 후 알림 숨기기
+        }
       } catch (err) {
         console.log("업데이트 실패", err);
       }

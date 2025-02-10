@@ -105,9 +105,7 @@ function App() {
         ) : null}
         <CalendarSection>
           {isLogin ? (
-            <CalaendarWrapper>
-              <Calendar />
-            </CalaendarWrapper>
+            <Calendar />
           ) : (
             <LoginComponent />
           )}

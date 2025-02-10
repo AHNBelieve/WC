@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./TodayInformation.css";
 import ToDo from "./todo/ToDo";
 import WeatherAPI from "./weather/WeatherApi";
 import { todoData, weatherDataToSave } from "../type";
@@ -29,13 +30,31 @@ export default function TodayInformation() {
   const [weatherDataToSave, setWeatherDataToSave] = useState<
     weatherDataToSave | object
   >({});
-
+  const [showToast, setShowToast] = useState<boolean>(false);
   //컴포넌트 상태에 관한 것
   const [isLoading, setIsLoading] = useState(false);
 
   //로그인 됐는지 안 됐는지
   const [isLogin, setIsLogin] = useState(false);
 
+  const updatingHandler = () => {
+    const func = async () => {
+      try {
+        await updateDailyData(
+          weatherDataToSave as weatherDataToSave,
+          todoDataArray as todoData[],
+          memoData as string
+        );
+        if (showToast === false) {
+          setShowToast(true); // 저장 완료 후 알림 표시
+          setTimeout(() => setShowToast(false), 5000); // 3초 후 알림 숨기기
+        }
+      } catch (err) {
+        console.log("업데이트 실패", err);
+      }
+    };
+    func();
+  };
   useEffect(() => {
     const func = async () => {
       //이렇게 보내면 그냥 오늘 데이터 받는 것!
@@ -75,29 +94,13 @@ export default function TodayInformation() {
     func();
   }, []);
 
-  //Update핸들러 이 핸들러를 통해서 데이터가 업데이트 된다.
-  const updatingHandler = () => {
-    const func = async () => {
-      try {
-        const response = await updateDailyData(
-          weatherDataToSave as weatherDataToSave,
-          todoDataArray,
-          memoData
-        );
-        response;
-      } catch (err) {
-        console.log("업데이트 실패", err);
-      }
-    };
-    func();
-  };
-
   if (isLoading) {
     return <div>로딩중입니다~~</div>;
   }
 
   return (
     <>
+      {showToast && <div className="toast">Save completed</div>}
       <WeatherAPI setWeatherDataToSave={setWeatherDataToSave}></WeatherAPI>
       {isLogin ? (
         <>

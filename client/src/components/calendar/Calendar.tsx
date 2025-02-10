@@ -5,7 +5,7 @@ import "./Calendar.styles.css";
 import { useNavigate } from "react-router-dom";
 import { getMonthlyDailyData } from "../../api/dailyData";
 import type { OnArgs } from "react-calendar/dist/cjs/shared/types.d.ts";
-import { Value } from "react-calendar/dist/cjs/shared/types.d.ts";
+import type { Value } from "react-calendar/dist/cjs/shared/types.d.ts";
 import Past from "../router/Past";
 
 function Calendar() {

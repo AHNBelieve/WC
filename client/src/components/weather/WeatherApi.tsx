@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { WeathersResponse, weatherDataToSave } from "../../type";
-import { fetchWeatherData } from "../../api/weatherData";
+import { fetchWeatherData, getLocation } from "../../api/weatherData";
 import { FaChevronRight } from "react-icons/fa6";
 import countries from "i18n-iso-countries";
 import en from "i18n-iso-countries/langs/en.json";
@@ -28,7 +28,7 @@ const Icon = styled.div`
     @media (max-width: 1920px) and (max-height: 1080px) {
       width: 130px;
       height: 120px;
-  }
+    }
   }
 `;
 
@@ -59,34 +59,33 @@ const Temp = styled.div`
   grid-template-rows: 17fr 4fr;
 
   div:nth-child(1) {
-  grid-column: 1;
-  grid-row: 1;
-  display: flex;
-  justify-content: center;
-  margin: 0;
-  font-size: 120px;
-  text-align: center;
-  @media (max-width: 1920px) and (max-height: 1080px) {
-    font-size: 100px;
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    font-size: 120px;
+    text-align: center;
+    @media (max-width: 1920px) and (max-height: 1080px) {
+      font-size: 100px;
+    }
   }
+  div:nth-child(1) sup {
+    font-size: 0.25em;
+    vertical-align: super;
   }
-  div:nth-child(1) sup { 
-    font-size: 0.25em; 
-    vertical-align: super; 
-  }
-  
+
   div:nth-child(2) {
     font-size: 30px;
-  @media (max-width: 1920px) and (max-height: 1080px) {
+    @media (max-width: 1920px) and (max-height: 1080px) {
       font-size: 25px;
-  }
+    }
     font-weight: 500;
     grid-column: 1;
     grid-row: 2;
     display: flex;
     justify-content: center;
   }
-
 `;
 
 const MoreBTN = styled.button`
@@ -104,7 +103,7 @@ const MoreBTN = styled.button`
   padding: 0 30px;
   color: #7a7a7a;
   @media (max-width: 1920px) and (max-height: 1080px) {
-      font-size: 12px;
+    font-size: 12px;
   }
   &:hover {
     transition: color 0.3s ease-in-out;
@@ -127,37 +126,13 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [showWeatherModal, setshowweatherModal] = useState(false);
-  //애초에 geolocation이 비동기적으로 작동하는데 async를 적용할 수 없어서 그냥 Promise안에 가둬버렸다!
-  const getLocation = (): Promise<{ lat: number; lon: number }> => {
-    return new Promise((resolve) => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            resolve({ lat, lon });
-          },
-          () => {
-            // 오류가 발생하면 서울의 위치(위도: 37.5665, 경도: 126.978) 반환
-            resolve({ lat: 37.5665, lon: 126.978 });
-          }
-        );
-      } else {
-        // Geolocation이 지원되지 않는 경우에도 서울의 위치 반환
-        resolve({ lat: 37.5665, lon: 126.978 });
-      }
-    });
-  };
-  //메인 로직으로, 우선 location받아오고, 이후에 따로 뺀 weather API를 호출한다.
-  //보안을 위해서 API키는 환경변수로 뺐고, 타입도 빼줬다.
-  //성공적으로 값을 가져오면 weatherData값과 저장할 weatherDataToSave를 저장한다.
   useEffect(() => {
     const getWeather = async () => {
       setIsLoading(true);
       setError(null);
 
       try {
-        const location = await getLocation(); // 위치를 받아옴 무조건 받을 수 있음
+        const location = await getLocation();
         const data = await fetchWeatherData(location.lat, location.lon);
         setWeatherData(data);
         setWeatherDataToSave({
@@ -212,7 +187,7 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
 
   const onClick = () => {
     setshowweatherModal(true);
-  }
+  };
   return (
     <>
       {/* <Name>
@@ -226,7 +201,8 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
           </Icon>
           <Temp>
             <div>
-              {weatherData?.main.temp.toFixed(1)}<sup>°C</sup>
+              {weatherData?.main.temp.toFixed(1)}
+              <sup>°C</sup>
             </div>
             <div>
               {weatherData?.name}, {getCountryName(weatherData?.sys.country)}
@@ -238,7 +214,9 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
           </MoreBTN>
         </WeatherCard>
       </WeatherCardWrapper>
-      {showWeatherModal && <WeatherPopUp onClose={onClose} WeatherData={weatherData} />}
+      {showWeatherModal && (
+        <WeatherPopUp onClose={onClose} WeatherData={weatherData} />
+      )}
     </>
   );
 }

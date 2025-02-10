@@ -3,6 +3,17 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import DraggableToDo from "./DraggableToDo";
 import { todoData } from "../../type";
+import SettingPopup from "../Setting/SettingPopup";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+const SettingButton = styled.form`
+  grid-column: 3;
+  grid-row: 1;
+  margin-top: 20px;
+  cursor: pointer;
+  font-weight: bold;
+`;
 const Form = styled.form`
   width: 100%;
   height: 100%;
@@ -77,6 +88,8 @@ interface todoForm {
 
 function DroppableToDo({ todoDataArray, setTodoDataArray }: Props) {
   const { register, setValue, handleSubmit } = useForm<todoForm>();
+  const navigate = useNavigate();
+  const [isShowSettingModal, setIsShowSettingModal] = useState(false);
   const createToDo = (data: todoForm) => {
     const { todoText } = data;
     const newTodoData: todoData = {
@@ -87,8 +100,17 @@ function DroppableToDo({ todoDataArray, setTodoDataArray }: Props) {
     setTodoDataArray([...todoDataArray, newTodoData]);
     setValue("todoText", ""); // 입력필드 초기화
   };
+  const onClose = () => {
+    navigate("/");
+    setIsShowSettingModal(false);
+  };
+
+  const onClick = () => {
+    setIsShowSettingModal(true);
+  };
   return (
     <>
+      <SettingButton onClick={() => onClick()}>설정버튼</SettingButton>
       <Title>Todo List</Title>
       <Form onSubmit={handleSubmit(createToDo)}>
         <div>Add:</div>
@@ -118,6 +140,7 @@ function DroppableToDo({ todoDataArray, setTodoDataArray }: Props) {
           )}
         </Droppable>
       </Wrapper>
+      {isShowSettingModal && <SettingPopup onClose={onClose} />}
     </>
   );
 }

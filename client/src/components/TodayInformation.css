@@ -1,0 +1,34 @@
+.toast {
+  position: fixed;
+  top: -50px; /* 처음에는 화면 밖에 위치 */
+  left: 50%; /* 화면 중앙 */
+  transform: translateX(-50%); /* 중앙 정렬 보정 */
+  background-color: rgb(69, 166, 69);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 20px;
+  z-index: 1000; /* 가장 위에 */
+  animation: slideUp 3s ease-out, fadeOut 3.2s ease-in-out forwards;
+}
+
+@keyframes slideUp {
+  0% {
+    top: 50px;
+    opacity: 0;
+  }
+  100% {
+    top: 0px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1; /* 처음에는 완전히 보임 */
+  }
+  100% {
+    opacity: 0; /* 서서히 사라짐 */
+  }
+}

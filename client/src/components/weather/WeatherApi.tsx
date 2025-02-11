@@ -23,11 +23,11 @@ const Icon = styled.div`
   align-items: flex-end;
   user-select: none;
   img {
-    width: 148px;
+    width: 136px;
     height: 136px;
     @media (max-width: 1920px) and (max-height: 1080px) {
-      width: 130px;
-      height: 120px;
+      width: 110px;
+      height: 110px;
     }
   }
 `;
@@ -44,7 +44,7 @@ const WeatherCard = styled.div`
   grid-row: 2;
   width: 100%;
   height: 100%;
-  background-color: #c8d4e3;
+  background-color: ${({ theme }) => theme.cardColor};
   border-radius: 50px;
   display: grid;
   grid-template-columns: 1fr;
@@ -161,21 +161,23 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
   }
   const renderIcon = () => {
     const Id = weatherData?.weather[0].id;
+    const nowTime = new Date(Date.now());
+    const time = nowTime.getHours();
     if (Id) {
       if (Id === 800) {
-        return <img src="/day_clear.svg" alt="Day Clear Icon" />;
+        return (time >= 18 || time <= 6 ? <img src="/night_clear.png" alt="Night Clear Icon" /> : <img src="/day_clear.png" alt="Day Clear Icon" />)
       } else if (Id >= 200 && Id <= 232) {
-        return <img src="/rain_thunder.svg" alt="Rain Thunder Icon" />;
+        return <img src="/rain_thunder.png" alt="Rain Thunder Icon" />;
       } else if (Id >= 300 && Id <= 321) {
-        return <img src="/rain.svg" alt="Rain Icon" />;
+        return <img src="/rain.png" alt="Rain Icon" />;
       } else if (Id >= 500 && Id <= 531) {
-        return <img src="/rain.svg" alt="Rain Icon" />;
+        return <img src="/rain.png" alt="Rain Icon" />;
       } else if (Id >= 600 && Id <= 622) {
-        return <img src="/snow.svg" alt="Snow Icon" />;
+        return <img src="/snow.png" alt="Snow Icon" />;
       } else if (Id >= 700 && Id <= 781) {
         return <img src="/fog.svg" alt="Fog Icon" />;
       } else if (Id >= 801 && Id <= 804) {
-        return <img src="/cloudy.svg" alt="Cloudy Icon" />;
+        return <img src="/cloudy.png" alt="Cloudy Icon" />;
       }
     }
     return null;
@@ -196,8 +198,7 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
       <WeatherCardWrapper>
         <WeatherCard>
           <Icon>
-            {/* {renderIcon()} */}
-            <img src="weather.png" alt="Day Clear Icon" />
+            {renderIcon()}
           </Icon>
           <Temp>
             <div>

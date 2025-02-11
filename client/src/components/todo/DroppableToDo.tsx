@@ -1,18 +1,33 @@
 import { Droppable } from "react-beautiful-dnd";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import { CiSettings } from "react-icons/ci";
 import DraggableToDo from "./DraggableToDo";
 import { todoData } from "../../type";
 import SettingPopup from "../Setting/SettingPopup";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { DefaultTheme } from "styled-components/dist/types";
 
 const SettingButton = styled.form`
   grid-column: 3;
   grid-row: 1;
   margin-top: 20px;
-  cursor: pointer;
-  font-weight: bold;
+  margin-right: 20px;
+  display: flex;
+  justify-content: flex-end;
+  svg{
+    cursor: pointer;
+    font-size: 25px;
+    color: #4b4b4b;
+  }
+  svg:hover{
+    color: #000;
+    transition: color 0.4s ease-in-out;
+  }
+  svg:not(:hover) {
+    transition: color 0.4s ease-in-out;
+  }
 `;
 const Form = styled.form`
   width: 100%;
@@ -81,12 +96,13 @@ interface Props {
   todoDataArray: todoData[];
   setTodoDataArray: React.Dispatch<React.SetStateAction<todoData[]>>;
   updatingHandler: () => void;
+  setTheme: React.Dispatch<React.SetStateAction<DefaultTheme>>;
 }
 interface todoForm {
   todoText: string;
 }
 
-function DroppableToDo({ todoDataArray, setTodoDataArray }: Props) {
+function DroppableToDo({ todoDataArray, setTodoDataArray, setTheme }: Props) {
   const { register, setValue, handleSubmit } = useForm<todoForm>();
   const navigate = useNavigate();
   const [isShowSettingModal, setIsShowSettingModal] = useState(false);
@@ -110,7 +126,9 @@ function DroppableToDo({ todoDataArray, setTodoDataArray }: Props) {
   };
   return (
     <>
-      <SettingButton onClick={() => onClick()}>설정버튼</SettingButton>
+      <SettingButton>
+        <CiSettings onClick={() => onClick()} />
+      </SettingButton>
       <Title>Todo List</Title>
       <Form onSubmit={handleSubmit(createToDo)}>
         <div>Add:</div>
@@ -140,7 +158,7 @@ function DroppableToDo({ todoDataArray, setTodoDataArray }: Props) {
           )}
         </Droppable>
       </Wrapper>
-      {isShowSettingModal && <SettingPopup onClose={onClose} />}
+      {isShowSettingModal && <SettingPopup onClose={onClose} setTheme={setTheme} />}
     </>
   );
 }

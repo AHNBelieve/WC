@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import "./TodayInformation.css";
 import ToDo from "./todo/ToDo";
 import WeatherAPI from "./weather/WeatherApi";

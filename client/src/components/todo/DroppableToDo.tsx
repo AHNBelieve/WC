@@ -80,7 +80,6 @@ const Title = styled.div`
 interface Props {
   todoDataArray: todoData[];
   setTodoDataArray: React.Dispatch<React.SetStateAction<todoData[]>>;
-  updatingHandler: () => void;
 }
 interface todoForm {
   todoText: string;

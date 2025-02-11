@@ -1,7 +1,7 @@
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import DroppableToDo from "./DroppableToDo";
 import { todoData } from "../../type";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaRegSave } from "react-icons/fa";
 
@@ -27,10 +27,17 @@ interface Props {
 }
 
 function ToDo({ todoDataArray, setTodoDataArray, updatingHandler }: Props) {
+  const [isFirstRender, setIsFirstRender] = useState(true);
+
   useEffect(() => {
+    if (isFirstRender) {
+      setIsFirstRender(false); // 첫 실행을 막음
+      return;
+    }
+
     updatingHandler();
   }, [todoDataArray]);
-  const onDragEnd = ({ destination, source }: DropResult) => {
+  const onDragEnd = async ({ destination, source }: DropResult) => {
     // 드래그가 끝났을 때 호출, destination은 목적지, source는 출발지
 
     if (!destination) return; // 드롭 위치가 없으면 종료
@@ -44,6 +51,7 @@ function ToDo({ todoDataArray, setTodoDataArray, updatingHandler }: Props) {
         todoCopy.splice(destination.index, 0, taskObj);
         return todoCopy;
       });
+      updatingHandler();
     }
   };
 
@@ -52,7 +60,6 @@ function ToDo({ todoDataArray, setTodoDataArray, updatingHandler }: Props) {
       <DroppableToDo
         todoDataArray={todoDataArray}
         setTodoDataArray={setTodoDataArray}
-        updatingHandler={updatingHandler}
       />
     </DragDropContext>
   );

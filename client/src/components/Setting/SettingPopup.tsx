@@ -56,6 +56,7 @@ export default function SettingPopup({ onClose }: { onClose: () => void }) {
         <div className="settings-section">
           <span>Weather Calender</span>
           <h5>Version: {version}</h5>
+          <h5>Developed by IBelieve & Nunu</h5>
         </div>
         <div className="settings-section">
           <span>Weather</span>

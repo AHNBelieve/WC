@@ -19,8 +19,8 @@ const ToDoCard = styled.div`
   display: grid;
   grid-template-columns: auto 60px;
   align-items: center;
-    position: relative;
-    &::before {
+  position: relative;
+  &::before {
     content: "";
     position: absolute;
     left: 37px; /* 왼쪽 여백 */
@@ -263,7 +263,9 @@ function DraggableToDo({
                     <polyline points="1 7.6 5 11 13 1"></polyline>
                   </CheckStyle>
                 </SubLabel>
-                <label htmlFor={`${Date.now()}`} className="cbx-lbl">{todoText}</label>
+                <label htmlFor={`${Date.now()}`} className="cbx-lbl">
+                  {todoText}
+                </label>
               </MainLabel>
             </CheckBoxWrapper>
             <TextWrapper>

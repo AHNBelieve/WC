@@ -11,7 +11,7 @@ import "./modifyPopUp.style.css";
 const ToDoCard = styled.div`
   width: 100%;
   height: 54px;
-  background-color: white;
+  opacity: 1;
   margin-bottom: 10px;
   color: black;
   box-sizing: border-box;

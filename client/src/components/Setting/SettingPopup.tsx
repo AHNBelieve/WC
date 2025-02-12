@@ -1,8 +1,12 @@
+import { Default, PastelGray, PastelRed, PastelOrange, PastelYellow, PastelGreen, PastelBlue, PastelPink, PastelPurple, PastelBrown } from '../../theme'; // 상위 디렉토리의 theme.ts 파일 참조
 import { supabase } from "../../supabase";
 import "./SettingPopup.css";
+import { useState } from 'react';
+import { DefaultTheme } from 'styled-components/dist/types';
 const version = "0.0.1";
 
-export default function SettingPopup({ onClose }: { onClose: () => void }) {
+export default function SettingPopup({ onClose, setTheme }: { onClose: () => void, setTheme: (theme: DefaultTheme) => void }) {
+  const [selectedTheme, setSelectedTheme] = useState('light'); // 추가: 선택된 테마 상태 관리
   //날씨 권한 여부 확인 핸들러
   const handleResetWeatherPermission = () => {
     if (navigator.geolocation) {
@@ -49,6 +53,49 @@ export default function SettingPopup({ onClose }: { onClose: () => void }) {
     window.open("https://github.com/AHNBelieve/WC/issues/new", "_blank");
   };
 
+
+
+  const handleThemeChange = (event: React.ChangeEvent<HTMLSelectElement>) => { // 추가: 테마 변경 핸들러
+    const themeValue = event.target.value;
+    setSelectedTheme(themeValue);
+
+    // 선택된 테마에 따라 테마 설정
+    switch (themeValue) {
+      case 'light':
+        setTheme(Default);
+        break;
+      case 'pastelGray':
+        setTheme(PastelGray);
+        break;
+      case 'pastelRed':
+        setTheme(PastelRed);
+        break;
+      case 'pastelOrange':
+        setTheme(PastelOrange);
+        break;
+      case 'pastelYellow':
+        setTheme(PastelYellow);
+        break;
+      case 'pastelGreen':
+        setTheme(PastelGreen);
+        break;
+      case 'pastelBlue':
+        setTheme(PastelBlue);
+        break;
+      case 'pastelPink':
+        setTheme(PastelPink);
+        break;
+      case 'pastelPurple':
+        setTheme(PastelPurple);
+        break;
+      case 'pastelBrown':
+        setTheme(PastelBrown);
+        break;
+      default:
+        setTheme(Default);
+    }
+  };
+
   return (
     <div className="popup-overlay" onClick={onClose}>
       <div className="setting-popup-box" onClick={(e) => e.stopPropagation()}>
@@ -65,9 +112,17 @@ export default function SettingPopup({ onClose }: { onClose: () => void }) {
           >
             Check Weather Permission
           </button>
-          <select className="settings-select">
-            <option value="light">Light mode</option>
-            <option value="dark">Dark mode</option>
+          <select className="settings-select" value={selectedTheme} onChange={handleThemeChange}> {/* 변경: 선택된 테마와 핸들러 추가 */}
+            <option value="Default">Default</option>
+            <option value="pastelGray">Pastel Gray</option>
+            <option value="pastelRed">Pastel Red</option>
+            <option value="pastelOrange">Pastel Orange</option>
+            <option value="pastelYellow">Pastel Yellow</option>
+            <option value="pastelGreen">Pastel Green</option>
+            <option value="pastelBlue">Pastel Blue</option>
+            <option value="pastelPink">Pastel Pink</option>
+            <option value="pastelPurple">Pastel Purple</option>
+            <option value="pastelBrown">Pastel Brown</option>
           </select>
         </div>
 

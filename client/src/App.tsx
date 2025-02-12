@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { DefaultTheme } from "styled-components";
 import Calendar from "./components/calendar/Calendar";
 import LoginComponent from "./components/LoginComponent/LoginComponent";
 import TodayInformation from "./components/TodayInformation";
@@ -20,7 +20,7 @@ const TodayInformationSection = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f0f7fa;
+  background-color: ${({ theme }) => theme.bgColor};
 `;
 const CalendarSection = styled.div`
   height: 100vh;
@@ -64,16 +64,11 @@ const TodayInformationWrapper = styled.div`
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 `;
 
-const CalaendarWrapper = styled.div`
-  max-width: 1000px;
-  max-height: 1200px;
-  width: 60%;
-  height: 80%;
-  border-radius: 9% 9% 3% 3%;
-  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
-`;
+export interface AppProps {
+  setTheme: React.Dispatch<React.SetStateAction<DefaultTheme>>;
+}
 
-function App() {
+function App({ setTheme }: AppProps) {
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -99,7 +94,7 @@ function App() {
         {isLogin ? (
           <TodayInformationSection>
             <TodayInformationWrapper>
-              <TodayInformation />
+              <TodayInformation setTheme={setTheme} />
             </TodayInformationWrapper>
           </TodayInformationSection>
         ) : null}

@@ -120,14 +120,10 @@ function WeatherChart() {
       const { temperature, fullDate, time } = payload[0].payload;
       return (
         <div
-          style={{
-            backgroundColor: "white",
-            border: "1px solid #ccc",
-            padding: "10px",
-          }}
+          className={style.tooltip}
         >
           <p>{`${fullDate} ${time}`}</p>
-          <p>{`temp: ${temperature}°C`}</p>
+          <p>{`Temp: ${temperature}°C`}</p>
         </div>
       );
     }

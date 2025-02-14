@@ -2,18 +2,22 @@ import "./WeatherPopUp.styles.css";
 import WeatherChart from "./WeatherChart";
 import { WeathersResponse } from "../../type";
 import styled from "styled-components";
+import { renderIcon } from "./utils/renderIcon";
+import { getCountryName } from "./WeatherApi";
+import { useEffect, useState } from "react";
 
 interface WeatherPopUpProp {
   onClose: () => void;
-  WeatherData: WeathersResponse | null;
+  weatherData: WeathersResponse | null;
 }
 
 const PopUpBox = styled.div`
-background-color: ${({ theme }) => theme.bgColor};
+  background-color: ${({ theme }) => theme.bgColor};
 `;
 
-function WeatherPopUp({ onClose, WeatherData }: WeatherPopUpProp) {
-  if (!WeatherData) return null;
+function WeatherPopUp({ onClose, weatherData }: WeatherPopUpProp) {
+  const [currentTime, setCurrentTime] = useState<string>('');
+  if (!weatherData) return null;
 
   // Unix 타임스탬프를 a.m./p.m. 형식으로 변환하는 함수
   const formatTime = (timestamp: number) => {
@@ -27,7 +31,7 @@ function WeatherPopUp({ onClose, WeatherData }: WeatherPopUpProp) {
 
   // 가시거리 기준
   const visibilityStandard = () => {
-    const visibility = WeatherData.visibility / 1000;
+    const visibility = weatherData.visibility / 1000;
     if (visibility >= 10) {
       return <div>Very Good!😊</div>;
     } else if (visibility >= 5 && visibility < 10) {
@@ -40,7 +44,7 @@ function WeatherPopUp({ onClose, WeatherData }: WeatherPopUpProp) {
   }
   // 기압압 기준
   const PressureStandard = () => {
-    const pressure = WeatherData.main.pressure;
+    const pressure = weatherData.main.pressure;
     if (pressure >= 1020) { // 고기압
       return <div>High Pressure</div>;
     } else if (pressure >= 1000 && pressure < 1020) {  // 중기압
@@ -50,17 +54,58 @@ function WeatherPopUp({ onClose, WeatherData }: WeatherPopUpProp) {
     }
   }
 
+  //현재 시간
+  const formatCurrentTime = () => {
+    const now = new Date();
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    };
+    return now.toLocaleString('en-US', options);
+  };
+
+  useEffect(() => {
+    const updateTime = () => {
+      setCurrentTime(formatCurrentTime());
+    };
+
+    // 처음 렌더링 시 시간 설정
+    updateTime();
+
+    // 1분마다 시간 업데이트
+    const interval = setInterval(updateTime, 60000);
+
+    // 컴포넌트 언마운트 시 interval 정리
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="popup-overlay" onClick={onClose}>
       <PopUpBox className="popup-box" onClick={(e) => e.stopPropagation()}>
-        <div className="weather-card" />
         <WeatherChart />
+        {/*날씨 카드*/}
+        <div className="weather-card-top">
+          {renderIcon(weatherData?.weather[0].id)}
+          <div className="weather-card-bottom">
+            <div>
+              {weatherData?.main.temp.toFixed(1)}
+              <sup>°C</sup>
+            </div>
+            <div>{currentTime}</div>
+            <div>{weatherData.weather[0].description}</div>
+            <div>
+              {weatherData?.name}, {getCountryName(weatherData?.sys.country)}
+            </div>
+          </div>
+        </div>
         <div className="detail-weather">
           {/* 체감 온도 */}
           <div>
             <div className="Title">Feels like</div>
             <div className="feels_like">
-              {WeatherData.main.feels_like}
+              {weatherData.main.feels_like}
               <sup>°C</sup>
             </div>
           </div>
@@ -69,7 +114,7 @@ function WeatherPopUp({ onClose, WeatherData }: WeatherPopUpProp) {
             <div className="Title">Humidity</div>
             <div className="humidity">
               <img src="/humidity.png" alt="Humidity" />
-              {WeatherData.main.humidity}<span>%</span>
+              {weatherData.main.humidity}<span>%</span>
             </div>
           </div>
           {/* 풍속 */}
@@ -77,14 +122,14 @@ function WeatherPopUp({ onClose, WeatherData }: WeatherPopUpProp) {
             <div className="Title">Wind Status</div>
             <div className="wind_speed">
               <img src="/wind_status.png" alt="Wind Status" />
-              {WeatherData.wind.speed}m/s
+              {weatherData.wind.speed}m/s
             </div>
           </div>
           {/* 가시 거리 */}
           <div>
             <div className="Title">Visibility</div>
             <div className="visibility">
-              <div>{WeatherData.visibility / 1000}<span>km</span></div>
+              <div>{weatherData.visibility / 1000}<span>km</span></div>
               {visibilityStandard()}
             </div>
           </div>
@@ -92,7 +137,7 @@ function WeatherPopUp({ onClose, WeatherData }: WeatherPopUpProp) {
           <div>
             <div className="Title">Pressure</div>
             <div className="pressure">
-              <div>{WeatherData.main.pressure}<span>hpa</span></div>
+              <div>{weatherData.main.pressure}<span>hpa</span></div>
               {PressureStandard()}
             </div>
           </div>
@@ -102,11 +147,11 @@ function WeatherPopUp({ onClose, WeatherData }: WeatherPopUpProp) {
             <div className="sunrise_sunset">
               <div>
                 <img src="/sunrise.png" alt="Sunrise" />
-                {formatTime(WeatherData.sys.sunrise)}
+                {formatTime(weatherData.sys.sunrise)}
               </div>
               <div>
                 <img src="/sunset.png" alt="Sunset" />
-                {formatTime(WeatherData.sys.sunset)}
+                {formatTime(weatherData.sys.sunset)}
               </div>
             </div>
           </div>

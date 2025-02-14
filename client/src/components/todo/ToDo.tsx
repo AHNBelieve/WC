@@ -34,7 +34,7 @@ function ToDo({ todoDataArray, setTodoDataArray, updatingHandler }: Props) {
       setIsFirstRender(false); // 첫 실행을 막음
       return;
     }
-
+    console.log(todoDataArray);
     updatingHandler();
   }, [todoDataArray]);
   const onDragEnd = async ({ destination, source }: DropResult) => {
@@ -65,4 +65,4 @@ function ToDo({ todoDataArray, setTodoDataArray, updatingHandler }: Props) {
   );
 }
 
-export default ToDo;
+export default React.memo(ToDo);

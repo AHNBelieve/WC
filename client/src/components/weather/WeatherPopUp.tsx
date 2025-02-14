@@ -1,6 +1,7 @@
 import "./WeatherPopUp.styles.css";
 import WeatherChart from "./WeatherChart";
 import { WeathersResponse } from "../../type";
+import React from "react";
 
 interface WeatherPopUpProp {
   onClose: () => void;
@@ -69,4 +70,4 @@ function WeatherPopUp({ onClose, WeatherData }: WeatherPopUpProp) {
   );
 }
 
-export default WeatherPopUp;
+export default React.memo(WeatherPopUp);

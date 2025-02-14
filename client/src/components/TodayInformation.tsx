@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import "./TodayInformation.css";
 import ToDo from "./todo/ToDo";
 import WeatherAPI from "./weather/WeatherApi";
@@ -40,6 +40,7 @@ export default function TodayInformation() {
   const updatingHandler = () => {
     const func = async () => {
       try {
+        console.log(weatherDataToSave, todoDataArray, memoData);
         await updateDailyData(
           weatherDataToSave as weatherDataToSave,
           todoDataArray as todoData[],

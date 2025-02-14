@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getDailyData } from "../../api/dailyData";
 import { todoData, weatherDataToSave } from "../../type";
 import "./Past.styles.css";
@@ -117,4 +117,4 @@ function Past({ onClose, dateId }: PastProps) {
   );
 }
 
-export default Past;
+export default React.memo(Past);

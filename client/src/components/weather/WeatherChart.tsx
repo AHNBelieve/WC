@@ -7,7 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
 import { fetchForeCastData, getLocation } from "../../api/weatherData";
 
@@ -201,4 +201,4 @@ function WeatherChart() {
   );
 }
 
-export default WeatherChart;
+export default React.memo(WeatherChart);

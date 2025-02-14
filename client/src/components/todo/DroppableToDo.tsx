@@ -5,7 +5,7 @@ import DraggableToDo from "./DraggableToDo";
 import { todoData } from "../../type";
 import SettingPopup from "../Setting/SettingPopup";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 const SettingButton = styled.form`
   grid-column: 3;
@@ -99,14 +99,14 @@ function DroppableToDo({ todoDataArray, setTodoDataArray }: Props) {
     setTodoDataArray([...todoDataArray, newTodoData]);
     setValue("todoText", ""); // 입력필드 초기화
   };
-  const onClose = () => {
+  const onClose = useCallback(() => {
     navigate("/");
     setIsShowSettingModal(false);
-  };
+  }, []);
 
-  const onClick = () => {
+  const onClick = useCallback(() => {
     setIsShowSettingModal(true);
-  };
+  }, []);
   return (
     <>
       <SettingButton onClick={() => onClick()}>설정버튼</SettingButton>

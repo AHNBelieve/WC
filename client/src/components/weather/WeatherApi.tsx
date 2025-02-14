@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { WeathersResponse, weatherDataToSave } from "../../type";
 import { fetchWeatherData, getLocation } from "../../api/weatherData";
@@ -221,4 +221,4 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
   );
 }
 
-export default WeatherAPI;
+export default React.memo(WeatherAPI);

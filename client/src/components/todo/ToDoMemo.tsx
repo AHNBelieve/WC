@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import styled from "styled-components";
 
 const MemoWrapper = styled.div`
@@ -77,9 +77,12 @@ function ToDoMemo({ memoData, setMemoData, updatingHandler }: Props) {
   //     setMemoData(memo);
   //   };
 
-  const onChangeMemoData = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMemoData(e.target.value);
-  };
+  const onChangeMemoData = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setMemoData(e.target.value);
+    },
+    []
+  );
 
   return (
     <MemoWrapper>
@@ -93,4 +96,4 @@ function ToDoMemo({ memoData, setMemoData, updatingHandler }: Props) {
   );
 }
 
-export default ToDoMemo;
+export default React.memo(ToDoMemo);

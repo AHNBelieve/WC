@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
@@ -168,7 +168,7 @@ function DraggableToDo({
   const [showPop, setShowPop] = useState(false);
   const [newTodo, setNewTodo] = useState("");
 
-  const onDelete = () => {
+  const onDelete = useCallback(() => {
     setTodoDataArray((prevData) => {
       let updatedTodoDataArray = [...prevData];
       updatedTodoDataArray = updatedTodoDataArray.filter(
@@ -183,13 +183,13 @@ function DraggableToDo({
     //   );
     //   return updatedTodos;
     // });
-  };
+  }, []);
 
   const onModify = () => {
     setShowPop(true);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     if (newTodo.trim() !== "") {
       setTodoDataArray((prevData) => {
         let updatedTodoDataArray = [...prevData];
@@ -213,9 +213,9 @@ function DraggableToDo({
     } else {
       alert("유효하지 않은 입력");
     }
-  };
+  }, []);
 
-  const handleClose = (event: React.MouseEvent) => {
+  const handleClose = useCallback((event: React.MouseEvent) => {
     if (
       event.target instanceof HTMLElement &&
       (event.target.id === "overlay" || event.target.id === "cancel")
@@ -223,9 +223,9 @@ function DraggableToDo({
       setShowPop(false);
       setNewTodo("");
     }
-  };
+  }, []);
   //체크박스 바꾸는 핸들러
-  const onChangeCheckBox = () => {
+  const onChangeCheckBox = useCallback(() => {
     setTodoDataArray((prevData) => {
       let updatedTodoDataArray = [...prevData];
       updatedTodoDataArray = updatedTodoDataArray.filter(
@@ -238,7 +238,7 @@ function DraggableToDo({
       );
       return updatedTodoDataArray;
     });
-  };
+  }, []);
 
   return (
     <>

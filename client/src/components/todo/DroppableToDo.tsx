@@ -40,7 +40,8 @@ const Form = styled.form`
   border: none;
   div {
     font-size: 20px;
-    font-weight: 400;
+    font-Family: Roboto sans-serif;
+    font-weight: 600;
   }
 `;
 
@@ -129,7 +130,7 @@ function DroppableToDo({ todoDataArray, setTodoDataArray, setTheme }: Props) {
       <SettingButton>
         <CiSettings onClick={() => onClick()} />
       </SettingButton>
-      <Title>Todo List</Title>
+      <Title style={{ fontFamily: 'Roboto, sans-serif', fontWeight: '600' }}>Todo List</Title>
       <Form onSubmit={handleSubmit(createToDo)}>
         <div>Add:</div>
         <Input
@@ -137,6 +138,7 @@ function DroppableToDo({ todoDataArray, setTodoDataArray, setTheme }: Props) {
           type="text"
           placeholder=""
           maxLength={30}
+          style={{ fontFamily: 'Roboto, sans-serif', fontWeight: '500' }}
         />
       </Form>
       <Wrapper>

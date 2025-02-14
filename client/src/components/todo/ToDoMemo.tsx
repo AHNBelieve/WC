@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { useEffect } from "react";
 import styled from "styled-components";
 
 const MemoWrapper = styled.div`
@@ -24,11 +23,14 @@ const Memo = styled(motion.textarea)`
   font-size: 20px;
   resize: none;
   border: none;
+  font-Family: Roboto sans-serif;
+  font-weight: 500;
   &:focus {
     outline: none;
   }
   &::placeholder {
     font-weight: bold;
+    line-height: 27px;
   }
   /* 스크롤바 스타일 */
   &::-webkit-scrollbar {

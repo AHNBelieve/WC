@@ -29,12 +29,15 @@ const ToDoCard = styled.div`
     height: 1px;
     border-bottom-color: black;
     border-bottom: solid 1px;
+    
+
   }
 `;
 
 const TextWrapper = styled.div`
   display: grid;
   grid-template-columns: 30px 30px;
+
 `;
 
 const Overlay = styled(motion.div)`
@@ -135,6 +138,7 @@ const ToDoTextWrapper = styled.div<{ isDone: boolean }>`
   line-height: 30px;
   text-decoration: ${(props) => (props.isDone ? "line-through" : "none")};
   color: ${(props) => (props.isDone ? "#c8ccd4;;" : "black")};
+
 `;
 
 const MainLabel = styled.label`
@@ -263,7 +267,7 @@ function DraggableToDo({
                     <polyline points="1 7.6 5 11 13 1"></polyline>
                   </CheckStyle>
                 </SubLabel>
-                <label htmlFor={`${Date.now()}`} className="cbx-lbl">{todoText}</label>
+                <label htmlFor={`${Date.now()}`} className="cbx-lbl" style={{ fontFamily: 'Roboto, sans-serif', fontWeight: '500' }}>{todoText}</label>
               </MainLabel>
             </CheckBoxWrapper>
             <TextWrapper>

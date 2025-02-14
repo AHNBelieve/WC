@@ -49,6 +49,8 @@ const WeatherCard = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 15fr 21fr 14fr;
+  font-Family: Roboto sans-serif;
+  font-Weight: 500; 
 `;
 
 const Temp = styled.div`
@@ -85,6 +87,8 @@ const Temp = styled.div`
     grid-row: 2;
     display: flex;
     justify-content: center;
+    font-Family: Roboto sans-serif;
+    font-Weight: 500; 
   }
 `;
 
@@ -112,6 +116,8 @@ const MoreBTN = styled.button`
   &:not(:hover) {
     transition: color 0.3s ease-in-out; /* 원래 색으로 돌아갈 때 속도 변경 */
   }
+  font-Family: Roboto sans-serif;
+  font-Weight: 500; 
 `;
 
 interface Props {

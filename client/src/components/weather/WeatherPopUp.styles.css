@@ -22,8 +22,6 @@
   overflow: hidden;
 }
 
-
-
 /*Weather Card*/
 .weather-card-top {
   grid-column: 1;
@@ -83,6 +81,7 @@
   grid-row: 3;
   margin-left: 35px;
   align-self: center;
+  font-size: 18px;
 }
 
 .weather-card-bottom div:nth-child(4) {
@@ -123,6 +122,7 @@
   width: 100%;
   height: 100%;
   padding: 15px;
+  font-size: 16px;
   color: #bdbdbd;
 }
 
@@ -134,12 +134,14 @@
   display: flex;
   align-items: center;
   margin-left: 15px;
-  font-size: 30px;
   font-Family: Roboto sans-serif;
   font-Weight: 600;
 }
 
 /*체감온도*/
+.feels_like {
+  font-size: 30px;
+}
 
 /*습도*/
 .humidity {
@@ -265,4 +267,197 @@
   width: 40px;
   height: 40px;
   margin-right: 10px;
+}
+
+@media (max-width: 2560px) and (max-height: 1440px) {
+  .popup-box {
+    width: 905px;
+    height: 610px;
+  }
+
+  .detail-weather>div {
+    width: 180px;
+    height: 160px;
+  }
+
+  .weather-card-top>img {
+    width: 180px;
+    height: 180px;
+  }
+
+  .weather-card-bottom div:nth-child(1) {
+    font-size: 120px;
+  }
+
+  .weather-card-bottom div:nth-child(2) {
+    font-size: 18px;
+  }
+
+  .weather-card-bottom div:nth-child(3) {
+    font-size: 18px;
+  }
+
+  .weather-card-bottom div:nth-child(4) {
+    padding-top: 20px;
+    font-size: 24px;
+  }
+
+  .Title {
+    font-size: 16px;
+    padding: 15px;
+  }
+
+  .feels_like {
+    font-size: 30px;
+    margin-left: 15px;
+
+  }
+
+  .humidity {
+    font-size: 35px;
+    margin-left: 15px;
+
+  }
+
+  .wind_speed {
+    font-size: 23px;
+  }
+
+  .wind_speed>img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .pressure,
+  .visibility {
+    margin-left: 15px;
+    font-size: 30px;
+  }
+
+  .pressure>div:nth-child(1),
+  .visibility>div:nth-child(1) {
+    height: 40px;
+  }
+
+  .pressure>div:nth-child(2),
+  .visibility>div:nth-child(2) {
+    font-size: 13px;
+    margin-left: 5px;
+  }
+
+  .pressure>div>span,
+  .visibility>div>span {
+    font-size: 15px;
+    padding-top: 15px;
+  }
+
+  .sunrise_sunset {
+    font-size: 18px;
+  }
+
+  .sunrise_sunset>div>img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+}
+
+
+
+
+
+
+@media (max-width: 1920px) and (max-height: 1080px) {
+  .popup-box {
+    width: 724px;
+    height: 488px;
+  }
+
+  .detail-weather>div {
+    width: 144px;
+    height: 128px;
+  }
+
+  .weather-card-top>img {
+    width: 144px;
+    height: 144px;
+  }
+
+  .weather-card-bottom div:nth-child(1) {
+    font-size: 96px;
+  }
+
+  .weather-card-bottom div:nth-child(2) {
+    font-size: 14.4px;
+  }
+
+  .weather-card-bottom div:nth-child(3) {
+    font-size: 14.4px;
+  }
+
+  .weather-card-bottom div:nth-child(4) {
+    padding-top: 20px;
+    font-size: 19.2px;
+  }
+
+  .Title {
+    font-size: 12.8px;
+    padding: 12px;
+  }
+
+  .feels_like {
+    font-size: 24px;
+    margin-left: 12px;
+
+  }
+
+  .humidity {
+    font-size: 28px;
+    margin-left: 12px;
+
+  }
+
+  .wind_speed {
+    font-size: 18.4px;
+  }
+
+  .wind_speed>img {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+  }
+
+  .pressure,
+  .visibility {
+    margin-left: 12px;
+    font-size: 24px;
+  }
+
+  .pressure>div:nth-child(1),
+  .visibility>div:nth-child(1) {
+    height: 32px;
+  }
+
+  .pressure>div:nth-child(2),
+  .visibility>div:nth-child(2) {
+    font-size: 10.4px;
+    margin-left: 4px;
+  }
+
+  .pressure>div>span,
+  .visibility>div>span {
+    font-size: 12px;
+    padding-top: 12px;
+  }
+
+  .sunrise_sunset {
+    font-size: 14.4px;
+  }
+
+  .sunrise_sunset>div>img {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+  }
 }

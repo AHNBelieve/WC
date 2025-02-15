@@ -2,13 +2,15 @@
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
-import { theme } from './theme.ts';
+import { Default } from './theme.ts';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot } from 'recoil';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useState } from 'react';
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital@0;1&display=swap');
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -59,12 +61,12 @@ table {
 * {
   box-sizing: border-box;
 }
-body {
+/* body {
   font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
   line-height: 1.2;
   background-color: white;
-}
+} */
 html,body{
   height: 100vh;
   overflow: hidden;
@@ -79,20 +81,28 @@ a {
 
 const client = new QueryClient();
 
+const Main = () => {
+  const [theme, setTheme] = useState(Default); // 추가: 테마 상태 관리
+
+  return (
+    <ThemeProvider theme={theme}> {/* 추가: ThemeProvider에 테마 상태 전달 */}
+      <GlobalStyle />
+      <Router>
+        <Routes>
+          <Route path='/' element={<App setTheme={setTheme} />} /> {/* 변경: App에 setTheme 전달 */}
+          <Route path='/date/:dateId' element={<App setTheme={setTheme} />} /> {/* 변경: App에 setTheme 전달 */}
+        </Routes>
+      </Router>
+    </ThemeProvider>
+  );
+};
+
 createRoot(document.getElementById('root')!).render(
   // <StrictMode>
   <RecoilRoot>
     <QueryClientProvider client={client}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <Router>
-          <Routes>
-            <Route path='/' element={<App />} />
-            <Route path='/date/:dateId' element={<App />} />
-          </Routes>
-        </Router>
-      </ThemeProvider>
+      <Main /> {/* 변경: Main 컴포넌트 사용 */}
     </QueryClientProvider>
   </RecoilRoot>
   // </StrictMode>,
-)
+);

@@ -11,7 +11,7 @@ import "./modifyPopUp.style.css";
 const ToDoCard = styled.div`
   width: 100%;
   height: 54px;
-  background-color: white;
+  opacity: 1;
   margin-bottom: 10px;
   color: black;
   box-sizing: border-box;
@@ -168,7 +168,7 @@ function DraggableToDo({
   const [showPop, setShowPop] = useState(false);
   const [newTodo, setNewTodo] = useState("");
 
-  const onDelete = useCallback(() => {
+  const onDelete = () => {
     setTodoDataArray((prevData) => {
       let updatedTodoDataArray = [...prevData];
       updatedTodoDataArray = updatedTodoDataArray.filter(
@@ -183,13 +183,13 @@ function DraggableToDo({
     //   );
     //   return updatedTodos;
     // });
-  }, []);
+  };
 
   const onModify = () => {
     setShowPop(true);
   };
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = () => {
     if (newTodo.trim() !== "") {
       setTodoDataArray((prevData) => {
         let updatedTodoDataArray = [...prevData];
@@ -213,7 +213,7 @@ function DraggableToDo({
     } else {
       alert("유효하지 않은 입력");
     }
-  }, []);
+  };
 
   const handleClose = useCallback((event: React.MouseEvent) => {
     if (
@@ -263,7 +263,14 @@ function DraggableToDo({
                     <polyline points="1 7.6 5 11 13 1"></polyline>
                   </CheckStyle>
                 </SubLabel>
-                <label htmlFor={`${Date.now()}`} className="cbx-lbl">
+                <label
+                  htmlFor={`${Date.now()}`}
+                  className="cbx-lbl"
+                  style={{
+                    fontFamily: "Roboto, sans-serif",
+                    fontWeight: "500",
+                  }}
+                >
                   {todoText}
                 </label>
               </MainLabel>
@@ -289,17 +296,17 @@ function DraggableToDo({
             exit={{ opacity: 0 }}
           >
             <PopUp className="edit-form">
-              <h2>수정할 값을 작성해주세요.</h2>
               <input
                 type="text"
                 defaultValue={todoText}
                 onChange={(e) => setNewTodo(e.target.value)}
-                placeholder="새로운 할 일"
+                placeholder="New Task"
+                maxLength={30}
               />
               <div>
-                <button onClick={handleSubmit}>제출</button>
+                <button onClick={handleSubmit}>Submit</button>
                 <button id="cancel" onClick={handleClose}>
-                  취소
+                  Cancel
                 </button>
               </div>
             </PopUp>

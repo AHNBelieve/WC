@@ -11,6 +11,7 @@ import {
 import { getToken } from "../supabase";
 import styled from "styled-components";
 import ToDoMemo from "./todo/ToDoMemo";
+import { AppProps } from "../App";
 
 const Tododo = styled.div`
   grid-column: 2;
@@ -20,7 +21,7 @@ const Tododo = styled.div`
   grid-template-rows: 8fr 4fr 18fr 3fr;
 `;
 
-export default function TodayInformation() {
+export default function TodayInformation({ setTheme }: AppProps) {
   //주요 변수들
   //todoDataArray -> 할 일 목록
   const [todoDataArray, setTodoDataArray] = useState<todoData[]>([]);
@@ -110,6 +111,7 @@ export default function TodayInformation() {
               todoDataArray={todoDataArray}
               setTodoDataArray={setTodoDataArray}
               updatingHandler={updatingHandler}
+              setTheme={setTheme}
             />
           </Tododo>
           <ToDoMemo

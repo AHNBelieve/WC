@@ -2,31 +2,20 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import DroppableToDo from "./DroppableToDo";
 import { todoData } from "../../type";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { FaRegSave } from "react-icons/fa";
-
-const StyledFaRegSave = styled.div`
-  grid-column: 1;
-  grid-row: 1;
-  display: flex;
-  align-items: center;
-  svg {
-    width: 10px;
-    height: 10px;
-  }
-  svg:hover {
-    transition: 0.6s ease-in-out;
-    color: #6495ed;
-  }
-`;
+import { DefaultTheme } from "styled-components/dist/types";
 
 interface Props {
   todoDataArray: todoData[];
   setTodoDataArray: React.Dispatch<React.SetStateAction<todoData[]>>;
   updatingHandler: () => void;
+  setTheme: React.Dispatch<React.SetStateAction<DefaultTheme>>;
 }
-
-function ToDo({ todoDataArray, setTodoDataArray, updatingHandler }: Props) {
+function ToDo({
+  todoDataArray,
+  setTodoDataArray,
+  updatingHandler,
+  setTheme,
+}: Props) {
   const [isFirstRender, setIsFirstRender] = useState(true);
 
   useEffect(() => {
@@ -60,6 +49,7 @@ function ToDo({ todoDataArray, setTodoDataArray, updatingHandler }: Props) {
       <DroppableToDo
         todoDataArray={todoDataArray}
         setTodoDataArray={setTodoDataArray}
+        setTheme={setTheme}
       />
     </DragDropContext>
   );

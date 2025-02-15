@@ -26,9 +26,31 @@ interface TooltipProps {
 }
 
 function WeatherChart() {
+  const [chartHeight, setChartHeight] = useState(204); // 초기 높이 설정
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 5; // 한 화면에 보여줄 데이터 개수
+
+
+  // chart 크기조정
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 600) {
+        setChartHeight(150); // 작은 화면
+      } else if (window.innerWidth <= 1920 && window.innerHeight <= 1080) {
+        setChartHeight(163.2); // 지정된 화면 크기
+      } else {
+        setChartHeight(204); // 기본 높이
+      }
+    };
+
+    handleResize(); // 초기 높이 설정
+    window.addEventListener('resize', handleResize); // 창 크기 변경 시 높이 업데이트
+
+    return () => {
+      window.removeEventListener('resize', handleResize); // 클린업
+    };
+  }, []);
 
   // API 호출 및 이것저것
   useEffect(() => {
@@ -120,14 +142,10 @@ function WeatherChart() {
       const { temperature, fullDate, time } = payload[0].payload;
       return (
         <div
-          style={{
-            backgroundColor: "white",
-            border: "1px solid #ccc",
-            padding: "10px",
-          }}
+          className={style.tooltip}
         >
           <p>{`${fullDate} ${time}`}</p>
-          <p>{`temp: ${temperature}°C`}</p>
+          <p>{`Temp: ${temperature}°C`}</p>
         </div>
       );
     }
@@ -136,9 +154,10 @@ function WeatherChart() {
 
   return (
     <div className={style.container}>
+
       <ResponsiveContainer
         width="100%"
-        height={204}
+        height={chartHeight}
         style={{ padding: "10px" }}
       >
         <LineChart data={displayedData} margin={{ left: -40 }}>

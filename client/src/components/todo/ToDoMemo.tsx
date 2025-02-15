@@ -24,11 +24,14 @@ const Memo = styled(motion.textarea)`
   font-size: 20px;
   resize: none;
   border: none;
+  font-family: Roboto sans-serif;
+  font-weight: 500;
   &:focus {
     outline: none;
   }
   &::placeholder {
     font-weight: bold;
+    line-height: 27px;
   }
   /* 스크롤바 스타일 */
   &::-webkit-scrollbar {

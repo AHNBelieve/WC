@@ -291,17 +291,17 @@ function DraggableToDo({
             exit={{ opacity: 0 }}
           >
             <PopUp className="edit-form">
-              <h2>수정할 값을 작성해주세요.</h2>
               <input
                 type="text"
                 defaultValue={todoText}
                 onChange={(e) => setNewTodo(e.target.value)}
-                placeholder="새로운 할 일"
+                placeholder="New Task"
+                maxLength={30}
               />
               <div>
-                <button onClick={handleSubmit}>제출</button>
+                <button onClick={handleSubmit}>Submit</button>
                 <button id="cancel" onClick={handleClose}>
-                  취소
+                  Cancel
                 </button>
               </div>
             </PopUp>

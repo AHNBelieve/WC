@@ -7,8 +7,9 @@ import countries from "i18n-iso-countries";
 import en from "i18n-iso-countries/langs/en.json";
 import WeatherPopUp from "./WeatherPopUp";
 import { useNavigate } from "react-router-dom";
+import { renderIcon } from "./utils/renderIcon";
 countries.registerLocale(en);
-const getCountryName = (code: string | undefined) => {
+export const getCountryName = (code: string | undefined) => {
   if (!code) return "Unknown Country";
   return countries.getName(code, "en") || "Unknown Country";
 };
@@ -165,29 +166,9 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
   if (error) {
     return <div>에러 발생: {error}</div>;
   }
-  const renderIcon = () => {
-    const Id = weatherData?.weather[0].id;
-    const nowTime = new Date(Date.now());
-    const time = nowTime.getHours();
-    if (Id) {
-      if (Id === 800) {
-        return (time >= 18 || time <= 6 ? <img src="/night_clear.png" alt="Night Clear Icon" /> : <img src="/day_clear.png" alt="Day Clear Icon" />)
-      } else if (Id >= 200 && Id <= 232) {
-        return <img src="/rain_thunder.png" alt="Rain Thunder Icon" />;
-      } else if (Id >= 300 && Id <= 321) {
-        return <img src="/rain.png" alt="Rain Icon" />;
-      } else if (Id >= 500 && Id <= 531) {
-        return <img src="/rain.png" alt="Rain Icon" />;
-      } else if (Id >= 600 && Id <= 622) {
-        return <img src="/snow.png" alt="Snow Icon" />;
-      } else if (Id >= 700 && Id <= 781) {
-        return <img src="/fog.svg" alt="Fog Icon" />;
-      } else if (Id >= 801 && Id <= 804) {
-        return <img src="/cloudy.png" alt="Cloudy Icon" />;
-      }
-    }
-    return null;
-  };
+
+
+
   const onClose = () => {
     navigate("/");
     setshowweatherModal(false);
@@ -204,7 +185,7 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
       <WeatherCardWrapper>
         <WeatherCard>
           <Icon>
-            {renderIcon()}
+            {renderIcon(weatherData?.weather[0].id)}
           </Icon>
           <Temp>
             <div>
@@ -222,7 +203,7 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
         </WeatherCard>
       </WeatherCardWrapper>
       {showWeatherModal && (
-        <WeatherPopUp onClose={onClose} WeatherData={weatherData} />
+        <WeatherPopUp onClose={onClose} weatherData={weatherData} />
       )}
     </>
   );

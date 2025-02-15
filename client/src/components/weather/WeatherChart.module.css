@@ -14,10 +14,12 @@
     opacity: 0.5;
 }
 
-
-
 .tooltip {
     background-color: white;
-    border: 1px solid #ccc;
+    border: none;
+    border-radius: 5px;
     padding: 10px;
+    font-Family: Roboto sans-serif;
+    font-Weight: 600;
+    font-size: 14px;
 }

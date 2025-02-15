@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import React, { useCallback, useEffect } from "react";
 import styled from "styled-components";
 
 const MemoWrapper = styled.div`
@@ -23,7 +24,7 @@ const Memo = styled(motion.textarea)`
   font-size: 20px;
   resize: none;
   border: none;
-  font-Family: Roboto sans-serif;
+  font-family: Roboto sans-serif;
   font-weight: 500;
   &:focus {
     outline: none;
@@ -79,9 +80,12 @@ function ToDoMemo({ memoData, setMemoData, updatingHandler }: Props) {
   //     setMemoData(memo);
   //   };
 
-  const onChangeMemoData = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMemoData(e.target.value);
-  };
+  const onChangeMemoData = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setMemoData(e.target.value);
+    },
+    []
+  );
 
   return (
     <MemoWrapper>
@@ -95,4 +99,4 @@ function ToDoMemo({ memoData, setMemoData, updatingHandler }: Props) {
   );
 }
 
-export default ToDoMemo;
+export default React.memo(ToDoMemo);

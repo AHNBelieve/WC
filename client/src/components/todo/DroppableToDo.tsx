@@ -6,7 +6,7 @@ import DraggableToDo from "./DraggableToDo";
 import { todoData } from "../../type";
 import SettingPopup from "../Setting/SettingPopup";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { DefaultTheme } from "styled-components/dist/types";
 
 const SettingButton = styled.form`
@@ -16,12 +16,12 @@ const SettingButton = styled.form`
   margin-right: 20px;
   display: flex;
   justify-content: flex-end;
-  svg{
+  svg {
     cursor: pointer;
     font-size: 25px;
     color: #4b4b4b;
   }
-  svg:hover{
+  svg:hover {
     color: #000;
     transition: color 0.4s ease-in-out;
   }
@@ -40,7 +40,7 @@ const Form = styled.form`
   border: none;
   div {
     font-size: 20px;
-    font-Family: Roboto sans-serif;
+    font-family: Roboto sans-serif;
     font-weight: 600;
   }
 `;
@@ -96,7 +96,6 @@ const Title = styled.div`
 interface Props {
   todoDataArray: todoData[];
   setTodoDataArray: React.Dispatch<React.SetStateAction<todoData[]>>;
-  updatingHandler: () => void;
   setTheme: React.Dispatch<React.SetStateAction<DefaultTheme>>;
 }
 interface todoForm {
@@ -117,20 +116,22 @@ function DroppableToDo({ todoDataArray, setTodoDataArray, setTheme }: Props) {
     setTodoDataArray([...todoDataArray, newTodoData]);
     setValue("todoText", ""); // 입력필드 초기화
   };
-  const onClose = () => {
+  const onClose = useCallback(() => {
     navigate("/");
     setIsShowSettingModal(false);
-  };
+  }, []);
 
-  const onClick = () => {
+  const onClick = useCallback(() => {
     setIsShowSettingModal(true);
-  };
+  }, []);
   return (
     <>
       <SettingButton>
         <CiSettings onClick={() => onClick()} />
       </SettingButton>
-      <Title style={{ fontFamily: 'Roboto, sans-serif', fontWeight: '600' }}>Todo List</Title>
+      <Title style={{ fontFamily: "Roboto, sans-serif", fontWeight: "600" }}>
+        Todo List
+      </Title>
       <Form onSubmit={handleSubmit(createToDo)}>
         <div>Add:</div>
         <Input
@@ -138,7 +139,7 @@ function DroppableToDo({ todoDataArray, setTodoDataArray, setTheme }: Props) {
           type="text"
           placeholder=""
           maxLength={30}
-          style={{ fontFamily: 'Roboto, sans-serif', fontWeight: '500' }}
+          style={{ fontFamily: "Roboto, sans-serif", fontWeight: "500" }}
         />
       </Form>
       <Wrapper>
@@ -160,7 +161,9 @@ function DroppableToDo({ todoDataArray, setTodoDataArray, setTheme }: Props) {
           )}
         </Droppable>
       </Wrapper>
-      {isShowSettingModal && <SettingPopup onClose={onClose} setTheme={setTheme} />}
+      {isShowSettingModal && (
+        <SettingPopup onClose={onClose} setTheme={setTheme} />
+      )}
     </>
   );
 }

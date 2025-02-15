@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,8 +19,8 @@ const ToDoCard = styled.div`
   display: grid;
   grid-template-columns: auto 60px;
   align-items: center;
-    position: relative;
-    &::before {
+  position: relative;
+  &::before {
     content: "";
     position: absolute;
     left: 37px; /* 왼쪽 여백 */
@@ -29,15 +29,12 @@ const ToDoCard = styled.div`
     height: 1px;
     border-bottom-color: black;
     border-bottom: solid 1px;
-    
-
   }
 `;
 
 const TextWrapper = styled.div`
   display: grid;
   grid-template-columns: 30px 30px;
-
 `;
 
 const Overlay = styled(motion.div)`
@@ -138,7 +135,6 @@ const ToDoTextWrapper = styled.div<{ isDone: boolean }>`
   line-height: 30px;
   text-decoration: ${(props) => (props.isDone ? "line-through" : "none")};
   color: ${(props) => (props.isDone ? "#c8ccd4;;" : "black")};
-
 `;
 
 const MainLabel = styled.label`
@@ -219,7 +215,7 @@ function DraggableToDo({
     }
   };
 
-  const handleClose = (event: React.MouseEvent) => {
+  const handleClose = useCallback((event: React.MouseEvent) => {
     if (
       event.target instanceof HTMLElement &&
       (event.target.id === "overlay" || event.target.id === "cancel")
@@ -227,9 +223,9 @@ function DraggableToDo({
       setShowPop(false);
       setNewTodo("");
     }
-  };
+  }, []);
   //체크박스 바꾸는 핸들러
-  const onChangeCheckBox = () => {
+  const onChangeCheckBox = useCallback(() => {
     setTodoDataArray((prevData) => {
       let updatedTodoDataArray = [...prevData];
       updatedTodoDataArray = updatedTodoDataArray.filter(
@@ -242,7 +238,7 @@ function DraggableToDo({
       );
       return updatedTodoDataArray;
     });
-  };
+  }, []);
 
   return (
     <>
@@ -267,7 +263,16 @@ function DraggableToDo({
                     <polyline points="1 7.6 5 11 13 1"></polyline>
                   </CheckStyle>
                 </SubLabel>
-                <label htmlFor={`${Date.now()}`} className="cbx-lbl" style={{ fontFamily: 'Roboto, sans-serif', fontWeight: '500' }}>{todoText}</label>
+                <label
+                  htmlFor={`${Date.now()}`}
+                  className="cbx-lbl"
+                  style={{
+                    fontFamily: "Roboto, sans-serif",
+                    fontWeight: "500",
+                  }}
+                >
+                  {todoText}
+                </label>
               </MainLabel>
             </CheckBoxWrapper>
             <TextWrapper>

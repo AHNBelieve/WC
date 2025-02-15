@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Calendar as Calendars } from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./Calendar.styles.css";
@@ -26,6 +26,7 @@ function Calendar() {
   }, [date]);
 
   const onChange = (value: Value) => {
+    console.log(value);
     if (value instanceof Date) {
       const dateString = new Date(
         value.getTime() - value.getTimezoneOffset() * 60000
@@ -97,4 +98,4 @@ function Calendar() {
   );
 }
 
-export default Calendar;
+export default React.memo(Calendar);

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { renderIcon } from "./utils/renderIcon";
 import { getCountryName } from "./WeatherApi";
 import { useEffect, useState } from "react";
+import React from "react";
 
 interface WeatherPopUpProp {
   onClose: () => void;
@@ -16,7 +17,7 @@ const PopUpBox = styled.div`
 `;
 
 function WeatherPopUp({ onClose, weatherData }: WeatherPopUpProp) {
-  const [currentTime, setCurrentTime] = useState<string>('');
+  const [currentTime, setCurrentTime] = useState<string>("");
   if (!weatherData) return null;
 
   // Unix 타임스탬프를 a.m./p.m. 형식으로 변환하는 함수
@@ -41,29 +42,32 @@ function WeatherPopUp({ onClose, weatherData }: WeatherPopUpProp) {
     } else if (visibility < 1) {
       return <div>Very Bad😭</div>;
     }
-  }
+  };
   // 기압압 기준
   const PressureStandard = () => {
     const pressure = weatherData.main.pressure;
-    if (pressure >= 1020) { // 고기압
+    if (pressure >= 1020) {
+      // 고기압
       return <div>High Pressure</div>;
-    } else if (pressure >= 1000 && pressure < 1020) {  // 중기압
+    } else if (pressure >= 1000 && pressure < 1020) {
+      // 중기압
       return <div>Mid Pressure</div>;
-    } else if (pressure < 1000) { // 저기압
+    } else if (pressure < 1000) {
+      // 저기압
       return <div>Low Pressure</div>;
     }
-  }
+  };
 
   //현재 시간
   const formatCurrentTime = () => {
     const now = new Date();
     const options: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      hour: '2-digit',
-      minute: '2-digit',
+      weekday: "long",
+      hour: "2-digit",
+      minute: "2-digit",
       hour12: false,
     };
-    return now.toLocaleString('en-US', options);
+    return now.toLocaleString("en-US", options);
   };
 
   useEffect(() => {
@@ -114,7 +118,8 @@ function WeatherPopUp({ onClose, weatherData }: WeatherPopUpProp) {
             <div className="Title">Humidity</div>
             <div className="humidity">
               <img src="/humidity.png" alt="Humidity" />
-              {weatherData.main.humidity}<span>%</span>
+              {weatherData.main.humidity}
+              <span>%</span>
             </div>
           </div>
           {/* 풍속 */}
@@ -129,7 +134,10 @@ function WeatherPopUp({ onClose, weatherData }: WeatherPopUpProp) {
           <div>
             <div className="Title">Visibility</div>
             <div className="visibility">
-              <div>{weatherData.visibility / 1000}<span>km</span></div>
+              <div>
+                {weatherData.visibility / 1000}
+                <span>km</span>
+              </div>
               {visibilityStandard()}
             </div>
           </div>
@@ -137,7 +145,10 @@ function WeatherPopUp({ onClose, weatherData }: WeatherPopUpProp) {
           <div>
             <div className="Title">Pressure</div>
             <div className="pressure">
-              <div>{weatherData.main.pressure}<span>hpa</span></div>
+              <div>
+                {weatherData.main.pressure}
+                <span>hpa</span>
+              </div>
               {PressureStandard()}
             </div>
           </div>
@@ -161,4 +172,4 @@ function WeatherPopUp({ onClose, weatherData }: WeatherPopUpProp) {
   );
 }
 
-export default WeatherPopUp;
+export default React.memo(WeatherPopUp);

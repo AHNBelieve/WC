@@ -1,7 +1,7 @@
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import DroppableToDo from "./DroppableToDo";
 import { todoData } from "../../type";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { DefaultTheme } from "styled-components/dist/types";
 
 interface Props {
@@ -10,11 +10,23 @@ interface Props {
   updatingHandler: () => void;
   setTheme: React.Dispatch<React.SetStateAction<DefaultTheme>>;
 }
-function ToDo({ todoDataArray, setTodoDataArray, updatingHandler, setTheme }: Props) {
+function ToDo({
+  todoDataArray,
+  setTodoDataArray,
+  updatingHandler,
+  setTheme,
+}: Props) {
+  const [isFirstRender, setIsFirstRender] = useState(true);
+
   useEffect(() => {
+    if (isFirstRender) {
+      setIsFirstRender(false); // 첫 실행을 막음
+      return;
+    }
+    console.log(todoDataArray);
     updatingHandler();
   }, [todoDataArray]);
-  const onDragEnd = ({ destination, source }: DropResult) => {
+  const onDragEnd = async ({ destination, source }: DropResult) => {
     // 드래그가 끝났을 때 호출, destination은 목적지, source는 출발지
 
     if (!destination) return; // 드롭 위치가 없으면 종료
@@ -28,6 +40,7 @@ function ToDo({ todoDataArray, setTodoDataArray, updatingHandler, setTheme }: Pr
         todoCopy.splice(destination.index, 0, taskObj);
         return todoCopy;
       });
+      updatingHandler();
     }
   };
 
@@ -36,11 +49,10 @@ function ToDo({ todoDataArray, setTodoDataArray, updatingHandler, setTheme }: Pr
       <DroppableToDo
         todoDataArray={todoDataArray}
         setTodoDataArray={setTodoDataArray}
-        updatingHandler={updatingHandler}
         setTheme={setTheme}
       />
     </DragDropContext>
   );
 }
 
-export default ToDo;
+export default React.memo(ToDo);

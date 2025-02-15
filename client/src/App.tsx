@@ -2,7 +2,7 @@ import styled, { DefaultTheme } from "styled-components";
 import Calendar from "./components/calendar/Calendar";
 import LoginComponent from "./components/LoginComponent/LoginComponent";
 import TodayInformation from "./components/TodayInformation";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getToken } from "./supabase";
 
 const Container = styled.div`
@@ -99,15 +99,11 @@ function App({ setTheme }: AppProps) {
           </TodayInformationSection>
         ) : null}
         <CalendarSection>
-          {isLogin ? (
-            <Calendar />
-          ) : (
-            <LoginComponent />
-          )}
+          {isLogin ? <Calendar /> : <LoginComponent />}
         </CalendarSection>
       </Container>
     </>
   );
 }
 
-export default App;
+export default React.memo(App);

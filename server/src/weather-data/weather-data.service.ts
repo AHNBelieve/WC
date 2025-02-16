@@ -4,14 +4,14 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class WeatherDataService {
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService) { }
 
   async getWeatherData(@Query('lat') lat: number, @Query('lon') lon: number) {
     try {
       const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.configService.get<string>(
           'WEATHER_API_KEY',
-        )}&units=metric&lang=kr`,
+        )}&units=metric&lang=en`,
       );
       if (!response.ok) {
         throw new Error('날씨 데이터를 가져오는 데 실패했습니다.');

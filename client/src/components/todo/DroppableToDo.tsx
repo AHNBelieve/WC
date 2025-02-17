@@ -18,7 +18,7 @@ const SettingButton = styled.form`
   justify-content: flex-end;
   svg {
     cursor: pointer;
-    font-size: 25px;
+    font-size: 35px;
     color: #4b4b4b;
   }
   svg:hover {

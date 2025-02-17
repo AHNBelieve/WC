@@ -17,7 +17,7 @@ export const renderIcon = (weatherId: number | undefined) => {
         } else if (weatherId >= 600 && weatherId <= 622) {
             return <img src="/snow.png" alt="Snow Icon" />;
         } else if (weatherId >= 700 && weatherId <= 781) {
-            return <img src="/fog.svg" alt="Fog Icon" />;
+            return <img src="/fog.png" alt="Fog Icon" />;
         } else if (weatherId >= 801 && weatherId <= 804) {
             return <img src="/cloudy.png" alt="Cloudy Icon" />;
         }

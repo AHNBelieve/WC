@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Calendar as Calendars } from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./Calendar.styles.css";
@@ -15,8 +15,23 @@ function Calendar() {
   const [isLoading, setIsLoading] = useState(true);
   const [showPastModal, setShowPastModal] = useState(false);
   const [dateId, setDateId] = useState("");
+  const calendarRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     setIsLoading(true);
+    if (window.location.pathname.includes("/date")) {
+      setDateId(window.location.pathname.split("/")[2]);
+      navigate(`/date/${window.location.pathname.split("/")[2]}`);
+      setShowPastModal(true);
+      setTimeout(() => {
+        if (calendarRef.current) {
+          calendarRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      }, 300);
+    }
+
     const fetchWrittenDates = async () => {
       const dates = await getMonthlyDailyData(date);
       setWrittenDates(dates);
@@ -84,7 +99,7 @@ function Calendar() {
   };
 
   return (
-    <div className="calendar-board">
+    <div className="calendar-board" ref={calendarRef}>
       <Calendars
         onChange={onChange}
         value={date}

@@ -1,19 +1,9 @@
-import {
-  Default,
-  PastelGray,
-  PastelRed,
-  PastelOrange,
-  PastelYellow,
-  PastelGreen,
-  PastelBlue,
-  PastelPink,
-  PastelPurple,
-  PastelBrown,
-} from "../../theme"; // 상위 디렉토리의 theme.ts 파일 참조
+import { handleThemeCase } from "../../theme"; // 상위 디렉토리의 theme.ts 파일 참조
 import { supabase } from "../../supabase";
 import "./SettingPopup.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DefaultTheme } from "styled-components/dist/types";
+import { getUserTheme, updateUserTheme } from "../../api/userProfile";
 const version = "0.0.1";
 
 export default function SettingPopup({
@@ -21,10 +11,17 @@ export default function SettingPopup({
   setTheme,
 }: {
   onClose: () => void;
-  setTheme: (theme: DefaultTheme) => void;
+  setTheme: React.Dispatch<React.SetStateAction<DefaultTheme>>;
 }) {
   const [selectedTheme, setSelectedTheme] = useState("light"); // 추가: 선택된 테마 상태 관리
   //날씨 권한 여부 확인 핸들러
+  useEffect(() => {
+    const func1 = async () => {
+      const serverTheme = await getUserTheme();
+      setSelectedTheme(serverTheme);
+    };
+    func1();
+  }, [setSelectedTheme]);
   const handleResetWeatherPermission = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -74,42 +71,8 @@ export default function SettingPopup({
     // 추가: 테마 변경 핸들러
     const themeValue = event.target.value;
     setSelectedTheme(themeValue);
-
-    // 선택된 테마에 따라 테마 설정
-    switch (themeValue) {
-      case "light":
-        setTheme(Default);
-        break;
-      case "pastelGray":
-        setTheme(PastelGray);
-        break;
-      case "pastelRed":
-        setTheme(PastelRed);
-        break;
-      case "pastelOrange":
-        setTheme(PastelOrange);
-        break;
-      case "pastelYellow":
-        setTheme(PastelYellow);
-        break;
-      case "pastelGreen":
-        setTheme(PastelGreen);
-        break;
-      case "pastelBlue":
-        setTheme(PastelBlue);
-        break;
-      case "pastelPink":
-        setTheme(PastelPink);
-        break;
-      case "pastelPurple":
-        setTheme(PastelPurple);
-        break;
-      case "pastelBrown":
-        setTheme(PastelBrown);
-        break;
-      default:
-        setTheme(Default);
-    }
+    updateUserTheme(themeValue);
+    handleThemeCase(themeValue, setTheme);
   };
 
   return (

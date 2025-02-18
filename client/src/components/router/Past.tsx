@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getDailyData } from "../../api/dailyData";
 import { todoData, weatherDataToSave } from "../../type";
 import "./Past.styles.css";
+import { useNavigate } from "react-router-dom";
 
 interface PastProps {
   onClose: () => void;
@@ -20,7 +21,7 @@ function Past({ onClose, dateId }: PastProps) {
   const [data, setData] = useState<responseData>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const getData = async () => {
       try {

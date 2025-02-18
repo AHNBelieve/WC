@@ -11,7 +11,7 @@ import {
 import { getToken } from "../supabase";
 import styled from "styled-components";
 import ToDoMemo from "./todo/ToDoMemo";
-import { AppProps } from "../App";
+import { AppProps, Loading } from "../App";
 
 const Tododo = styled.div`
   grid-column: 2;
@@ -97,7 +97,7 @@ export default function TodayInformation({ setTheme }: AppProps) {
   }, []);
 
   if (isLoading) {
-    return <div>로딩중입니다~~</div>;
+    return <Loading />;
   }
 
   return (

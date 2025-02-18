@@ -55,7 +55,7 @@ const Memo = styled(motion.textarea)`
     );
   @media (max-width: 1920px) and (max-height: 1080px) {
     line-height: 24.8px;
-    padding: 5px 8px;
+    padding: 4px 8px;
     background-image: linear-gradient(to right, white 8px, transparent 8px),
       linear-gradient(to left, white 8px, transparent 8px),
       repeating-linear-gradient(
@@ -65,6 +65,10 @@ const Memo = styled(motion.textarea)`
         #000 25px,
         white 25px
       );
+      &::placeholder {
+    font-weight: bold;
+    line-height: 18px;
+  }
   }
 `;
 

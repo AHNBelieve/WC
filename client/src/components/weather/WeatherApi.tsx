@@ -8,6 +8,7 @@ import en from "i18n-iso-countries/langs/en.json";
 import WeatherPopUp from "./WeatherPopUp";
 import { useNavigate } from "react-router-dom";
 import { renderIcon } from "./utils/renderIcon";
+import { Loading } from "../../App";
 countries.registerLocale(en);
 export const getCountryName = (code: string | undefined) => {
   if (!code) return "Unknown Country";
@@ -160,7 +161,7 @@ function WeatherAPI({ setWeatherDataToSave }: Props) {
   }, []);
 
   if (isLoading) {
-    return <div>로딩 중...</div>;
+    return <Loading />;;
   }
 
   if (error) {

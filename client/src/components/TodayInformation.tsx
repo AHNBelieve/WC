@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./TodayInformation.css";
 import ToDo from "./todo/ToDo";
-import WeatherAPI from "./weather/WeatherApi";
+import WeatherMain from "./weather/WeatherMain";
 import { todoData, weatherDataToSave } from "../type";
 import {
   createDailyData,
@@ -103,7 +103,7 @@ export default function TodayInformation({ setTheme }: AppProps) {
   return (
     <>
       {showToast && <div className="toast">Save completed</div>}
-      <WeatherAPI setWeatherDataToSave={setWeatherDataToSave}></WeatherAPI>
+      <WeatherMain setWeatherDataToSave={setWeatherDataToSave}></WeatherMain>
       {isLogin ? (
         <>
           <Tododo>

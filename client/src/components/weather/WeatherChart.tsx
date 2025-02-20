@@ -1,4 +1,4 @@
-import style from "./WeatherChart.module.css";
+import style from "./css/WeatherChart.module.css";
 import {
   LineChart,
   Line,
@@ -154,7 +154,6 @@ function WeatherChart() {
 
   return (
     <div className={style.container}>
-
       <ResponsiveContainer
         width="100%"
         height={chartHeight}

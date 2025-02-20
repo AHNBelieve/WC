@@ -1,9 +1,9 @@
-import "./WeatherPopUp.styles.css";
+import style from "./css/WeatherPopUp.module.css";
 import WeatherChart from "./WeatherChart";
 import { WeathersResponse } from "../../type";
 import styled from "styled-components";
 import { renderIcon } from "./utils/renderIcon";
-import { getCountryName } from "./WeatherApi";
+import { getCountryName } from "./WeatherMain";
 import { useEffect, useState } from "react";
 import React from "react";
 
@@ -86,13 +86,13 @@ function WeatherPopUp({ onClose, weatherData }: WeatherPopUpProp) {
   }, []);
 
   return (
-    <div className="popup-overlay" onClick={onClose}>
-      <PopUpBox className="popup-box" onClick={(e) => e.stopPropagation()}>
+    <div className={style.popup_overlay} onClick={onClose}>
+      <PopUpBox className={style.popup_box} onClick={(e) => e.stopPropagation()}>
         <WeatherChart />
         {/*날씨 카드*/}
-        <div className="weather-card-top">
+        <div className={style.weather_card_top}>
           {renderIcon(weatherData?.weather[0].id)}
-          <div className="weather-card-bottom">
+          <div className={style.weather_card_bottom}>
             <div>
               {weatherData?.main.temp.toFixed(1)}
               <sup>°C</sup>
@@ -104,19 +104,19 @@ function WeatherPopUp({ onClose, weatherData }: WeatherPopUpProp) {
             </div>
           </div>
         </div>
-        <div className="detail-weather">
+        <div className={style.detail_weather}>
           {/* 체감 온도 */}
           <div>
-            <div className="Title">Feels like</div>
-            <div className="feels_like">
+            <div className={style.Title}>Feels like</div>
+            <div className={style.feels_like}>
               {weatherData.main.feels_like}
               <sup>°C</sup>
             </div>
           </div>
           {/* 습도 */}
           <div>
-            <div className="Title">Humidity</div>
-            <div className="humidity">
+            <div className={style.Title}>Humidity</div>
+            <div className={style.humidity}>
               <img src="/humidity.png" alt="Humidity" />
               {weatherData.main.humidity}
               <span>%</span>
@@ -124,16 +124,16 @@ function WeatherPopUp({ onClose, weatherData }: WeatherPopUpProp) {
           </div>
           {/* 풍속 */}
           <div>
-            <div className="Title">Wind Status</div>
-            <div className="wind_speed">
+            <div className={style.Title}>Wind Status</div>
+            <div className={style.wind_speed}>
               <img src="/wind_status.png" alt="Wind Status" />
               {weatherData.wind.speed}m/s
             </div>
           </div>
           {/* 가시 거리 */}
           <div>
-            <div className="Title">Visibility</div>
-            <div className="visibility">
+            <div className={style.Title}>Visibility</div>
+            <div className={style.visibility}>
               <div>
                 {weatherData.visibility / 1000}
                 <span>km</span>
@@ -143,8 +143,8 @@ function WeatherPopUp({ onClose, weatherData }: WeatherPopUpProp) {
           </div>
           {/* 기압 */}
           <div>
-            <div className="Title">Pressure</div>
-            <div className="pressure">
+            <div className={style.Title}>Pressure</div>
+            <div className={style.pressure}>
               <div>
                 {weatherData.main.pressure}
                 <span>hpa</span>
@@ -154,8 +154,8 @@ function WeatherPopUp({ onClose, weatherData }: WeatherPopUpProp) {
           </div>
           {/* 일출, 일몰 */}
           <div>
-            <div className="Title">Sunrise & Sunset</div>
-            <div className="sunrise_sunset">
+            <div className={style.Title}>Sunrise & Sunset</div>
+            <div className={style.sunrise_sunset}>
               <div>
                 <img src="/sunrise.png" alt="Sunrise" />
                 {formatTime(weatherData.sys.sunrise)}

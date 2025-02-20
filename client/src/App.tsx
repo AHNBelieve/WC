@@ -5,6 +5,20 @@ import TodayInformation from "./components/TodayInformation";
 import React, { useEffect, useState } from "react";
 import { getToken } from "./supabase";
 
+export const Loading = styled.div`
+  border: 4px solid #f3f3f3; /* 회색 배경 */
+  border-top: 4px solid #3498db; /* 파란색 상단 */
+  border-radius: 50%; /* 원형 */
+  width: 30px; /* 너비 */
+  height: 30px; /* 높이 */
+  margin: auto;
+  animation: spin 1s linear infinite; /* 회전 애니메이션 */
+  @keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+`;
+
 const Container = styled.div`
   height: 100vh;
   width: 100vw;
@@ -28,7 +42,7 @@ const CalendarSection = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: ${({ theme }) => theme.bgColor};
 `;
 
 const TodayInformationWrapper = styled.div`
@@ -85,7 +99,7 @@ function App({ setTheme }: AppProps) {
   });
 
   if (isLoading) {
-    return <>로딩중...</>;
+    return <Loading />
   }
 
   return (

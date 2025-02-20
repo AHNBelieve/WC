@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./TodayInformation.css";
 import ToDo from "./todo/ToDo";
-import WeatherAPI from "./weather/WeatherApi";
+import WeatherMain from "./weather/WeatherMain";
 import { todoData, weatherDataToSave } from "../type";
 import {
   createDailyData,
@@ -11,7 +11,7 @@ import {
 import { getToken } from "../supabase";
 import styled from "styled-components";
 import ToDoMemo from "./todo/ToDoMemo";
-import { AppProps } from "../App";
+import { AppProps, Loading } from "../App";
 
 const Tododo = styled.div`
   grid-column: 2;
@@ -97,13 +97,13 @@ export default function TodayInformation({ setTheme }: AppProps) {
   }, []);
 
   if (isLoading) {
-    return <div>로딩중입니다~~</div>;
+    return <Loading />;
   }
 
   return (
     <>
       {showToast && <div className="toast">Save completed</div>}
-      <WeatherAPI setWeatherDataToSave={setWeatherDataToSave}></WeatherAPI>
+      <WeatherMain setWeatherDataToSave={setWeatherDataToSave}></WeatherMain>
       {isLogin ? (
         <>
           <Tododo>

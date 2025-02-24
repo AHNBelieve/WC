@@ -225,7 +225,7 @@ function DraggableToDo({
     }
   }, []);
   //체크박스 바꾸는 핸들러
-  const onChangeCheckBox = useCallback(() => {
+  const onChangeCheckBox = () => {
     setTodoDataArray((prevData) => {
       let updatedTodoDataArray = [...prevData];
       updatedTodoDataArray = updatedTodoDataArray.filter(
@@ -238,7 +238,7 @@ function DraggableToDo({
       );
       return updatedTodoDataArray;
     });
-  }, []);
+  };
 
   return (
     <>

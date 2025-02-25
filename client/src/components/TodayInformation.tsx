@@ -1,40 +1,27 @@
 import { useEffect, useState } from "react";
+import "./TodayInformation.css";
 import ToDo from "./todo/ToDo";
-import WeatherAPI from "./weather/WeatherApi";
+import WeatherMain from "./weather/WeatherMain";
 import { todoData, weatherDataToSave } from "../type";
 import {
   createDailyData,
   getDailyData,
-  getMonthlyDailyData,
   updateDailyData,
 } from "../api/dailyData";
 import { getToken } from "../supabase";
 import styled from "styled-components";
-import { FaRegSave } from "react-icons/fa";
+import ToDoMemo from "./todo/ToDoMemo";
+import { AppProps, Loading } from "../App";
 
 const Tododo = styled.div`
-  grid-column: 1 / span 2;
-  grid-row: 2;
-  grid-template-columns: 220px 1fr;
-  grid-template-rows: 58px 247px 95px;
-`;
-
-const StyledFaRegSave = styled.div`
   grid-column: 2;
   grid-row: 1;
-  display: flex;
-  align-items: center;
-  svg{
-    width: 40px;
-    height: 40px;
-  }
-  svg:hover{
-    transition: 0.6s ease-in-out;
-    color: #6495ED;
-  }
+  display: grid;
+  grid-template-columns: 3fr 36fr 11fr;
+  grid-template-rows: 8fr 4fr 18fr 3fr;
 `;
 
-export default function TodayInformation() {
+export default function TodayInformation({ setTheme }: AppProps) {
   //주요 변수들
   //todoDataArray -> 할 일 목록
   const [todoDataArray, setTodoDataArray] = useState<todoData[]>([]);
@@ -44,13 +31,32 @@ export default function TodayInformation() {
   const [weatherDataToSave, setWeatherDataToSave] = useState<
     weatherDataToSave | object
   >({});
-
+  const [showToast, setShowToast] = useState<boolean>(false);
   //컴포넌트 상태에 관한 것
   const [isLoading, setIsLoading] = useState(false);
 
   //로그인 됐는지 안 됐는지
   const [isLogin, setIsLogin] = useState(false);
 
+  const updatingHandler = () => {
+    const func = async () => {
+      try {
+        console.log(weatherDataToSave, todoDataArray, memoData);
+        await updateDailyData(
+          weatherDataToSave as weatherDataToSave,
+          todoDataArray as todoData[],
+          memoData as string
+        );
+        if (showToast === false) {
+          setShowToast(true); // 저장 완료 후 알림 표시
+          setTimeout(() => setShowToast(false), 5000); // 3초 후 알림 숨기기
+        }
+      } catch (err) {
+        console.log("업데이트 실패", err);
+      }
+    };
+    func();
+  };
   useEffect(() => {
     const func = async () => {
       //이렇게 보내면 그냥 오늘 데이터 받는 것!
@@ -63,15 +69,12 @@ export default function TodayInformation() {
         setIsLogin(true);
         setIsLoading(true);
         const response = await getDailyData();
-
         //이건 한번 해당 유저의 해당 달에 쓴 데이터를 뽑는 로직을 짜봄
         //month를 받아서 이를 적절히 넘겨줘야지 가능하다.
-        const response2 = await getMonthlyDailyData();
-        console.log(response2);
 
-        if (response && response.data) {
-          setTodoDataArray(response.data.todoData as todoData[]);
-          setMemoData(response.data.memoData as string);
+        if (response) {
+          setTodoDataArray(response.todoData as todoData[]);
+          setMemoData(response.memoData as string);
         } else {
           //현재 오늘 데이터가 존재하지 않는 경우!
           //일단은 바로 오늘 데이터를 생성해놓는 걸로 했는데, 이거 버튼식으로 바꿔도 좋을듯
@@ -93,44 +96,30 @@ export default function TodayInformation() {
     func();
   }, []);
 
-  //Update핸들러 이 핸들러를 통해서 데이터가 업데이트 된다.
-  const updatingHandler = () => {
-    const func = async () => {
-      try {
-        const response = await updateDailyData(
-          weatherDataToSave as weatherDataToSave,
-          todoDataArray,
-          memoData
-        );
-        if (response) {
-          alert("저장되었습니다!");
-        }
-      } catch (err) {
-        console.log("업데이트 실패", err);
-      }
-    };
-    func();
-  };
-
   if (isLoading) {
-    return <div>로딩중입니다~~</div>;
+    return <Loading />;
   }
 
   return (
     <>
-      <WeatherAPI setWeatherDataToSave={setWeatherDataToSave}></WeatherAPI>
+      {showToast && <div className="toast">Save completed</div>}
+      <WeatherMain setWeatherDataToSave={setWeatherDataToSave}></WeatherMain>
       {isLogin ? (
-        <Tododo>
-          <StyledFaRegSave>
-            <FaRegSave onClick={updatingHandler} />
-          </StyledFaRegSave>
-          <ToDo
-            todoDataArray={todoDataArray}
-            setTodoDataArray={setTodoDataArray}
+        <>
+          <Tododo>
+            <ToDo
+              todoDataArray={todoDataArray}
+              setTodoDataArray={setTodoDataArray}
+              updatingHandler={updatingHandler}
+              setTheme={setTheme}
+            />
+          </Tododo>
+          <ToDoMemo
             memoData={memoData}
             setMemoData={setMemoData}
-          ></ToDo>
-        </Tododo>
+            updatingHandler={updatingHandler}
+          />
+        </>
       ) : null}
     </>
   );

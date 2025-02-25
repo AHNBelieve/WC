@@ -3,9 +3,11 @@ import {
   UnauthorizedException,
   Headers,
   Body,
+  Query,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { UpdateDailyDataDto, DailyDataResponseDto } from './dto/daily-data.dto';
 
 @Injectable()
 export class DailyDataService {
@@ -32,27 +34,32 @@ export class DailyDataService {
     return data.user; // 사용자 정보 반환
   }
 
-  async getDailyData(@Headers('Authorization') authHeader: string) {
-    //오늘 데이터를 보내주는 함수
+  async getDailyData(
+    @Headers('Authorization') authHeader: string,
+    @Query('date') date?: string,
+  ): Promise<DailyDataResponseDto> {
     try {
-      const today = new Date().toISOString().split('T')[0];
       const user = await this.getUserFromAuthHeader(authHeader);
+      const queryDate = date || new Date().toISOString().split('T')[0];
       const { data, error } = await this.supabase
         .from('DailyData')
         .select('*')
-        .match({ userId: user.id, date: today });
+        .match({ userId: user.id, date: queryDate });
+
       if (error) {
         console.error('Supabase Error:', error);
         throw error;
       }
 
-      return data[0];
+      return data[0]; // 항상 배열로 반환
     } catch (error) {
       console.error('Error fetching products:', error);
       throw error;
     }
   }
-  async postDailyData(@Headers('Authorization') authHeader: string) {
+  async postDailyData(
+    @Headers('Authorization') authHeader: string,
+  ): Promise<{ success: string; data: DailyDataResponseDto }> {
     try {
       const today = new Date().toISOString().split('T')[0];
       const user = await this.getUserFromAuthHeader(authHeader);
@@ -78,19 +85,19 @@ export class DailyDataService {
     }
   }
   async updateDailyData(
-    @Body() body: any,
+    @Body() body: UpdateDailyDataDto,
     @Headers('Authorization') authHeader: string,
-  ) {
+  ): Promise<void> {
     try {
-      //DailyData받아서 오늘 데이터 업데이트!
+      //DailyData받아 서 오늘 데이터 업데이트!
       const today = new Date().toISOString().split('T')[0];
       const user = await this.getUserFromAuthHeader(authHeader);
       //supabase fetch
       const { error } = await this.supabase
         .from('DailyData')
         .update({
-          weatherData: body.weatherDataToSave,
-          todoData: body.todoDataArray,
+          weatherData: body.weatherData,
+          todoData: body.todoData,
           memoData: body.memoData,
         })
         .match({ userId: user.id, date: today });
@@ -104,24 +111,35 @@ export class DailyDataService {
     }
   }
   //Calender 전용
-  async getMonthlyDailyData(@Headers('Authorization') authHeader: string) {
+  async getMonthlyDailyData(
+    @Headers('Authorization') authHeader: string,
+    year: string,
+    month: string,
+  ) {
     try {
-      //조건 : 해당 유저이고, todoData가 있긴 해야한다.
       const user = await this.getUserFromAuthHeader(authHeader);
+
+      // 해당 월의 시작일과 마지막일 계산
+      const startDate = `${year}-${month.padStart(2, '0')}-01`;
+      const lastDay = new Date(parseInt(year), parseInt(month), 0).getDate();
+      const endDate = `${year}-${month.padStart(2, '0')}-${lastDay}`;
+
       const { data, error } = await this.supabase
         .from('DailyData')
         .select('date')
         .eq('userId', user.id)
         .neq('weatherData', null)
-        .gte('date', '2025-01-01')
-        .lte('date', '2025-01-31');
+        .gte('date', startDate)
+        .lte('date', endDate);
+
       if (error) {
         throw new Error(error.message);
       }
-      console.log(data);
+
       return data;
     } catch (err) {
       console.log(err);
+      throw err;
     }
   }
 }

@@ -1,0 +1,194 @@
+.past-overlay {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+.past-box {
+  width: clamp(600px, 70vw, 800px);
+  height: clamp(600px, 80vh, 800px);
+  background-color: #f8f9fa;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.past-container {
+  padding: clamp(20px, 2.5vw, 32px);
+  height: 100%;
+  overflow-y: auto;
+}
+
+.past-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: clamp(20px, 2.5vw, 32px);
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.past-header h2 {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  color: #343a40;
+  font-weight: 600;
+}
+
+.past-close-button {
+  background: none;
+  border: none;
+  font-size: clamp(1.2rem, 1.5vw, 1.8rem);
+  color: #868e96;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.past-close-button:hover {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.past-section {
+  margin-bottom: clamp(24px, 3vw, 36px);
+}
+
+.past-section h3 {
+  font-size: clamp(1.2rem, 1.4vw, 1.6rem);
+  color: #495057;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.past-weather-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  font-size: clamp(1rem, 1.2vw, 1.4rem);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.past-weather-location {
+  font-size: clamp(0.9rem, 1.1vw, 1.3rem);
+  color: #343a40;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.past-weather-temps {
+  display: flex;
+  gap: 16px;
+}
+
+.past-weather-temp {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.past-weather-temp.high {
+  background-color: #fff5f5;
+  color: #e03131;
+}
+
+.past-weather-temp.low {
+  background-color: #f1f6ff;
+  color: #1c7ed6;
+}
+
+.past-todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.past-todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  font-size: clamp(0.9rem, 1.1vw, 1.3rem);
+}
+
+/* 할 일 목록 스크롤바 스타일링 */
+.past-todo-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.past-todo-list::-webkit-scrollbar-track {
+  background: #f1f3f5;
+  border-radius: 4px;
+}
+
+.past-todo-list::-webkit-scrollbar-thumb {
+  background: #dee2e6;
+  border-radius: 4px;
+}
+
+.past-todo-list::-webkit-scrollbar-thumb:hover {
+  background: #ced4da;
+}
+
+.past-memo-content {
+  padding: 20px;
+  background-color: white;
+  border-radius: 12px;
+  min-height: 150px;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  font-size: clamp(0.9rem, 1.1vw, 1.3rem);
+  line-height: 1.6;
+  color: #495057;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* 스크롤바 스타일링 */
+.past-memo-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.past-memo-content::-webkit-scrollbar-track {
+  background: #f1f3f5;
+  border-radius: 4px;
+}
+
+.past-memo-content::-webkit-scrollbar-thumb {
+  background: #dee2e6;
+  border-radius: 4px;
+}
+
+.past-memo-content::-webkit-scrollbar-thumb:hover {
+  background: #ced4da;
+}
+
+/* 로딩 및 에러 상태 */
+.past-loading,
+.past-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: clamp(1.1rem, 1.3vw, 1.5rem);
+  color: #495057;
+}

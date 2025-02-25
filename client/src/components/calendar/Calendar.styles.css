@@ -1,0 +1,268 @@
+/* 캘린더를 감싸는 메인 컨테이너 - 고정된 크기와 비율 설정 */
+.calendar-board {
+  width: 1000px;
+  height: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  border-radius: 9% 9% 3% 3%;
+  padding: 0;
+  max-height: calc(100vh - 40px);
+  aspect-ratio: 4/5;
+  /* 고정된 비율 추가 */
+}
+
+@media (max-width: 2560px) and (max-height: 1440px) {
+
+  .calendar-board,
+  .custom-calendar {
+    width: 1000px;
+    height: 1000px;
+  }
+}
+
+@media (max-width: 1920px) and (max-height: 1080px) {
+
+  .calendar-board,
+  .custom-calendar {
+    width: 800px;
+    height: 800px;
+  }
+}
+
+/* 캘린더 기본 스타일 */
+.custom-calendar {
+  width: 1000px;
+  height: 1000px;
+  padding: clamp(20px, 2.5vw, 32px);
+  background-color: white;
+  border: none;
+  border-radius: 9% 9% 3% 3%;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 네비게이션 영역 */
+.custom-calendar .react-calendar__navigation {
+  height: clamp(45px, 5vw, 60px);
+  margin-bottom: clamp(16px, 2vw, 24px);
+  padding: 0 clamp(16px, 2vw, 24px);
+}
+
+.custom-calendar .react-calendar__navigation button {
+  min-width: clamp(40px, 5vw, 60px);
+  height: clamp(40px, 5vw, 60px);
+  font-size: clamp(1.6em, 1.3vw, 20em);
+  font-weight: 600;
+}
+
+/* 요일 헤더 */
+.custom-calendar .react-calendar__month-view__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: clamp(12px, 1.3vw, 20px);
+}
+
+.custom-calendar .react-calendar__month-view__weekdays__weekday {
+  height: clamp(32px, 4vw, 40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-calendar .react-calendar__month-view__weekdays abbr {
+  font-size: clamp(1.4em, 1.3vw, 1.8em);
+  font-weight: 600;
+  color: black;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+/* 날짜 그리드 */
+.custom-calendar .react-calendar__month-view__days {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr);
+  gap: clamp(4px, 0.8vw, 8px);
+  flex: 1;
+  aspect-ratio: 7/6;
+}
+
+/* 날짜 셀 */
+.custom-calendar .react-calendar__month-view__days__day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  font-size: clamp(1em, 1.2vw, 1.4em);
+  color: black;
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+  border-radius: 18%;
+  user-select: none;
+}
+
+/* 이전/다음 달 날짜 */
+.custom-calendar .react-calendar__month-view__days__day--neighboringMonth {
+  color: #b1b3b6;
+  opacity: 1;
+  pointer-events: none;
+}
+
+/* 작성된 날짜 스타일 */
+.custom-calendar .react-calendar__tile.written-date {
+  background-color: #c8d4e3 !important;
+  color: #4f5e70 !important;
+  border: 20px solid white;
+  border-radius: 50%;
+  font-weight: 600;
+}
+
+.custom-calendar .react-calendar__tile.written-date:hover {
+  background-color: #a0bcdf !important;
+}
+
+/* 반응형 조정 */
+@media (max-height: 800px) {
+  .custom-calendar {
+    padding: clamp(12px, 1.5vw, 20px);
+  }
+
+  .custom-calendar .react-calendar__navigation {
+    height: clamp(35px, 4vw, 45px);
+    margin-bottom: clamp(12px, 1.5vw, 16px);
+  }
+
+  .custom-calendar .react-calendar__month-view__weekdays__weekday {
+    height: clamp(28px, 3.5vw, 35px);
+  }
+}
+
+/* 로딩 컨테이너 - calendar-board와 동일한 크기로 설정 */
+.calendar-loading {
+  width: 100%;
+  height: 115%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 9% 9% 3% 3%;
+  color: #495057;
+  font-size: clamp(1.1em, 1.3vw, 1.4em);
+  font-weight: bold;
+  aspect-ratio: 4/5;
+  /* calendar-board와 동일한 비율 */
+}
+
+/* 로딩 스피너 애니메이션 */
+.loading-spinner {
+  width: clamp(40px, 5vw, 50px);
+  height: clamp(40px, 5vw, 50px);
+  border: 3px solid #e9ecef;
+  border-top: 3px solid #40c057;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 네비게이션 */
+.custom-calendar .react-calendar__navigation button:hover {
+  background-color: #f0f7fa;
+  border-radius: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-calendar .react-calendar__navigation button {
+  background-color: white;
+}
+
+.custom-calendar .react-calendar__navigation__label {
+  color: black;
+  border-radius: 15px;
+}
+
+.custom-calendar .react-calendar__year-view__months__month {
+  background-color: white;
+}
+
+.custom-calendar .react-calendar__century-view__decades__decade {
+  background-color: white;
+}
+
+.custom-calendar .react-calendar__decade-view__years__year {
+  background-color: white;
+}
+
+/* 모바일 대응: 갤럭시 S22 (1080x2340) */
+@media (max-width: 1080px) {
+  .calendar-board {
+    width: 90vw;
+    height: auto;
+    max-height: 90vh;
+    aspect-ratio: 4/5;
+    border-radius: 5%;
+  }
+
+  .custom-calendar {
+    width: 100%;
+    height: auto;
+    padding: clamp(12px, 2vw, 20px);
+  }
+
+  .custom-calendar .react-calendar__navigation {
+    height: clamp(35px, 4vw, 50px);
+    margin-bottom: clamp(10px, 1.5vw, 16px);
+    padding: 0 clamp(12px, 2vw, 16px);
+  }
+
+  .custom-calendar .react-calendar__navigation button {
+    min-width: clamp(35px, 5vw, 50px);
+    height: clamp(35px, 5vw, 50px);
+    font-size: clamp(1em, 1.2vw, 1.4em);
+  }
+
+  .custom-calendar .react-calendar__month-view__weekdays {
+    margin-bottom: clamp(10px, 1.2vw, 16px);
+  }
+
+  .custom-calendar .react-calendar__month-view__weekdays__weekday {
+    height: clamp(28px, 3.5vw, 35px);
+  }
+
+  .custom-calendar .react-calendar__month-view__days {
+    gap: clamp(3px, 0.5vw, 6px);
+  }
+
+  .custom-calendar .react-calendar__month-view__days__day {
+    font-size: clamp(0.9em, 1.1vw, 1.2em);
+    border-radius: 15%;
+  }
+
+  .calendar-loading {
+    width: 90vw;
+    height: auto;
+    max-height: 90vh;
+    aspect-ratio: 4/5;
+    border-radius: 5%;
+  }
+
+  .loading-spinner {
+    width: clamp(30px, 4vw, 40px);
+    height: clamp(30px, 4vw, 40px);
+  }
+}

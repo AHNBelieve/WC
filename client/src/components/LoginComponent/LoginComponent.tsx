@@ -15,7 +15,7 @@ const LoginComponent: React.FC = () => {
   const handleGoogleLogin = async () => {
     try {
       // 구글 로그인 OAuth 시작
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           queryParams: {
@@ -28,9 +28,9 @@ const LoginComponent: React.FC = () => {
         throw new Error();
       }
       // JWT 토큰은 Supabase에서 자동으로 쿠키에 저장됨
-      data;
     } catch (err: unknown) {
       // err가 Error인 경우를 처리
+      alert(err);
     }
   };
   const openSignupPopup = () => {
@@ -48,11 +48,31 @@ const LoginComponent: React.FC = () => {
         email: email,
         password: password,
       });
-      if (error) throw error;
-      console.log("Logged in successfully");
+
+      if (error) {
+        // Supabase 에러 메시지에 따른 한국어 에러 메시지 매핑
+        const errorMessage =
+          {
+            "Invalid login credentials":
+              "이메일 또는 비밀번호가 올바르지 않습니다.",
+            "Email not confirmed": "이메일 인증이 필요합니다.",
+            "Invalid email or password":
+              "이메일 또는 비밀번호가 올바르지 않습니다.",
+            "Too many requests":
+              "너무 많은 로그인 시도가 있었습니다. 잠시 후 다시 시도해주세요.",
+            "Email rate limit exceeded":
+              "이메일 전송 횟수가 초과되었습니다. 잠시 후 다시 시도해주세요.",
+          }[error.message] || "로그인 중 오류가 발생했습니다.";
+
+        alert(errorMessage);
+        return;
+      }
+
+      console.log("로그인 성공!");
       window.location.reload();
     } catch (error) {
-      console.log(error);
+      alert("로그인 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      console.error("Login error:", error);
     }
   };
   return (

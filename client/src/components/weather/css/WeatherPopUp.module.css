@@ -1,0 +1,463 @@
+.popup_overlay {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+.popup_box {
+  width: 905px;
+  height: 610px;
+  display: grid;
+  grid-template-columns: 55fr 126fr;
+  grid-template-rows: 102fr 203fr;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+/*Weather Card*/
+.weather_card_top {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  display: grid;
+  grid-template-rows: 102fr 203fr;
+  grid-template-columns: 1fr;
+  background-color: white;
+  width: 100%;
+  height: 100%;
+}
+
+.weather_card_top>img {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  justify-self: center;
+  align-self: center;
+  width: 136px;
+  height: 136px;
+}
+
+.weather_card_bottom {
+  grid-column: 1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 146fr 55fr 55fr 110fr;
+  font-Family: Roboto sans-serif;
+}
+
+.weather_card_bottom div:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: center;
+  font-size: 120px;
+  display: flex;
+}
+
+.weather_card_bottom div:nth-child(1) sup {
+  font-size: 0.25em;
+  vertical-align: super;
+  /* 수직 정렬 */
+}
+
+.weather_card_bottom div:nth-child(2) {
+  grid-column: 1;
+  grid-row: 2;
+  margin: 0 35px;
+  font-size: 18px;
+  margin-bottom: 10px;
+  border-bottom: 3px solid #f2f2f2;
+}
+
+.weather_card_bottom div:nth-child(3) {
+  grid-column: 1;
+  grid-row: 3;
+  margin-left: 35px;
+  align-self: center;
+  font-size: 18px;
+}
+
+.weather_card_bottom div:nth-child(4) {
+  grid-column: 1;
+  grid-row: 4;
+  justify-self: center;
+  padding-top: 20px;
+  font-size: 24px;
+}
+
+
+
+
+
+/*Detail Weather*/
+.detail_weather {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding-top: 20px;
+}
+
+.detail_weather>div {
+  width: 180px;
+  height: 160px;
+  background-color: white;
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 30px auto;
+}
+
+.Title {
+  grid-row: 1;
+  grid-column: 1;
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  font-size: 16px;
+  color: #bdbdbd;
+}
+
+.feels_like,
+.humidity,
+.wind_speed {
+  grid-row: 2;
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+  font-Family: Roboto sans-serif;
+  font-Weight: 600;
+}
+
+/*체감온도*/
+.feels_like {
+  font-size: 30px;
+}
+
+/*습도*/
+.humidity {
+  font-size: 35px;
+  font-Weight: 600;
+}
+
+.humidity>img {
+  width: 60px;
+  height: 60px;
+}
+
+.humidity>span {
+  font-size: 20px;
+  padding-bottom: 10px;
+  padding-left: 3px;
+}
+
+/*풍속*/
+.wind_speed {
+  font-size: 23px;
+  font-Weight: 600;
+}
+
+.wind_speed>img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+/*가시거리*/
+.visibility {
+  grid-row: 2;
+  grid-column: 1;
+  display: grid;
+  grid-template-rows: 7fr 10fr 10fr;
+  grid-template-columns: 1fr;
+  height: 100%;
+  margin-left: 15px;
+  font-size: 30px;
+  font-Family: Roboto sans-serif;
+  font-Weight: 600;
+}
+
+.visibility>div:nth-child(1) {
+  grid-row: 2;
+  grid-column: 1;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.visibility>div:nth-child(2) {
+  grid-row: 3;
+  grid-column: 1;
+  font-size: 13px;
+  margin-left: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.visibility>div>span {
+  font-size: 15px;
+  padding-top: 15px;
+}
+
+/*기압*/
+.pressure {
+  grid-row: 2;
+  grid-column: 1;
+  display: grid;
+  grid-template-rows: 7fr 10fr 10fr;
+  grid-template-columns: 1fr;
+  height: 100%;
+  margin-left: 15px;
+  font-size: 30px;
+  font-Family: Roboto sans-serif;
+  font-Weight: 600;
+}
+
+.pressure>div:nth-child(1) {
+  grid-row: 2;
+  grid-column: 1;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.pressure>div:nth-child(2) {
+  grid-row: 3;
+  grid-column: 1;
+  font-size: 13px;
+  margin-left: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.pressure>div>span {
+  font-size: 15px;
+  padding-top: 15px;
+}
+
+/*일출, 일몰몰*/
+.sunrise_sunset {
+  grid-row: 2;
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-Family: Roboto sans-serif;
+  font-Weight: 600;
+  font-size: 18px;
+}
+
+.sunrise_sunset>div {
+  display: flex;
+  align-items: center;
+
+}
+
+.sunrise_sunset>div>img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+@media (max-width: 2560px) and (max-height: 1440px) {
+  .popup_box {
+    width: 905px;
+    height: 610px;
+  }
+
+  .detail_weather>div {
+    width: 180px;
+    height: 160px;
+  }
+
+  .weather_card_top>img {
+    width: 136px;
+    height: 136px;
+  }
+
+  .weather_card_bottom div:nth-child(1) {
+    font-size: 120px;
+  }
+
+  .weather_card_bottom div:nth-child(2) {
+    font-size: 18px;
+  }
+
+  .weather_card_bottom div:nth-child(3) {
+    font-size: 18px;
+  }
+
+  .weather_card_bottom div:nth-child(4) {
+    padding-top: 20px;
+    font-size: 24px;
+  }
+
+  .Title {
+    font-size: 16px;
+    padding: 15px;
+  }
+
+  .feels_like {
+    font-size: 30px;
+    margin-left: 15px;
+
+  }
+
+  .humidity {
+    font-size: 35px;
+    margin-left: 15px;
+
+  }
+
+  .wind_speed {
+    font-size: 23px;
+  }
+
+  .wind_speed>img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .pressure,
+  .visibility {
+    margin-left: 15px;
+    font-size: 30px;
+  }
+
+  .pressure>div:nth-child(1),
+  .visibility>div:nth-child(1) {
+    height: 40px;
+  }
+
+  .pressure>div:nth-child(2),
+  .visibility>div:nth-child(2) {
+    font-size: 13px;
+    margin-left: 5px;
+  }
+
+  .pressure>div>span,
+  .visibility>div>span {
+    font-size: 15px;
+    padding-top: 15px;
+  }
+
+  .sunrise_sunset {
+    font-size: 18px;
+  }
+
+  .sunrise_sunset>div>img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+}
+
+
+
+
+
+
+@media (max-width: 1920px) and (max-height: 1080px) {
+  .popup_box {
+    width: 724px;
+    height: 488px;
+  }
+
+  .detail_weather>div {
+    width: 144px;
+    height: 128px;
+  }
+
+  .weather_card-top>img {
+    width: 108.8px;
+    height: 108.8px;
+  }
+
+  .weather_card_bottom div:nth-child(1) {
+    font-size: 96px;
+  }
+
+  .weather_card_bottom div:nth-child(2) {
+    font-size: 14.4px;
+  }
+
+  .weather_card_bottom div:nth-child(3) {
+    font-size: 14.4px;
+  }
+
+  .weather_card_bottom div:nth-child(4) {
+    padding-top: 20px;
+    font-size: 19.2px;
+  }
+
+  .Title {
+    font-size: 12.8px;
+    padding: 12px;
+  }
+
+  .feels_like {
+    font-size: 24px;
+    margin-left: 12px;
+
+  }
+
+  .humidity {
+    font-size: 28px;
+    margin-left: 12px;
+
+  }
+
+  .wind_speed {
+    font-size: 18.4px;
+  }
+
+  .wind_speed>img {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+  }
+
+  .pressure,
+  .visibility {
+    margin-left: 12px;
+    font-size: 24px;
+  }
+
+  .pressure>div:nth-child(1),
+  .visibility>div:nth-child(1) {
+    height: 32px;
+  }
+
+  .pressure>div:nth-child(2),
+  .visibility>div:nth-child(2) {
+    font-size: 10.4px;
+    margin-left: 4px;
+  }
+
+  .pressure>div>span,
+  .visibility>div>span {
+    font-size: 12px;
+    padding-top: 12px;
+  }
+
+  .sunrise_sunset {
+    font-size: 14.4px;
+  }
+
+  .sunrise_sunset>div>img {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+  }
+}

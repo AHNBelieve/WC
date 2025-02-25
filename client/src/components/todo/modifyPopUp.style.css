@@ -1,0 +1,133 @@
+/* 전체 폼 스타일 */
+.edit-form {
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 40px;
+    border-radius: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    font-Family: Roboto sans-serif;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* 폼 호버 효과 */
+.edit-form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* 제목 스타일 */
+.edit-form h2 {
+    text-align: center;
+    color: #444;
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* 입력 필드 스타일 */
+.edit-form input[type="text"] {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    font-size: 18px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 입력 필드 포커스 스타일 */
+.edit-form input[type="text"]:focus {
+    border-color: #6200ea;
+    outline: none;
+    box-shadow: 0 0 8px rgba(98, 0, 234, 0.5);
+}
+
+/* 버튼 컨테이너 스타일 */
+.edit-form div {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* 버튼 기본 스타일 */
+.edit-form button {
+    flex: 1;
+    padding: 14px 0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    margin: 0 10px;
+    position: relative;
+}
+
+/* 제출 버튼 스타일 */
+.edit-form button:first-child {
+    background-color: #6200ea;
+    color: white;
+}
+
+/* 제출 버튼 호버 효과 */
+.edit-form button:first-child:hover {
+    background-color: #3700b3;
+    transform: translateY(-2px);
+}
+
+/* 취소 버튼 스타일 */
+.edit-form button#cancel {
+    background-color: #f44336;
+    color: white;
+}
+
+/* 취소 버튼 호버 효과 */
+.edit-form button#cancel:hover {
+    background-color: #c62828;
+    transform: translateY(-2px);
+}
+
+/* 버튼 클릭 시 효과 */
+.edit-form button:active {
+    transform: scale(0.95);
+}
+
+/* 버튼의 그림자 효과 */
+.edit-form button::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.edit-form button:hover::after {
+    transform: scaleX(1);
+}
+
+/* 미디어 쿼리 */
+@media (max-width: 480px) {
+    .edit-form {
+        padding: 20px;
+    }
+
+    .edit-form h2 {
+        font-size: 24px;
+    }
+
+    .edit-form input[type="text"] {
+        padding: 12px;
+    }
+
+    .edit-form button {
+        font-size: 14px;
+    }
+}

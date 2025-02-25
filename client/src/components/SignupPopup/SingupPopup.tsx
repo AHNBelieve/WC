@@ -15,22 +15,42 @@ export default function SignupPopup({ isOpen, onClose }: SignupPopupProps) {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      console.error("Passwords do not match");
+      alert("비밀번호가 일치하지 않습니다.");
       return;
     }
     try {
       const { error } = await supabase.auth.signUp({ email, password });
-      if (error) throw error;
-      console.log("Signed up successfully");
-      alert("이메일에서 인증 후 Weather Calender를 이용하세요!");
+      if (error) {
+        const errorMessage =
+          {
+            "Password should be at least 6 characters":
+              "비밀번호는 최소 6자 이상이어야 합니다.",
+            "Email already registered": "이미 등록된 이메일입니다.",
+            "Invalid email format": "올바르지 않은 이메일 형식입니다.",
+            "Signup is disabled": "현재 회원가입이 비활성화되어 있습니다.",
+            "Password is too weak":
+              "비밀번호가 너무 취약합니다. 더 강력한 비밀번호를 사용해주세요.",
+            "Email rate limit exceeded":
+              "너무 많은 요청이 있었습니다. 잠시 후 다시 시도해주세요.",
+            "User already registered": "이미 가입된 사용자입니다.",
+          }[error.message] || "회원가입 중 오류가 발생했습니다.";
+
+        alert(errorMessage);
+        return;
+      }
+      alert("이메일에서 인증 후 Weather Calendar를 이용하세요!");
       onClose();
     } catch (error) {
       console.error("Error signing up:", error);
+      alert("회원가입 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
     }
   };
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
       onClose();
     }
   };

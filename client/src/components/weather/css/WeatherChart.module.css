@@ -1,0 +1,25 @@
+.container {
+    grid-column: 2;
+    grid-row: 1;
+    position: relative;
+}
+
+.button {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    opacity: 0.5;
+}
+
+.tooltip {
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-Family: Roboto sans-serif;
+    font-Weight: 600;
+    font-size: 14px;
+}

@@ -1,23 +1,32 @@
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import DroppableToDo from "./DroppableToDo";
-import ToDoMemo from "./ToDoMemo";
 import { todoData } from "../../type";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { DefaultTheme } from "styled-components/dist/types";
 
 interface Props {
   todoDataArray: todoData[];
   setTodoDataArray: React.Dispatch<React.SetStateAction<todoData[]>>;
-  memoData: string;
-  setMemoData: React.Dispatch<React.SetStateAction<string>>;
+  updatingHandler: () => void;
+  setTheme: React.Dispatch<React.SetStateAction<DefaultTheme>>;
 }
-
 function ToDo({
   todoDataArray,
   setTodoDataArray,
-  memoData,
-  setMemoData,
+  updatingHandler,
+  setTheme,
 }: Props) {
-  const onDragEnd = ({ destination, source }: DropResult) => {
+  const [isFirstRender, setIsFirstRender] = useState(true);
+
+  useEffect(() => {
+    if (isFirstRender) {
+      setIsFirstRender(false); // 첫 실행을 막음
+      return;
+    }
+    console.log(todoDataArray);
+    updatingHandler();
+  }, [todoDataArray]);
+  const onDragEnd = async ({ destination, source }: DropResult) => {
     // 드래그가 끝났을 때 호출, destination은 목적지, source는 출발지
 
     if (!destination) return; // 드롭 위치가 없으면 종료
@@ -31,6 +40,7 @@ function ToDo({
         todoCopy.splice(destination.index, 0, taskObj);
         return todoCopy;
       });
+      updatingHandler();
     }
   };
 
@@ -39,10 +49,10 @@ function ToDo({
       <DroppableToDo
         todoDataArray={todoDataArray}
         setTodoDataArray={setTodoDataArray}
+        setTheme={setTheme}
       />
-      <ToDoMemo memoData={memoData} setMemoData={setMemoData} />
     </DragDropContext>
   );
 }
 
-export default ToDo;
+export default React.memo(ToDo);
